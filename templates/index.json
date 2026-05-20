@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -10,10 +19,28 @@
         "secondary_text": "Read the story"
       }
     },
-    "features-grid": { "type": "features-grid" },
-    "trusted-by": { "type": "trusted-by" },
-    "rated-grid": { "type": "rated-grid" },
-    "newsletter": { "type": "newsletter" }
+    "features-grid": {
+      "type": "features-grid",
+      "settings": {}
+    },
+    "trusted-by": {
+      "type": "trusted-by",
+      "settings": {}
+    },
+    "rated-grid": {
+      "type": "rated-grid",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
   },
-  "order": ["hero", "features-grid", "trusted-by", "rated-grid", "newsletter"]
+  "order": [
+    "hero",
+    "features-grid",
+    "trusted-by",
+    "rated-grid",
+    "newsletter"
+  ]
 }
