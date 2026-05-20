@@ -18,6 +18,8 @@
             {%- if block.settings.verified -%}<span class="badge">Verified</span>{%- endif -%}
             {%- if block.settings.image != blank -%}
               <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape | default: block.settings.name | escape }}" loading="lazy">
+            {%- elsif block.settings.image_filename != blank -%}
+              <img src="{{ block.settings.image_filename | file_url }}" alt="{{ block.settings.name | escape }}" loading="lazy">
             {%- endif -%}
           </div>
           <div class="nm">{{ block.settings.name }}</div>
@@ -82,7 +84,8 @@
       "type": "ugc",
       "name": "Customer photo",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image (overrides filename below)" },
+        { "type": "text", "id": "image_filename", "label": "Image filename in Shopify Files", "info": "Used if no image is picked. e.g. eastiott-customer-london.png" },
         { "type": "text", "id": "name", "label": "Name", "default": "Eleanor Hayes" },
         { "type": "text", "id": "location", "label": "Location", "default": "London, UK" },
         { "type": "textarea", "id": "quote", "label": "Quote", "default": "Obsessed. Elegant, endlessly spacious, and it goes with absolutely everything I own." },
@@ -93,10 +96,10 @@
   "max_blocks": 4,
   "default": {
     "blocks": [
-      { "type": "ugc", "settings": { "name": "Eleanor Hayes", "location": "London, UK", "quote": "Obsessed. Elegant, endlessly spacious, and it goes with absolutely everything I own." } },
-      { "type": "ugc", "settings": { "name": "David Carter", "location": "Toronto, Canada", "quote": "Has everything I need in one bag. Fits under the seat, saves the fees, and still looks sharp." } },
-      { "type": "ugc", "settings": { "name": "Sophia Bennett", "location": "Sydney, Australia", "quote": "Stylish and so practical. I get compliments on it everywhere I go." } },
-      { "type": "ugc", "settings": { "name": "Hannah Thompson", "location": "New York, USA", "quote": "The interior keeps everything in its place. I genuinely take it everywhere. Love it." } }
+      { "type": "ugc", "settings": { "name": "Eleanor Hayes", "location": "London, UK", "quote": "Obsessed. Elegant, endlessly spacious, and it goes with absolutely everything I own.", "image_filename": "eastiott-customer-london.png" } },
+      { "type": "ugc", "settings": { "name": "David Carter", "location": "Toronto, Canada", "quote": "Has everything I need in one bag. Fits under the seat, saves the fees, and still looks sharp.", "image_filename": "eastiott-customer-plane.png" } },
+      { "type": "ugc", "settings": { "name": "Sophia Bennett", "location": "Sydney, Australia", "quote": "Stylish and so practical. I get compliments on it everywhere I go.", "image_filename": "eastiott-customer-couple.png" } },
+      { "type": "ugc", "settings": { "name": "Hannah Thompson", "location": "New York, USA", "quote": "The interior keeps everything in its place. I genuinely take it everywhere. Love it.", "image_filename": "eastiott-customer-street.png" } }
     ]
   },
   "presets": [{ "name": "Rated #1 UGC grid" }]
