@@ -4,7 +4,7 @@ Custom Online Store 2.0 theme for **Eastiott**, ported from the four reference H
 
 ## Brand system
 
-Tokens live in `theme/assets/eastiott.css`:
+Tokens live in `assets/eastiott.css`:
 
 ```
 --blue       #006B95   primary — buttons, links, selected states
@@ -76,15 +76,15 @@ Theme writes from this session are blocked. To preview:
 
 1. Pull this branch locally.
 2. Authenticate the [Shopify CLI](https://shopify.dev/docs/themes/tools/cli) for `7rkgkh-kh.myshopify.com`.
-3. From `theme/`, push as an **unpublished** theme:
+3. From the repo root, push as an **unpublished** theme:
 
    ```
-   shopify theme push --unpublished --store 7rkgkh-kh.myshopify.com --path .
+   shopify theme push --unpublished --store 7rkgkh-kh.myshopify.com
    ```
 
 4. Use the preview URL Shopify returns. Publish from the Shopify admin only after review.
 
-Alternative: zip the `theme/` directory and upload via **Online Store → Themes → Add theme → Upload zip**.
+Alternative: zip the repo root (the `assets/`, `config/`, `layout/`, `locales/`, `sections/`, `snippets/`, `templates/` directories together) and upload via **Online Store → Themes → Add theme → Upload zip**. Shopify's GitHub theme integration also works on this branch — it requires the standard theme directories at the branch root, which is how this repo is laid out.
 
 ## Editing in the theme editor
 

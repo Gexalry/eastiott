@@ -16,12 +16,13 @@ Common end-to-end tasks against this repo + Shopify MCP.
 
 ## Push theme to Shopify
 
+From the repo root:
+
 ```
-cd theme
-shopify theme push --store 7rkgkh-kh.myshopify.com
+shopify theme push --unpublished --store 7rkgkh-kh.myshopify.com
 ```
 
-(Requires Shopify CLI auth — not handled by this repo.)
+The theme directories (`assets/`, `config/`, `layout/`, `locales/`, `sections/`, `snippets/`, `templates/`) live at the branch root so the Shopify CLI and the GitHub theme integration both treat the branch as a valid theme. (Requires Shopify CLI auth — not handled by this repo.)
 
 ## Run analytics
 

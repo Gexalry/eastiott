@@ -30,36 +30,36 @@ Connected store: `7rkgkh-kh.myshopify.com` · Plan: Basic · Currency: USD · Ow
 
 Brand tokens, fonts, header/footer chrome:
 
-- [theme/assets/eastiott.css](theme/assets/eastiott.css): brand tokens, base type, header/footer/announcement CSS, scroll-reveal
-- [theme/layout/theme.liquid](theme/layout/theme.liquid): root layout, loads fonts + eastiott.css, renders header/footer sections
+- [assets/eastiott.css](assets/eastiott.css): brand tokens, base type, header/footer/announcement CSS, scroll-reveal
+- [layout/theme.liquid](layout/theme.liquid): root layout, loads fonts + eastiott.css, renders header/footer sections
 
 PDP composition — `templates/product.json` orders these sections:
 
-- [theme/sections/main-product.liquid](theme/sections/main-product.liquid): gallery + buy box (variants, bundle tiers, add-ons, ATC) — ported from `references/eastiott-tote.html`
-- [theme/sections/trust-strip.liquid](theme/sections/trust-strip.liquid): stat strip on slate background
-- [theme/sections/editorial-feature.liquid](theme/sections/editorial-feature.liquid): reusable 2-column image + copy block
-- [theme/sections/featured-on.liquid](theme/sections/featured-on.liquid): "As admired in" press row
-- [theme/sections/features-grid.liquid](theme/sections/features-grid.liquid): four-feature row — ported from `references/eastiott-features-section.html`
-- [theme/sections/product-specs.liquid](theme/sections/product-specs.liquid): two-column spec table
-- [theme/sections/trusted-by.liquid](theme/sections/trusted-by.liquid): review carousel with gold stars — ported from `references/eastiott-trusted-section.html`
-- [theme/sections/rated-grid.liquid](theme/sections/rated-grid.liquid): UGC 4-up grid — ported from `references/eastiott-rated-section.html`
-- [theme/sections/faq.liquid](theme/sections/faq.liquid): accordion FAQ
-- [theme/sections/newsletter.liquid](theme/sections/newsletter.liquid): email capture (uses Shopify `customer` form)
+- [sections/main-product.liquid](sections/main-product.liquid): gallery + buy box (variants, bundle tiers, add-ons, ATC) — ported from `references/eastiott-tote.html`
+- [sections/trust-strip.liquid](sections/trust-strip.liquid): stat strip on slate background
+- [sections/editorial-feature.liquid](sections/editorial-feature.liquid): reusable 2-column image + copy block
+- [sections/featured-on.liquid](sections/featured-on.liquid): "As admired in" press row
+- [sections/features-grid.liquid](sections/features-grid.liquid): four-feature row — ported from `references/eastiott-features-section.html`
+- [sections/product-specs.liquid](sections/product-specs.liquid): two-column spec table
+- [sections/trusted-by.liquid](sections/trusted-by.liquid): review carousel with gold stars — ported from `references/eastiott-trusted-section.html`
+- [sections/rated-grid.liquid](sections/rated-grid.liquid): UGC 4-up grid — ported from `references/eastiott-rated-section.html`
+- [sections/faq.liquid](sections/faq.liquid): accordion FAQ
+- [sections/newsletter.liquid](sections/newsletter.liquid): email capture (uses Shopify `customer` form)
 
 Chrome sections rendered by layout:
 
-- [theme/sections/announcement-bar.liquid](theme/sections/announcement-bar.liquid)
-- [theme/sections/header.liquid](theme/sections/header.liquid)
-- [theme/sections/footer.liquid](theme/sections/footer.liquid)
+- [sections/announcement-bar.liquid](sections/announcement-bar.liquid)
+- [sections/header.liquid](sections/header.liquid)
+- [sections/footer.liquid](sections/footer.liquid)
 
 Templates:
 
-- [theme/templates/product.json](theme/templates/product.json): composes the PDP — main → trust-strip → editorial-1 → featured-on → features-grid → editorial-2 → specs → trusted-by → rated-grid → faq → newsletter
+- [templates/product.json](templates/product.json): composes the PDP — main → trust-strip → editorial-1 → featured-on → features-grid → editorial-2 → specs → trusted-by → rated-grid → faq → newsletter
 
 Config:
 
-- [theme/config/settings_schema.json](theme/config/settings_schema.json): global theme settings (favicon, accent colour)
-- [theme/locales/en.default.json](theme/locales/en.default.json)
+- [config/settings_schema.json](config/settings_schema.json): global theme settings (favicon, accent colour)
+- [locales/en.default.json](locales/en.default.json)
 
 ## References
 
