@@ -1,0 +1,31 @@
+# eastiott
+
+> Shopify store repository for **My Store** (`7rkgkh-kh.myshopify.com`). Contains a minimal modifiable Shopify theme, a landing-page workspace, and structured docs describing store resources. Organized using the [llms.txt](https://llmstxt.org) convention so language models can navigate the project.
+
+Connected store: `7rkgkh-kh.myshopify.com` · Plan: Basic · Currency: USD · Owner: loridasam@gmail.com
+
+## Docs
+
+- [Store overview](docs/store.md): connected shop, plan, currency, timezone
+- [Products](docs/products.md): how products are modeled and managed via Shopify MCP
+- [Collections](docs/collections.md): collection structure and grouping rules
+- [Theme](docs/theme.md): theme skeleton layout, sections, templates
+- [Landing page](docs/landing.md): drop-in HTML workflow for the marketing landing page
+- [Workflows](docs/workflows.md): common tasks (create product, push theme, etc.)
+
+## Theme
+
+- [layout/theme.liquid](theme/layout/theme.liquid): root Liquid layout
+- [templates/index.liquid](theme/templates/index.liquid): home template
+- [sections/main-index.liquid](theme/sections/main-index.liquid): home section
+- [config/settings_schema.json](theme/config/settings_schema.json): theme settings
+- [assets/base.css](theme/assets/base.css): base styles
+
+## Landing
+
+- [landing/index.html](landing/index.html): static HTML landing page (drop-in target)
+
+## Optional
+
+- [README.md](README.md): human-readable project overview
+- [.gitignore](.gitignore): ignored paths

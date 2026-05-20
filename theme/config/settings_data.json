@@ -1,0 +1,10 @@
+{
+  "current": {
+    "color_accent": "#111111"
+  },
+  "presets": {
+    "Default": {
+      "color_accent": "#111111"
+    }
+  }
+}
