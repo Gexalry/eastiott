@@ -1,0 +1,52 @@
+<div class="east-featured-on">
+  <div class="ft-label">{{ section.settings.label | default: 'As admired in' }}</div>
+  <div class="logos">
+    {%- for block in section.blocks -%}
+      <span {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+  .east-featured-on {
+    padding: 54px 0; text-align: center;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .east-featured-on .ft-label {
+    font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--slate); margin-bottom: 30px;
+  }
+  .east-featured-on .logos {
+    display: flex; justify-content: center; align-items: center; gap: 56px;
+    flex-wrap: wrap; font-family: var(--serif); font-size: 24px;
+    color: var(--slate); opacity: 0.62; letter-spacing: 0.04em; font-style: italic;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "As admired in",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "As admired in" },
+    { "type": "paragraph", "content": "These names are presentational only. Replace with real press mentions before publish to avoid implying endorsements you don't have." }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Name / logo",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "The Atelier" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "logo", "settings": { "name": "The Atelier" } },
+      { "type": "logo", "settings": { "name": "Voyage" } },
+      { "type": "logo", "settings": { "name": "Maison" } },
+      { "type": "logo", "settings": { "name": "Cultivé" } }
+    ]
+  },
+  "presets": [{ "name": "As admired in" }]
+}
+{% endschema %}

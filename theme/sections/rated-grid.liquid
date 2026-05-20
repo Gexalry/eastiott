@@ -1,0 +1,104 @@
+<section class="east-rated">
+  <div class="wrap">
+    {%- if section.settings.kicker != blank -%}
+      <div class="kicker">{{ section.settings.kicker }}</div>
+    {%- endif -%}
+    <h2>{{ section.settings.heading_pre }} <em>{{ section.settings.heading_em }}</em>{%- if section.settings.heading_post != blank -%}<br>{{ section.settings.heading_post }}{%- endif -%}</h2>
+    {%- if section.settings.show_rating -%}
+      <div class="rate">
+        <span class="stars">★★★★★</span>
+        <span class="txt">Rated <b>{{ section.settings.rating_value }}</b> based on <b>{{ section.settings.rating_count }}</b> reviews</span>
+      </div>
+    {%- endif -%}
+
+    <div class="ug-grid">
+      {%- for block in section.blocks -%}
+        <article class="ug reveal" {{ block.shopify_attributes }}>
+          <div class="ph">
+            {%- if block.settings.verified -%}<span class="badge">Verified</span>{%- endif -%}
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape | default: block.settings.name | escape }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="nm">{{ block.settings.name }}</div>
+          <div class="loc">{{ block.settings.location }}</div>
+          <div class="qs">★★★★★</div>
+          <p class="qt">{{ block.settings.quote }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .east-rated { padding: 88px 0 96px; background: var(--paper); text-align: center; }
+  .east-rated .kicker { font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .east-rated h2 { font-family: var(--serif); font-size: 54px; line-height: 1.04; font-weight: 500; margin-bottom: 22px; }
+  .east-rated h2 em { font-style: italic; color: var(--blue); }
+  .east-rated .rate { display:flex; align-items:center; justify-content:center; gap:13px; margin-bottom: 58px; flex-wrap: wrap; }
+  .east-rated .rate .stars { color: var(--gold); letter-spacing: 4px; font-size: 20px; }
+  .east-rated .rate .txt { font-size: 14px; letter-spacing: 0.05em; color: var(--slate); }
+  .east-rated .rate .txt b { color: var(--ink); font-weight: 500; }
+
+  .east-rated .ug-grid { display:grid; grid-template-columns: repeat(4,1fr); gap: 26px; text-align: left; }
+  @media (max-width:1000px) { .east-rated .ug-grid { grid-template-columns: repeat(2,1fr); gap: 30px 26px; } }
+  @media (max-width:560px) { .east-rated .ug-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; } }
+
+  .east-rated .ug { display: flex; flex-direction: column; }
+  .east-rated .ug .ph {
+    aspect-ratio: 1; border-radius: 4px; overflow: hidden;
+    background: var(--paper-2); position: relative;
+  }
+  .east-rated .ug .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .east-rated .ug:hover .ph img { transform: scale(1.04); }
+  .east-rated .ug .ph::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px var(--line); border-radius: 4px; pointer-events: none; }
+  .east-rated .ug .badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,107,149,0.92); color: #fff;
+    font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 2px; backdrop-filter: blur(4px);
+  }
+  .east-rated .ug .nm { font-family: var(--serif); font-size: 21px; font-weight: 600; margin: 18px 0 2px; }
+  .east-rated .ug .loc { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 11px; }
+  .east-rated .ug .qs { color: var(--gold); letter-spacing: 2px; font-size: 13px; margin-bottom: 9px; }
+  .east-rated .ug .qt { font-size: 14.5px; line-height: 1.62; color: var(--slate); }
+</style>
+
+{% schema %}
+{
+  "name": "Rated #1 UGC grid",
+  "settings": [
+    { "type": "paragraph", "content": "Customer photos & quotes are placeholders. Connect to real, permissioned customer content before publish — fabricated 'Verified' tags are an FTC/ASA risk." },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Carried the world over" },
+    { "type": "text", "id": "heading_pre", "label": "Heading (pre)", "default": "Rated the" },
+    { "type": "text", "id": "heading_em", "label": "Heading (emphasized italic blue)", "default": "#1" },
+    { "type": "text", "id": "heading_post", "label": "Heading (post — second line)", "default": "everyday tote of 2026" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating line", "default": true },
+    { "type": "text", "id": "rating_value", "label": "Rating value", "default": "4.8/5" },
+    { "type": "text", "id": "rating_count", "label": "Rating count", "default": "12,500+" }
+  ],
+  "blocks": [
+    {
+      "type": "ugc",
+      "name": "Customer photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Eleanor Hayes" },
+        { "type": "text", "id": "location", "label": "Location", "default": "London, UK" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Obsessed. Elegant, endlessly spacious, and it goes with absolutely everything I own." },
+        { "type": "checkbox", "id": "verified", "label": "Show 'Verified' badge", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "default": {
+    "blocks": [
+      { "type": "ugc", "settings": { "name": "Eleanor Hayes", "location": "London, UK", "quote": "Obsessed. Elegant, endlessly spacious, and it goes with absolutely everything I own." } },
+      { "type": "ugc", "settings": { "name": "David Carter", "location": "Toronto, Canada", "quote": "Has everything I need in one bag. Fits under the seat, saves the fees, and still looks sharp." } },
+      { "type": "ugc", "settings": { "name": "Sophia Bennett", "location": "Sydney, Australia", "quote": "Stylish and so practical. I get compliments on it everywhere I go." } },
+      { "type": "ugc", "settings": { "name": "Hannah Thompson", "location": "New York, USA", "quote": "The interior keeps everything in its place. I genuinely take it everywhere. Love it." } }
+    ]
+  },
+  "presets": [{ "name": "Rated #1 UGC grid" }]
+}
+{% endschema %}

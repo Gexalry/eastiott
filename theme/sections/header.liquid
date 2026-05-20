@@ -1,0 +1,55 @@
+<header class="site-header">
+  <div class="wrap nav">
+    <div class="nav-icons">
+      <a href="{{ routes.search_url }}">Search</a>
+    </div>
+    <a class="logo" href="{{ routes.root_url }}">{{ section.settings.logo_text | default: shop.name }}</a>
+    <div class="nav-icons">
+      <a href="{{ routes.account_url }}">Account</a>
+      <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+    </div>
+  </div>
+</header>
+
+{%- if section.blocks.size > 0 -%}
+  <div class="site-subnav">
+    <div class="wrap row">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "Eastiott"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Nav link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "The Collection" },
+        { "type": "url", "id": "link", "label": "URL" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link", "settings": { "label": "The Collection" } },
+      { "type": "link", "settings": { "label": "The Atelier Tote" } },
+      { "type": "link", "settings": { "label": "Travel" } },
+      { "type": "link", "settings": { "label": "Materials" } },
+      { "type": "link", "settings": { "label": "Our Story" } }
+    ]
+  }
+}
+{% endschema %}

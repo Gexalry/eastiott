@@ -1,0 +1,203 @@
+<section class="east-trusted" id="EastTrusted-{{ section.id }}">
+  <div class="wrap">
+    {%- if section.settings.kicker != blank -%}
+      <div class="kicker">{{ section.settings.kicker }}</div>
+    {%- endif -%}
+    <h2>{{ section.settings.heading_pre }} <em>{{ section.settings.heading_em }}</em> {{ section.settings.heading_post }}</h2>
+
+    {%- if section.settings.show_score -%}
+      <div class="score">
+        <span class="word">{{ section.settings.score_word }}</span>
+        <span class="num">{{ section.settings.score_value }}</span>
+        <span class="stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+          {%- endfor -%}
+        </span>
+      </div>
+      <div class="based">based on <u>{{ section.settings.based_count }}</u> reviews</div>
+    {%- endif -%}
+
+    <div class="carousel">
+      <button class="arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+
+      <div class="track-mask">
+        <div class="track">
+          {%- for block in section.blocks -%}
+            <article class="rcard" {{ block.shopify_attributes }}>
+              <span class="stars" aria-hidden="true">
+                {%- for i in (1..5) -%}
+                  <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+                {%- endfor -%}
+              </span>
+              {%- if block.settings.title != blank -%}
+                <div class="rt">{{ block.settings.title }}</div>
+              {%- endif -%}
+              <p>{{ block.settings.body }}</p>
+              <div class="who">{{ block.settings.author }}</div>
+              {%- if block.settings.verified -%}
+                <div class="vf">Verified</div>
+              {%- endif -%}
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="dots" aria-hidden="true"></div>
+    </div>
+
+    {%- if section.settings.cta_text != blank -%}
+      <div class="viewall">
+        <a href="{{ section.settings.cta_link | default: '#' }}">{{ section.settings.cta_text }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .east-trusted { padding: 88px 0 96px; background: linear-gradient(180deg, var(--paper-2), var(--paper)); text-align: center; position: relative; }
+  .east-trusted .kicker { font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .east-trusted h2 { font-family: var(--serif); font-size: 50px; line-height: 1.05; font-weight: 500; margin-bottom: 18px; }
+  .east-trusted h2 em { font-style: italic; color: var(--blue); }
+  .east-trusted .score { display:flex; align-items:center; justify-content:center; gap:13px; flex-wrap:wrap; margin-bottom:6px; }
+  .east-trusted .score .word { font-size: 15px; letter-spacing: 0.04em; color: var(--slate); }
+  .east-trusted .score .num { font-size: 22px; font-weight: 500; color: var(--ink); }
+  .east-trusted .score .stars { display: inline-flex; gap: 4px; }
+  .east-trusted .score .stars i {
+    width: 26px; height: 26px; background: var(--gold); display: inline-flex;
+    align-items: center; justify-content: center; border-radius: 3px;
+  }
+  .east-trusted .score .stars i svg { width: 16px; height: 16px; fill: #fff; }
+  .east-trusted .based { font-size: 13.5px; color: var(--slate); letter-spacing: 0.04em; margin-bottom: 52px; }
+  .east-trusted .based u { text-decoration-color: var(--gold); text-underline-offset: 3px; }
+
+  .east-trusted .carousel { position: relative; max-width: 1160px; margin: 0 auto; }
+  .east-trusted .track-mask { overflow: hidden; padding: 8px 4px; }
+  .east-trusted .track { display: flex; gap: 24px; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .east-trusted .rcard {
+    flex: 0 0 calc((100% - 48px) / 3);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+    padding: 34px 30px 30px; display: flex; flex-direction: column; align-items: center;
+    text-align: center; box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  @media (max-width:900px) { .east-trusted .rcard { flex: 0 0 calc((100% - 24px) / 2); } }
+  @media (max-width:600px) { .east-trusted .rcard { flex: 0 0 100%; } }
+  .east-trusted .rcard .stars { display: inline-flex; gap: 4px; margin-bottom: 20px; }
+  .east-trusted .rcard .stars i {
+    width: 24px; height: 24px; background: var(--gold); display: inline-flex;
+    align-items: center; justify-content: center; border-radius: 3px;
+  }
+  .east-trusted .rcard .stars i svg { width: 15px; height: 15px; fill: #fff; }
+  .east-trusted .rcard .rt { font-family: var(--serif); font-size: 23px; font-weight: 600; margin-bottom: 10px; color: var(--ink); }
+  .east-trusted .rcard p { font-size: 15px; line-height: 1.62; color: var(--slate); flex: 1; margin-bottom: 22px; }
+  .east-trusted .rcard .who { font-size: 13px; letter-spacing: 0.04em; color: var(--ink); font-weight: 500; }
+  .east-trusted .rcard .vf { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+
+  .east-trusted .arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--paper); border: 1px solid var(--line);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    z-index: 5; transition: background .25s, border-color .25s;
+    box-shadow: 0 4px 14px rgba(28,34,39,0.08);
+  }
+  .east-trusted .arrow:hover { background: var(--blue); border-color: var(--blue); }
+  .east-trusted .arrow:hover svg { stroke: #fff; }
+  .east-trusted .arrow svg { width: 18px; height: 18px; stroke: var(--slate); fill: none; stroke-width: 2; transition: stroke .25s; }
+  .east-trusted .arrow.prev { left: -22px; }
+  .east-trusted .arrow.next { right: -22px; }
+  @media (max-width:1200px) {
+    .east-trusted .arrow.prev { left: 6px; }
+    .east-trusted .arrow.next { right: 6px; }
+  }
+
+  .east-trusted .viewall { margin-top: 46px; }
+  .east-trusted .viewall a {
+    display: inline-block; background: var(--blue); color: #fff;
+    font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+    padding: 15px 38px; border-radius: 4px; transition: background .25s;
+  }
+  .east-trusted .viewall a:hover { background: var(--blue-deep); }
+
+  .east-trusted .dots { display: flex; justify-content: center; gap: 8px; margin-top: 30px; }
+  .east-trusted .dots b {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--line); cursor: pointer;
+    transition: background .25s, width .25s;
+  }
+  .east-trusted .dots b.on { background: var(--gold); width: 22px; border-radius: 4px; }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('EastTrusted-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('.track');
+    var cards = track ? track.children : [];
+    var dotsEl = root.querySelector('.dots');
+    if (!track || !cards.length || !dotsEl) return;
+
+    var perView = 3, index = 0;
+    function calc() { perView = window.innerWidth <= 600 ? 1 : (window.innerWidth <= 900 ? 2 : 3); }
+    function pages() { return Math.max(1, cards.length - perView + 1); }
+    function render() {
+      var w = cards[0].getBoundingClientRect().width, gap = 24;
+      track.style.transform = 'translateX(-' + (index * (w + gap)) + 'px)';
+      dotsEl.innerHTML = '';
+      for (var i = 0; i < pages(); i++) {
+        var b = document.createElement('b');
+        if (i === index) b.className = 'on';
+        (function (n) { b.onclick = function () { index = n; render(); }; })(i);
+        dotsEl.appendChild(b);
+      }
+    }
+    var next = root.querySelector('.next'), prev = root.querySelector('.prev');
+    if (next) next.onclick = function () { index = Math.min(index + 1, pages() - 1); render(); };
+    if (prev) prev.onclick = function () { index = Math.max(index - 1, 0); render(); };
+    window.addEventListener('resize', function () { calc(); index = Math.min(index, pages() - 1); render(); });
+    calc(); render();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Trusted-by reviews",
+  "settings": [
+    { "type": "paragraph", "content": "Reviews here are placeholders. Replace each card with real verified reviews — or connect a reviews app — before publishing. Star rating and counts are illustrative and should not imply third-party scores you don't have." },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The verdict is in" },
+    { "type": "text", "id": "heading_pre", "label": "Heading (pre)", "default": "Trusted by" },
+    { "type": "text", "id": "heading_em", "label": "Heading (emphasized, italic blue)", "default": "54,000+" },
+    { "type": "text", "id": "heading_post", "label": "Heading (post)", "default": "customers" },
+    { "type": "checkbox", "id": "show_score", "label": "Show score line", "default": true },
+    { "type": "text", "id": "score_word", "label": "Score word", "default": "Excellent" },
+    { "type": "text", "id": "score_value", "label": "Score value", "default": "4.8 / 5" },
+    { "type": "text", "id": "based_count", "label": "Based on (count)", "default": "12,500" },
+    { "type": "text", "id": "cta_text", "label": "CTA text", "default": "View All Reviews" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Optional short title" },
+        { "type": "textarea", "id": "body", "label": "Review body", "default": "I used to carry three bags to work. Now? Just the one." },
+        { "type": "text", "id": "author", "label": "Author", "default": "Priya R." },
+        { "type": "checkbox", "id": "verified", "label": "Show 'Verified' tag", "default": true }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "review", "settings": { "body": "I used to carry three bags to work. Now? Just the one. It fits my lunch, laptop, charger, and even a change of clothes, and it looks so refined.", "author": "Priya R." } },
+      { "type": "review", "settings": { "body": "It's the perfect all-in-one. I carry my lunch, laptop, and makeup in one sleek tote and it still looks brand new after months of daily use.", "author": "Amanda T." } },
+      { "type": "review", "settings": { "title": "I love it.", "body": "Didn't realise how much I needed this until I had it. So organised inside, and the insulated pocket is genius. No leaks, no smells.", "author": "Cathrine P." } },
+      { "type": "review", "settings": { "body": "Finally a bag that looks elegant and fits everything. My colleagues ask about it constantly. It quietly does the work of three.", "author": "Michelle K." } },
+      { "type": "review", "settings": { "body": "The insulated compartment saved me on long shifts. My food stays fresh and I never carry a second bag again. Worth every penny.", "author": "Brianna S." } },
+      { "type": "review", "settings": { "body": "Stylish enough for meetings, practical enough for real life. I love that it doesn't read as a lunch bag at all. It just looks expensive.", "author": "Erica J." } }
+    ]
+  },
+  "presets": [{ "name": "Trusted-by reviews" }]
+}
+{% endschema %}

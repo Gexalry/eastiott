@@ -1,0 +1,76 @@
+<section class="east-faq" id="EastFaq-{{ section.id }}">
+  <h2>{{ section.settings.heading | default: 'Questions, answered' }}</h2>
+  {%- for block in section.blocks -%}
+    <div class="q" {{ block.shopify_attributes }}>
+      <button type="button">{{ block.settings.question }}<span class="ic">+</span></button>
+      <div class="a"><p>{{ block.settings.answer }}</p></div>
+    </div>
+  {%- endfor -%}
+</section>
+
+<style>
+  .east-faq { padding: 84px 0; max-width: 820px; margin: 0 auto; padding-left: var(--wrap-pad); padding-right: var(--wrap-pad); }
+  .east-faq h2 { font-family: var(--serif); font-size: 40px; text-align: center; margin-bottom: 42px; font-weight: 500; }
+  .east-faq .q { border-bottom: 1px solid var(--line); }
+  .east-faq .q button {
+    width: 100%; background: none; border: none; text-align: left;
+    padding: 22px 0; font-family: var(--sans); font-size: 16px; color: var(--ink);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    gap: 20px; font-weight: 400;
+  }
+  .east-faq .q .ic { font-family: var(--serif); font-size: 24px; color: var(--gold); transition: transform .3s; flex: 0 0 auto; }
+  .east-faq .q.open .ic { transform: rotate(45deg); }
+  .east-faq .q .a { max-height: 0; overflow: hidden; transition: max-height .35s ease; color: var(--slate); font-size: 14.5px; }
+  .east-faq .q .a p { padding-bottom: 22px; max-width: 64ch; }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('EastFaq-{{ section.id }}');
+    if (!root) return;
+    root.querySelectorAll('.q button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var q = b.parentElement;
+        var a = q.querySelector('.a');
+        var isOpen = q.classList.contains('open');
+        root.querySelectorAll('.q').forEach(function (x) {
+          x.classList.remove('open');
+          var ax = x.querySelector('.a'); if (ax) ax.style.maxHeight = null;
+        });
+        if (!isOpen) {
+          q.classList.add('open');
+          a.style.maxHeight = a.scrollHeight + 'px';
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions, answered" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Q & A",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Can this really replace my laptop bag, lunch bag, and purse?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Yes — that's exactly what it's designed to do." }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "item", "settings": { "question": "Can this really replace my laptop bag, lunch bag, and purse?", "answer": "Yes — that's exactly what it's designed to do. A padded laptop compartment, a removable insulated lunch section, and multiple organised pockets mean one bag does the work of three." } },
+      { "type": "item", "settings": { "question": "How long does the insulated compartment keep food fresh?", "answer": "It keeps food hot or cold for hours — up to 5 hours warm and 10 hours chilled. Add an ice pack for extended freshness." } },
+      { "type": "item", "settings": { "question": "Will spills or leaks affect my laptop?", "answer": "No. The lunch section is fully leak-proof and isolated, so spills are contained and never reach your electronics or valuables." } },
+      { "type": "item", "settings": { "question": "Is it still comfortable when fully packed?", "answer": "Absolutely. The padded shoulder straps distribute weight evenly, keeping it comfortable to carry all day, even when full." } },
+      { "type": "item", "settings": { "question": "What is your return policy?", "answer": "We offer a 30-day money-back guarantee. If you're not completely satisfied, reach out and we'll arrange a smooth return." } }
+    ]
+  },
+  "presets": [{ "name": "FAQ" }]
+}
+{% endschema %}

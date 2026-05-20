@@ -1,29 +1,78 @@
 # eastiott
 
-> Shopify store repository for **My Store** (`7rkgkh-kh.myshopify.com`). Contains a minimal modifiable Shopify theme, a landing-page workspace, and structured docs describing store resources. Organized using the [llms.txt](https://llmstxt.org) convention so language models can navigate the project.
+> Shopify storefront repo for **Eastiott** — the quiet-luxury brand selling **The Atelier Tote** (a 3-in-1 everyday tote). Contains a custom Shopify theme built to the brand identity (Cormorant Garamond serif + Jost sans, paper palette, single confident blue, gold accents) plus the design references it was ported from. Organized using the [llms.txt](https://llmstxt.org) convention.
 
 Connected store: `7rkgkh-kh.myshopify.com` · Plan: Basic · Currency: USD · Owner: loridasam@gmail.com
+
+## Catalog (live in Shopify — do not recreate)
+
+- Product: **The Atelier Tote** — `gid://shopify/Product/8636911943817` (DRAFT, 2 variants: Champagne / Classic Black at $159, 0 inventory, 4 images on CDN)
+- Collection: **The Eastiott Collection** — `gid://shopify/Collection/322319679625`
+- Customer photos: files named `eastiott-customer-london|plane|couple|street.png`
+
+## Pre-publish flags
+
+- Product is **DRAFT** and **inventory is 0** — set live + stock first.
+- Reviews, ratings, "as admired in" press names are **placeholders**. Swap with real data or wire a reviews app before publish (FTC/ASA risk otherwise).
+- Bundle tiers + add-ons in the buy box are **presentational only** — they do not modify cart contents.
+- Reference HTML shows £/GBP sale prices; theme reads live $/USD price from Shopify.
 
 ## Docs
 
 - [Store overview](docs/store.md): connected shop, plan, currency, timezone
 - [Products](docs/products.md): how products are modeled and managed via Shopify MCP
 - [Collections](docs/collections.md): collection structure and grouping rules
-- [Theme](docs/theme.md): theme skeleton layout, sections, templates
+- [Theme](docs/theme.md): brand system, section map, deploy workflow
 - [Landing page](docs/landing.md): drop-in HTML workflow for the marketing landing page
 - [Workflows](docs/workflows.md): common tasks (create product, push theme, etc.)
 
 ## Theme
 
-- [layout/theme.liquid](theme/layout/theme.liquid): root Liquid layout
-- [templates/index.liquid](theme/templates/index.liquid): home template
-- [sections/main-index.liquid](theme/sections/main-index.liquid): home section
-- [config/settings_schema.json](theme/config/settings_schema.json): theme settings
-- [assets/base.css](theme/assets/base.css): base styles
+Brand tokens, fonts, header/footer chrome:
+
+- [theme/assets/eastiott.css](theme/assets/eastiott.css): brand tokens, base type, header/footer/announcement CSS, scroll-reveal
+- [theme/layout/theme.liquid](theme/layout/theme.liquid): root layout, loads fonts + eastiott.css, renders header/footer sections
+
+PDP composition — `templates/product.json` orders these sections:
+
+- [theme/sections/main-product.liquid](theme/sections/main-product.liquid): gallery + buy box (variants, bundle tiers, add-ons, ATC) — ported from `references/eastiott-tote.html`
+- [theme/sections/trust-strip.liquid](theme/sections/trust-strip.liquid): stat strip on slate background
+- [theme/sections/editorial-feature.liquid](theme/sections/editorial-feature.liquid): reusable 2-column image + copy block
+- [theme/sections/featured-on.liquid](theme/sections/featured-on.liquid): "As admired in" press row
+- [theme/sections/features-grid.liquid](theme/sections/features-grid.liquid): four-feature row — ported from `references/eastiott-features-section.html`
+- [theme/sections/product-specs.liquid](theme/sections/product-specs.liquid): two-column spec table
+- [theme/sections/trusted-by.liquid](theme/sections/trusted-by.liquid): review carousel with gold stars — ported from `references/eastiott-trusted-section.html`
+- [theme/sections/rated-grid.liquid](theme/sections/rated-grid.liquid): UGC 4-up grid — ported from `references/eastiott-rated-section.html`
+- [theme/sections/faq.liquid](theme/sections/faq.liquid): accordion FAQ
+- [theme/sections/newsletter.liquid](theme/sections/newsletter.liquid): email capture (uses Shopify `customer` form)
+
+Chrome sections rendered by layout:
+
+- [theme/sections/announcement-bar.liquid](theme/sections/announcement-bar.liquid)
+- [theme/sections/header.liquid](theme/sections/header.liquid)
+- [theme/sections/footer.liquid](theme/sections/footer.liquid)
+
+Templates:
+
+- [theme/templates/product.json](theme/templates/product.json): composes the PDP — main → trust-strip → editorial-1 → featured-on → features-grid → editorial-2 → specs → trusted-by → rated-grid → faq → newsletter
+
+Config:
+
+- [theme/config/settings_schema.json](theme/config/settings_schema.json): global theme settings (favicon, accent colour)
+- [theme/locales/en.default.json](theme/locales/en.default.json)
+
+## References
+
+Source designs ported into the sections above:
+
+- [references/eastiott-tote.html](references/eastiott-tote.html) → `main-product.liquid` + supporting sections
+- [references/eastiott-features-section.html](references/eastiott-features-section.html) → `features-grid.liquid`
+- [references/eastiott-trusted-section.html](references/eastiott-trusted-section.html) → `trusted-by.liquid`
+- [references/eastiott-rated-section.html](references/eastiott-rated-section.html) → `rated-grid.liquid`
 
 ## Landing
 
-- [landing/index.html](landing/index.html): static HTML landing page (drop-in target)
+- [landing/index.html](landing/index.html): standalone HTML landing-page workspace (separate from theme)
 
 ## Optional
 

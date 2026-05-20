@@ -1,0 +1,84 @@
+<section class="east-editorial{% if section.settings.alt_bg %} alt{% endif %}">
+  <div class="wrap feat-grid{% if section.settings.reversed %} rev{% endif %} reveal">
+    <div class="ftext">
+      {%- if section.settings.kicker != blank -%}
+        <div class="fkicker">{{ section.settings.kicker }}</div>
+      {%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.body != blank -%}
+        <p>{{ section.settings.body }}</p>
+      {%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <ul class="mini">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}>{{ block.settings.label }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+    <div class="fimg">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.heading | escape }}" loading="lazy">
+      {%- else -%}
+        <span>Lifestyle image</span>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .east-editorial { padding: 84px 0; }
+  .east-editorial.alt { background: var(--paper-2); }
+  .east-editorial .feat-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+  .east-editorial .feat-grid.rev .ftext { order:2; }
+  @media (max-width:880px) {
+    .east-editorial .feat-grid, .east-editorial .feat-grid.rev { grid-template-columns:1fr; gap:34px; }
+    .east-editorial .feat-grid.rev .ftext { order:0; }
+  }
+  .east-editorial .fimg {
+    aspect-ratio: 4/5; border-radius: 3px; overflow:hidden;
+    background: linear-gradient(150deg,#dfe6ea,#c6d0d5);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--serif); font-style: italic; color: var(--slate);
+  }
+  .east-editorial .fimg img { width:100%; height:100%; object-fit:cover; }
+  .east-editorial .fimg span { opacity: 0.5; }
+  .east-editorial .fkicker { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .east-editorial .feat-grid h2 { font-family: var(--serif); font-size: 42px; line-height: 1.08; font-weight: 500; margin-bottom: 20px; }
+  .east-editorial .feat-grid p { font-size: 15.5px; color: var(--slate); max-width: 46ch; margin-bottom: 14px; }
+  .east-editorial .mini { list-style: none; display: grid; gap: 10px; margin-top: 22px; padding: 0; }
+  .east-editorial .mini li { display:flex; gap:11px; font-size:14px; align-items:center; }
+  .east-editorial .mini li::before { content:""; width:7px; height:7px; background: var(--gold); transform: rotate(45deg); flex:0 0 7px; }
+</style>
+
+{% schema %}
+{
+  "name": "Editorial feature",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Where style meets function" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tired of carrying multiple bags?" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Organise your entire day in one quietly luxurious piece. No more juggling lunch boxes, laptops, and handbags — every essential has its place, and nothing announces itself." },
+    { "type": "checkbox", "id": "reversed", "label": "Reverse layout (image left)", "default": false },
+    { "type": "checkbox", "id": "alt_bg", "label": "Alt background (paper-2)", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "bullet",
+      "name": "Mini bullet",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Stylish, sturdy, and remarkably lightweight" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "bullet", "settings": { "label": "Stylish, sturdy, and remarkably lightweight" } },
+      { "type": "bullet", "settings": { "label": "Keeps meals warm for 5 hours, cold for 10" } },
+      { "type": "bullet", "settings": { "label": "Fits laptops up to 17\"" } },
+      { "type": "bullet", "settings": { "label": "At ease from the office to the airport" } }
+    ]
+  },
+  "presets": [{ "name": "Editorial feature" }]
+}
+{% endschema %}

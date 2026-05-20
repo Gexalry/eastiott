@@ -1,0 +1,86 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "eyebrow_1": "The Ultimate Tote — Built By Women",
+        "eyebrow_2": "2026 Top-Rated Tote",
+        "show_rating": true,
+        "rating_value": "4.8/5",
+        "rating_label": "Excellent · 12,500+ reviews",
+        "subtitle": "Three bags, refined into one.",
+        "unit_note": "Unit price / per",
+        "bullets": "No more juggling lunch bags, laptops, and handbags\nInsulated compartment keeps meals warm 5 hrs, cold 10 hrs\nFits laptops up to 17\" — work, travel, and beyond\nCrafted to be carried for years, not seasons",
+        "cta_text": "Add to Cart",
+        "ship_note": "Ships today · Tracked shipping worldwide",
+        "guarantee": "30-day money-back guarantee",
+        "addon_1": "<b>Matching purse</b> · same colour as your tote",
+        "addon_1_price": "Free",
+        "addon_1_compare": "$20",
+        "addon_1_on": true,
+        "addon_2": "<b>Matching shoulder strap</b>",
+        "addon_2_price": "$9.99",
+        "addon_2_compare": "$19.99",
+        "addon_2_on": false,
+        "addon_3": "<b>Signature gift wrap</b>",
+        "addon_3_price": "Free",
+        "addon_3_compare": "$9.99",
+        "addon_3_on": true
+      },
+      "blocks": {
+        "tier-1": { "type": "tier", "settings": { "name": "One Tote", "subtitle": "The signature carry", "price": "$159", "selected": true, "quantity": 1 } },
+        "tier-2": { "type": "tier", "settings": { "name": "Two Totes", "subtitle": "One to keep, one to gift", "price": "$302", "compare": "$318", "flag": "Flash Sale", "quantity": 2 } },
+        "tier-3": { "type": "tier", "settings": { "name": "Three Totes", "subtitle": "The family set", "price": "$429", "compare": "$477", "flag": "Best Value", "quantity": 3 } }
+      },
+      "block_order": ["tier-1", "tier-2", "tier-3"]
+    },
+    "trust-strip": { "type": "trust-strip" },
+    "feature-1": {
+      "type": "editorial-feature",
+      "settings": {
+        "kicker": "Where style meets function",
+        "heading": "Tired of carrying multiple bags?",
+        "body": "Organise your entire day in one quietly luxurious piece. No more juggling lunch boxes, laptops, and handbags — every essential has its place, and nothing announces itself.",
+        "reversed": false,
+        "alt_bg": false
+      }
+    },
+    "featured-on": { "type": "featured-on" },
+    "features-grid": { "type": "features-grid" },
+    "feature-2": {
+      "type": "editorial-feature",
+      "settings": {
+        "kicker": "Effortless by design",
+        "heading": "Fresh meals, made discreet",
+        "body": "A built-in insulated compartment keeps food hot or cold for hours, hidden so seamlessly into the silhouette that no one would guess it's there. Practical, never obvious.",
+        "reversed": true,
+        "alt_bg": true
+      },
+      "blocks": {
+        "b1": { "type": "bullet", "settings": { "label": "Fully leak-proof, isolated food compartment" } },
+        "b2": { "type": "bullet", "settings": { "label": "Hidden anti-theft pocket" } },
+        "b3": { "type": "bullet", "settings": { "label": "Seven interior pockets, thoughtfully placed" } },
+        "b4": { "type": "bullet", "settings": { "label": "Waterproof exterior, easy-to-clean lining" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"]
+    },
+    "specs": { "type": "product-specs" },
+    "trusted-by": { "type": "trusted-by" },
+    "rated-grid": { "type": "rated-grid" },
+    "faq": { "type": "faq" },
+    "newsletter": { "type": "newsletter" }
+  },
+  "order": [
+    "main",
+    "trust-strip",
+    "feature-1",
+    "featured-on",
+    "features-grid",
+    "feature-2",
+    "specs",
+    "trusted-by",
+    "rated-grid",
+    "faq",
+    "newsletter"
+  ]
+}

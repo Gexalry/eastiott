@@ -1,0 +1,18 @@
+{%- if section.settings.message != blank -%}
+  <div class="announce">{{ section.settings.message }}</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Complimentary shipping & gift wrap"
+    }
+  ],
+  "presets": [{ "name": "Announcement bar" }]
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+<section class="east-specs">
+  <div class="wrap">
+    <h2>{{ section.settings.heading | default: 'Considered in every dimension' }}</h2>
+    <div class="spec-grid">
+      {%- for block in section.blocks -%}
+        <div class="spec" {{ block.shopify_attributes }}>
+          <span class="sk">{{ block.settings.label }}</span>
+          <span class="sv">{{ block.settings.value }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .east-specs { padding: 80px 0; }
+  .east-specs h2 { font-family: var(--serif); font-size: 38px; text-align: center; margin-bottom: 46px; font-weight: 500; }
+  .east-specs .spec-grid { display:grid; grid-template-columns: repeat(2,1fr); gap: 0 60px; max-width: 760px; margin: 0 auto; }
+  @media (max-width:680px) { .east-specs .spec-grid { grid-template-columns:1fr; } }
+  .east-specs .spec { display:flex; justify-content:space-between; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .east-specs .sk { color: var(--slate); letter-spacing: 0.04em; }
+  .east-specs .sv { font-weight: 500; text-align: right; }
+</style>
+
+{% schema %}
+{
+  "name": "Product specs",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Considered in every dimension" }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Dimensions" },
+        { "type": "text", "id": "value", "label": "Value", "default": "5.5\"D × 14.5\"W × 17\"H" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "spec", "settings": { "label": "Dimensions", "value": "5.5\"D × 14.5\"W × 17\"H" } },
+      { "type": "spec", "settings": { "label": "Laptop fit", "value": "Up to 17\"" } },
+      { "type": "spec", "settings": { "label": "Weight", "value": "1.1 lbs" } },
+      { "type": "spec", "settings": { "label": "Material", "value": "Premium structured leather" } },
+      { "type": "spec", "settings": { "label": "Closure", "value": "Smooth-glide zipper" } },
+      { "type": "spec", "settings": { "label": "Thermal hold", "value": "5 hrs warm / 10 hrs cold" } }
+    ]
+  },
+  "presets": [{ "name": "Product specs" }]
+}
+{% endschema %}

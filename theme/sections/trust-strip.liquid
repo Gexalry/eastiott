@@ -1,0 +1,44 @@
+<div class="east-trust">
+  <div class="wrap">
+    {%- for block in section.blocks -%}
+      <div class="ti" {{ block.shopify_attributes }}>
+        <div class="tn">{{ block.settings.value }}</div>
+        <div class="tl">{{ block.settings.label }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+  .east-trust { background: var(--slate); color: #fff; padding: 22px 0; }
+  .east-trust .wrap { display:flex; justify-content:center; gap:54px; flex-wrap:wrap; text-align:center; }
+  .east-trust .ti { display:flex; flex-direction:column; gap:2px; }
+  .east-trust .tn { font-family: var(--serif); font-size: 26px; color: var(--gold-soft); }
+  .east-trust .tl { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.82; }
+</style>
+
+{% schema %}
+{
+  "name": "Trust strip",
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "54,000+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Customers Carried" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "default": {
+    "blocks": [
+      { "type": "stat", "settings": { "value": "54,000+", "label": "Customers Carried" } },
+      { "type": "stat", "settings": { "value": "4.8 / 5", "label": "Average Rating" } },
+      { "type": "stat", "settings": { "value": "30 Days", "label": "Money-Back Promise" } },
+      { "type": "stat", "settings": { "value": "5 / 10 hrs", "label": "Warm / Cold Hold" } }
+    ]
+  },
+  "presets": [{ "name": "Trust strip" }]
+}
+{% endschema %}
