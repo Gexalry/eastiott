@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eastiott — 4 Features Section</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#006B95;--slate:#4F5B65;--gold:#B3812A;--gold-soft:#c79a47;
+    --paper:#f7f5f1;--paper-2:#efece5;--ink:#1c2227;--line:rgba(79,91,101,.18);
+    --serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-weight:300;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+
+  .features{padding:90px 0 96px}
+  .fhead{text-align:center;margin-bottom:58px}
+  .fhead .line{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:14px}
+  .fhead .line::before,.fhead .line::after{content:"";height:1px;width:120px;background:var(--line)}
+  .fhead h2{font-family:var(--serif);font-size:46px;font-weight:600;letter-spacing:.01em}
+  .fhead h2 b{color:var(--blue);font-weight:600}
+  .fhead .sub{font-family:var(--serif);font-style:italic;font-size:21px;color:var(--slate)}
+
+  .fg{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+  @media(max-width:980px){.fg{grid-template-columns:repeat(2,1fr);gap:40px 30px}}
+  @media(max-width:540px){.fg{grid-template-columns:1fr;max-width:380px;margin:0 auto}}
+
+  .fc .img{aspect-ratio:1;border-radius:5px;overflow:hidden;background:var(--paper-2);position:relative;margin-bottom:22px}
+  .fc .img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+  .fc:hover .img img{transform:scale(1.04)}
+  .fc .img::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--line);border-radius:5px}
+  .fc .no{font-family:var(--serif);font-size:13px;letter-spacing:.18em;color:var(--gold);margin-bottom:8px;display:block}
+  .fc h3{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1.12;margin-bottom:12px}
+  .fc p{font-size:14.5px;line-height:1.64;color:var(--slate)}
+</style>
+</head>
+<body>
+
+<section class="features">
+  <div class="wrap">
+    <div class="fhead">
+      <div class="line"><h2>Four <b>Features</b></h2></div>
+      <div class="sub">the kind only a woman would think to include</div>
+    </div>
+
+    <div class="fg">
+      <article class="fc">
+        <div class="img"><img src="https://assets.pixelcut.app/org/f08fed57-589c-47e9-aba0-5154e622a7bb/media/74fde237-8f95-4815-8245-c891a2a64d7d_1779304127.png?Expires=1779390567&KeyName=px-assets-key-1&Signature=d2fK3uup18UOybKPmg_XX5dOS78=" alt="Insulated compartment"></div>
+        <span class="no">01</span>
+        <h3>An Insulated Home for Lunch</h3>
+        <p>A built-in thermal compartment keeps meals warm for 5 hours and cold for 10, sealed away from the rest of your day. No separate lunch bag, ever again.</p>
+      </article>
+
+      <article class="fc">
+        <div class="img"><img src="https://assets.pixelcut.app/org/f08fed57-589c-47e9-aba0-5154e622a7bb/media/9a18c435-7ba1-4c1b-8af2-edd2b86a1e45_1779304135.png?Expires=1779390572&KeyName=px-assets-key-1&Signature=NQgY8OdX2jkiWUy3iks5Ohp4ruA=" alt="Padded laptop sleeve"></div>
+        <span class="no">02</span>
+        <h3>A Padded Sleeve for Your Laptop</h3>
+        <p>A protective, padded compartment cradles laptops up to 17" and holds them secure, so your tech travels safely from the office to the airport.</p>
+      </article>
+
+      <article class="fc">
+        <div class="img"><img src="https://assets.pixelcut.app/org/f08fed57-589c-47e9-aba0-5154e622a7bb/media/bf72e51b-ff69-4725-9fc6-799a7da8e94f_1779304141.png?Expires=1779390576&KeyName=px-assets-key-1&Signature=If0jnYkCExBuiQIFOWJugL32aWg=" alt="Hidden anti-theft pocket"></div>
+        <span class="no">03</span>
+        <h3>A Hidden Anti-Theft Pocket</h3>
+        <p>A concealed pocket sits flat against the back panel, keeping your phone, wallet, and passport out of sight and out of reach in a crowd.</p>
+      </article>
+
+      <article class="fc">
+        <div class="img"><img src="https://assets.pixelcut.app/org/f08fed57-589c-47e9-aba0-5154e622a7bb/media/a02f4ac6-7cce-4161-a9de-d2ff687234ac_1779304149.png?Expires=1779390581&KeyName=px-assets-key-1&Signature=C6PxY17jJe6gGJd7dB651EALy2E=" alt="Leak-proof easy-clean lining"></div>
+        <span class="no">04</span>
+        <h3>A Leak-Proof, Easy-Clean Lining</h3>
+        <p>The food compartment is fully leak-proof and isolated, with a smooth lining that wipes clean in seconds. Spills stay contained, never near your laptop.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

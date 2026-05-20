@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eastiott — Trusted By Section</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#006B95;--blue-deep:#00567a;--slate:#4F5B65;--gold:#B3812A;--gold-soft:#c79a47;
+    --paper:#f7f5f1;--paper-2:#efece5;--ink:#1c2227;--line:rgba(79,91,101,.18);
+    --serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-weight:300;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+
+  .trusted{padding:88px 0 96px;background:linear-gradient(180deg,var(--paper-2),var(--paper));text-align:center;position:relative}
+  .kicker{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  .trusted h2{font-family:var(--serif);font-size:50px;line-height:1.05;font-weight:500;margin-bottom:18px}
+  .trusted h2 em{font-style:italic;color:var(--blue)}
+  .score{display:flex;align-items:center;justify-content:center;gap:13px;flex-wrap:wrap;margin-bottom:6px}
+  .score .word{font-size:15px;letter-spacing:.04em;color:var(--slate)}
+  .score .num{font-size:22px;font-weight:500;color:var(--ink)}
+  .score .stars{display:inline-flex;gap:4px}
+  .score .stars i{width:26px;height:26px;background:var(--gold);display:inline-flex;align-items:center;justify-content:center;border-radius:3px}
+  .score .stars i svg{width:16px;height:16px;fill:#fff}
+  .based{font-size:13.5px;color:var(--slate);letter-spacing:.04em;margin-bottom:52px}
+  .based u{text-decoration-color:var(--gold);text-underline-offset:3px}
+
+  /* carousel */
+  .carousel{position:relative;max-width:1160px;margin:0 auto}
+  .track-mask{overflow:hidden;padding:8px 4px}
+  .track{display:flex;gap:24px;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+  .rcard{flex:0 0 calc((100% - 48px)/3);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:34px 30px 30px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+  @media(max-width:900px){.rcard{flex:0 0 calc((100% - 24px)/2)}}
+  @media(max-width:600px){.rcard{flex:0 0 100%}}
+  .rcard .stars{display:inline-flex;gap:4px;margin-bottom:20px}
+  .rcard .stars i{width:24px;height:24px;background:var(--gold);display:inline-flex;align-items:center;justify-content:center;border-radius:3px}
+  .rcard .stars i svg{width:15px;height:15px;fill:#fff}
+  .rcard .rt{font-family:var(--serif);font-size:23px;font-weight:600;margin-bottom:10px;color:var(--ink)}
+  .rcard p{font-size:15px;line-height:1.62;color:var(--slate);flex:1;margin-bottom:22px}
+  .rcard .who{font-size:13px;letter-spacing:.04em;color:var(--ink);font-weight:500}
+  .rcard .vf{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:var(--paper);border:1px solid var(--line);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:background .25s,border-color .25s;box-shadow:0 4px 14px rgba(28,34,39,.08)}
+  .arrow:hover{background:var(--blue);border-color:var(--blue)}
+  .arrow:hover svg{stroke:#fff}
+  .arrow svg{width:18px;height:18px;stroke:var(--slate);fill:none;stroke-width:2;transition:stroke .25s}
+  .arrow.prev{left:-22px}.arrow.next{right:-22px}
+  @media(max-width:1200px){.arrow.prev{left:6px}.arrow.next{right:6px}}
+
+  .viewall{margin-top:46px}
+  .viewall a{display:inline-block;background:var(--blue);color:#fff;font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;padding:15px 38px;border-radius:4px;transition:background .25s}
+  .viewall a:hover{background:var(--blue-deep)}
+
+  .dots{display:flex;justify-content:center;gap:8px;margin-top:30px}
+  .dots b{width:7px;height:7px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .25s,width .25s}
+  .dots b.on{background:var(--gold);width:22px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<section class="trusted">
+  <div class="wrap">
+    <div class="kicker">The verdict is in</div>
+    <h2>Trusted by <em>54,000+</em> customers</h2>
+    <div class="score">
+      <span class="word">Excellent</span>
+      <span class="num">4.8 / 5</span>
+      <span class="stars">
+        <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+        <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+        <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+        <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+        <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+      </span>
+    </div>
+    <div class="based">based on <u>12,500</u> reviews</div>
+
+    <div class="carousel">
+      <button class="arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+
+      <div class="track-mask">
+        <div class="track" id="track">
+          <!-- cards -->
+          <article class="rcard">
+            <span class="stars">★</span>
+            <p>I used to carry three bags to work. Now? Just the one. It fits my lunch, laptop, charger, and even a change of clothes, and it looks so refined.</p>
+            <div class="who">Priya R.</div><div class="vf">Verified</div>
+          </article>
+          <article class="rcard">
+            <span class="stars">★</span>
+            <p>It's the perfect all-in-one. I carry my lunch, laptop, and makeup in one sleek tote and it still looks brand new after months of daily use.</p>
+            <div class="who">Amanda T.</div><div class="vf">Verified</div>
+          </article>
+          <article class="rcard">
+            <span class="stars">★</span>
+            <div class="rt">I love it.</div>
+            <p>Didn't realise how much I needed this until I had it. So organised inside, and the insulated pocket is genius. No leaks, no smells.</p>
+            <div class="who">Cathrine P.</div><div class="vf">Verified</div>
+          </article>
+          <article class="rcard">
+            <span class="stars">★</span>
+            <p>Finally a bag that looks elegant and fits everything. My colleagues ask about it constantly. It quietly does the work of three.</p>
+            <div class="who">Michelle K.</div><div class="vf">Verified</div>
+          </article>
+          <article class="rcard">
+            <span class="stars">★</span>
+            <p>The insulated compartment saved me on long shifts. My food stays fresh and I never carry a second bag again. Worth every penny.</p>
+            <div class="who">Brianna S.</div><div class="vf">Verified</div>
+          </article>
+          <article class="rcard">
+            <span class="stars">★</span>
+            <p>Stylish enough for meetings, practical enough for real life. I love that it doesn't read as a lunch bag at all. It just looks expensive.</p>
+            <div class="who">Erica J.</div><div class="vf">Verified</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <div class="viewall"><a href="#">View All Reviews</a></div>
+  </div>
+</section>
+
+<script>
+  // replace single ★ placeholders with 5 gold star icons
+  const starSVG='<i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>';
+  document.querySelectorAll('.rcard .stars').forEach(s=>s.innerHTML=starSVG.repeat(5));
+
+  const track=document.getElementById('track'),cards=track.children,dots=document.getElementById('dots');
+  let perView=3,index=0;
+  function calc(){perView=window.innerWidth<=600?1:window.innerWidth<=900?2:3}
+  function pages(){return Math.max(1,cards.length-perView+1)}
+  function render(){
+    const card=cards[0].getBoundingClientRect().width, gap=24;
+    track.style.transform=`translateX(-${index*(card+gap)}px)`;
+    dots.innerHTML='';
+    for(let i=0;i<pages();i++){const b=document.createElement('b');if(i===index)b.className='on';b.onclick=()=>{index=i;render()};dots.appendChild(b)}
+  }
+  document.querySelector('.next').onclick=()=>{index=Math.min(index+1,pages()-1);render()};
+  document.querySelector('.prev').onclick=()=>{index=Math.max(index-1,0);render()};
+  window.addEventListener('resize',()=>{calc();index=Math.min(index,pages()-1);render()});
+  calc();render();
+</script>
+</body>
+</html>
