@@ -1,0 +1,120 @@
+{%- assign product = section.settings.product -%}
+{%- if product == blank and collections['the-eastiott-collection'].products.size > 0 -%}
+  {%- assign product = collections['the-eastiott-collection'].products.first -%}
+{%- endif -%}
+
+<section class="east-hero">
+  <div class="wrap east-hero-grid">
+    <div class="east-hero-copy reveal">
+      {%- if section.settings.kicker != blank -%}
+        <div class="kicker">{{ section.settings.kicker }}</div>
+      {%- endif -%}
+      <h1>{{ section.settings.heading }}</h1>
+      {%- if section.settings.body != blank -%}
+        <p>{{ section.settings.body }}</p>
+      {%- endif -%}
+      <div class="east-hero-cta">
+        {%- if product != blank -%}
+          <a class="primary" href="{{ product.url }}">{{ section.settings.cta_text | default: 'Shop the tote' }}</a>
+        {%- elsif section.settings.cta_link != blank -%}
+          <a class="primary" href="{{ section.settings.cta_link }}">{{ section.settings.cta_text | default: 'Shop now' }}</a>
+        {%- endif -%}
+        {%- if section.settings.secondary_text != blank -%}
+          <a class="secondary" href="{{ section.settings.secondary_link | default: '#' }}">{{ section.settings.secondary_text }} →</a>
+        {%- endif -%}
+      </div>
+      {%- if product != blank -%}
+        <div class="east-hero-price">
+          <span class="from">From</span>
+          <span class="amt">{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <s>{{ product.compare_at_price | money }}</s>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <a class="east-hero-img reveal" href="{% if product %}{{ product.url }}{% else %}#{% endif %}">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.heading | escape }}" loading="eager">
+      {%- elsif product.featured_image != blank -%}
+        <img src="{{ product.featured_image | image_url: width: 1400 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" loading="eager">
+      {%- else -%}
+        <div class="east-hero-placeholder">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M32 6c4 5 10 6 16 6-2 8 0 18-16 40C16 30 18 20 16 12c6 0 12-1 16-6Z"/>
+            <circle cx="32" cy="22" r="5"/><path d="M24 30h16M27 36h10"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+</section>
+
+<style>
+  .east-hero { padding: 56px 0 88px; background: linear-gradient(180deg, var(--paper), var(--paper-2)); }
+  .east-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  @media (max-width: 880px) { .east-hero-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+  .east-hero-copy .kicker {
+    font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 18px;
+  }
+  .east-hero-copy h1 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: clamp(40px, 6vw, 72px); line-height: 1.02; letter-spacing: 0.005em;
+    margin-bottom: 18px;
+  }
+  .east-hero-copy p {
+    font-family: var(--serif); font-style: italic; font-size: 21px;
+    color: var(--slate); max-width: 46ch; margin-bottom: 30px;
+  }
+  .east-hero-cta { display: flex; align-items: center; gap: 22px; margin-bottom: 22px; flex-wrap: wrap; }
+  .east-hero-cta .primary {
+    background: var(--blue); color: #fff; padding: 16px 32px; border-radius: 4px;
+    font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+    transition: background .25s;
+  }
+  .east-hero-cta .primary:hover { background: var(--blue-deep); }
+  .east-hero-cta .secondary {
+    font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--slate); border-bottom: 1px solid var(--gold);
+    padding-bottom: 4px; transition: color .25s;
+  }
+  .east-hero-cta .secondary:hover { color: var(--blue); }
+  .east-hero-price { font-size: 14px; color: var(--slate); display: flex; align-items: baseline; gap: 8px; }
+  .east-hero-price .from { letter-spacing: 0.14em; text-transform: uppercase; font-size: 11px; }
+  .east-hero-price .amt { color: var(--blue); font-size: 20px; font-weight: 500; }
+  .east-hero-price s { opacity: 0.6; }
+
+  .east-hero-img {
+    display: block; aspect-ratio: 1; border-radius: 4px; overflow: hidden;
+    background: var(--paper-2); position: relative;
+  }
+  .east-hero-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
+  .east-hero-img:hover img { transform: scale(1.03); }
+  .east-hero-img::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px var(--line); border-radius: 4px; pointer-events: none; }
+  .east-hero-placeholder {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    color: var(--slate); opacity: 0.4;
+  }
+  .east-hero-placeholder svg { width: 120px; height: 120px; }
+</style>
+
+{% schema %}
+{
+  "name": "Hero — product",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Featured product", "info": "Defaults to the first product in 'the-eastiott-collection' if blank." },
+    { "type": "image_picker", "id": "image", "label": "Hero image (overrides product image)" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The Eastiott Atelier" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Three bags, refined into one." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Carry your laptop, your lunch, and your essentials in a single, quietly luxurious piece." },
+    { "type": "text", "id": "cta_text", "label": "Primary CTA text", "default": "Shop the tote" },
+    { "type": "url", "id": "cta_link", "label": "Primary CTA link (used if no product set)" },
+    { "type": "text", "id": "secondary_text", "label": "Secondary CTA text", "default": "Read the story" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary CTA link" }
+  ],
+  "presets": [{ "name": "Hero — product", "category": "Hero" }]
+}
+{% endschema %}

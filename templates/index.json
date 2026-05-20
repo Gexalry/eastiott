@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-product",
+      "settings": {
+        "kicker": "The Eastiott Atelier",
+        "heading": "Three bags, refined into one.",
+        "body": "Carry your laptop, your lunch, and your essentials in a single, quietly luxurious piece. Designed for those who carry more, gracefully.",
+        "cta_text": "Shop the tote",
+        "secondary_text": "Read the story"
+      }
+    },
+    "features-grid": { "type": "features-grid" },
+    "trusted-by": { "type": "trusted-by" },
+    "rated-grid": { "type": "rated-grid" },
+    "newsletter": { "type": "newsletter" }
+  },
+  "order": ["hero", "features-grid", "trusted-by", "rated-grid", "newsletter"]
+}
