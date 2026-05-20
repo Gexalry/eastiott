@@ -1,0 +1,13 @@
+<section class="wrap" style="padding:80px 28px;max-width:480px;">
+  <h1 style="font-family:var(--serif);font-size:38px;font-weight:500;text-align:center;margin-bottom:14px;">Activate your account</h1>
+  <p style="text-align:center;color:var(--slate);margin-bottom:28px;">Create a password to activate your account.</p>
+  {% form 'activate_customer_password' %}
+    {{ form.errors | default_errors }}
+    <label style="display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;">Password</label>
+    <input type="password" name="customer[password]" required style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;margin-bottom:14px;">
+    <label style="display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;">Confirm password</label>
+    <input type="password" name="customer[password_confirmation]" required style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;margin-bottom:18px;">
+    <button type="submit" style="width:100%;background:var(--blue);color:#fff;border:none;padding:14px;border-radius:4px;letter-spacing:.2em;text-transform:uppercase;font-size:13px;font-weight:500;cursor:pointer;">Activate</button>
+    <button type="submit" name="decline" style="width:100%;background:none;border:1px solid var(--line);padding:12px;border-radius:4px;margin-top:10px;cursor:pointer;font-size:12px;letter-spacing:.14em;text-transform:uppercase;">Decline invitation</button>
+  {% endform %}
+</section>

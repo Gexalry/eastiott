@@ -1,0 +1,16 @@
+<section class="wrap" style="padding:80px 28px;max-width:480px;">
+  <h1 style="font-family:var(--serif);font-size:42px;font-weight:500;text-align:center;margin-bottom:32px;">Create account</h1>
+  {% form 'create_customer' %}
+    {{ form.errors | default_errors }}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div><label style="display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;">First name</label><input type="text" name="customer[first_name]" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;"></div>
+      <div><label style="display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;">Last name</label><input type="text" name="customer[last_name]" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;"></div>
+    </div>
+    <label style="display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;">Email</label>
+    <input type="email" name="customer[email]" required style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;margin-bottom:14px;">
+    <label style="display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;">Password</label>
+    <input type="password" name="customer[password]" required style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;margin-bottom:18px;">
+    <button type="submit" style="width:100%;background:var(--blue);color:#fff;border:none;padding:14px;border-radius:4px;letter-spacing:.2em;text-transform:uppercase;font-size:13px;font-weight:500;cursor:pointer;">Create</button>
+  {% endform %}
+  <div style="text-align:center;margin-top:18px;font-size:13px;">Already have an account? <a href="{{ routes.account_login_url }}" style="color:var(--blue);">Sign in</a></div>
+</section>

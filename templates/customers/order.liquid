@@ -1,0 +1,31 @@
+<section class="wrap" style="padding:72px 28px;max-width:980px;">
+  <header style="margin-bottom:32px;">
+    <a href="{{ routes.account_url }}" style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);">← Back to account</a>
+    <h1 style="font-family:var(--serif);font-size:38px;font-weight:500;margin-top:14px;">Order {{ order.name }}</h1>
+    <p style="color:var(--slate);font-size:14px;margin-top:6px;">Placed {{ order.created_at | date: '%B %-d, %Y' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
+  </header>
+
+  <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+    <thead><tr style="text-align:left;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);border-bottom:1px solid var(--line);"><th style="padding:12px 0;">Item</th><th>Qty</th><th style="text-align:right;">Total</th></tr></thead>
+    <tbody>
+      {% for line_item in order.line_items %}
+        <tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:14px 0;"><a href="{{ line_item.product.url }}">{{ line_item.title }}</a>{% if line_item.variant.title and line_item.variant.title != 'Default Title' %} <span style="color:var(--slate);">({{ line_item.variant.title }})</span>{% endif %}</td>
+          <td>{{ line_item.quantity }}</td>
+          <td style="text-align:right;">{{ line_item.final_line_price | money }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr><td colspan="2" style="padding:12px 0;text-align:right;color:var(--slate);">Subtotal</td><td style="text-align:right;">{{ order.subtotal_price | money }}</td></tr>
+      <tr><td colspan="2" style="padding:6px 0;text-align:right;color:var(--slate);">Shipping</td><td style="text-align:right;">{{ order.shipping_price | money }}</td></tr>
+      <tr><td colspan="2" style="padding:6px 0;text-align:right;color:var(--slate);">Tax</td><td style="text-align:right;">{{ order.tax_price | money }}</td></tr>
+      <tr><td colspan="2" style="padding:12px 0;text-align:right;font-weight:500;">Total</td><td style="text-align:right;font-family:var(--serif);font-size:22px;color:var(--blue);">{{ order.total_price | money }}</td></tr>
+    </tfoot>
+  </table>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;font-size:14px;color:var(--slate);line-height:1.6;">
+    <div><h3 style="font-family:var(--serif);font-size:18px;color:var(--ink);margin-bottom:8px;">Shipping</h3>{{ order.shipping_address | format_address }}</div>
+    <div><h3 style="font-family:var(--serif);font-size:18px;color:var(--ink);margin-bottom:8px;">Billing</h3>{{ order.billing_address | format_address }}</div>
+  </div>
+</section>
