@@ -1,7 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
+      "blocks": {
+        "tier-1": {
+          "type": "tier",
+          "settings": {
+            "name": "One Tote",
+            "subtitle": "The signature carry",
+            "price": "$159",
+            "quantity": 1,
+            "selected": true
+          }
+        },
+        "tier-2": {
+          "type": "tier",
+          "settings": {
+            "name": "Two Totes",
+            "subtitle": "One to keep, one to gift",
+            "price": "$302",
+            "compare": "$318",
+            "flag": "Flash Sale",
+            "quantity": 2
+          }
+        },
+        "tier-3": {
+          "type": "tier",
+          "settings": {
+            "name": "Three Totes",
+            "subtitle": "The family set",
+            "price": "$429",
+            "compare": "$477",
+            "flag": "Best Value",
+            "quantity": 3
+          }
+        }
+      },
+      "block_order": [
+        "tier-1",
+        "tier-2",
+        "tier-3"
+      ],
       "settings": {
         "eyebrow_1": "The Ultimate Tote — Built By Women",
         "eyebrow_2": "2026 Top-Rated Tote",
@@ -26,15 +74,12 @@
         "addon_3_price": "Free",
         "addon_3_compare": "$9.99",
         "addon_3_on": true
-      },
-      "blocks": {
-        "tier-1": { "type": "tier", "settings": { "name": "One Tote", "subtitle": "The signature carry", "price": "$159", "selected": true, "quantity": 1 } },
-        "tier-2": { "type": "tier", "settings": { "name": "Two Totes", "subtitle": "One to keep, one to gift", "price": "$302", "compare": "$318", "flag": "Flash Sale", "quantity": 2 } },
-        "tier-3": { "type": "tier", "settings": { "name": "Three Totes", "subtitle": "The family set", "price": "$429", "compare": "$477", "flag": "Best Value", "quantity": 3 } }
-      },
-      "block_order": ["tier-1", "tier-2", "tier-3"]
+      }
     },
-    "trust-strip": { "type": "trust-strip" },
+    "trust-strip": {
+      "type": "trust-strip",
+      "settings": {}
+    },
     "feature-1": {
       "type": "editorial-feature",
       "settings": {
@@ -45,30 +90,76 @@
         "alt_bg": false
       }
     },
-    "featured-on": { "type": "featured-on" },
-    "features-grid": { "type": "features-grid" },
+    "featured-on": {
+      "type": "featured-on",
+      "settings": {}
+    },
+    "features-grid": {
+      "type": "features-grid",
+      "settings": {}
+    },
     "feature-2": {
       "type": "editorial-feature",
+      "blocks": {
+        "b1": {
+          "type": "bullet",
+          "settings": {
+            "label": "Fully leak-proof, isolated food compartment"
+          }
+        },
+        "b2": {
+          "type": "bullet",
+          "settings": {
+            "label": "Hidden anti-theft pocket"
+          }
+        },
+        "b3": {
+          "type": "bullet",
+          "settings": {
+            "label": "Seven interior pockets, thoughtfully placed"
+          }
+        },
+        "b4": {
+          "type": "bullet",
+          "settings": {
+            "label": "Waterproof exterior, easy-to-clean lining"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
       "settings": {
         "kicker": "Effortless by design",
         "heading": "Fresh meals, made discreet",
         "body": "A built-in insulated compartment keeps food hot or cold for hours, hidden so seamlessly into the silhouette that no one would guess it's there. Practical, never obvious.",
         "reversed": true,
         "alt_bg": true
-      },
-      "blocks": {
-        "b1": { "type": "bullet", "settings": { "label": "Fully leak-proof, isolated food compartment" } },
-        "b2": { "type": "bullet", "settings": { "label": "Hidden anti-theft pocket" } },
-        "b3": { "type": "bullet", "settings": { "label": "Seven interior pockets, thoughtfully placed" } },
-        "b4": { "type": "bullet", "settings": { "label": "Waterproof exterior, easy-to-clean lining" } }
-      },
-      "block_order": ["b1", "b2", "b3", "b4"]
+      }
     },
-    "specs": { "type": "product-specs" },
-    "trusted-by": { "type": "trusted-by" },
-    "rated-grid": { "type": "rated-grid" },
-    "faq": { "type": "faq" },
-    "newsletter": { "type": "newsletter" }
+    "specs": {
+      "type": "product-specs",
+      "settings": {}
+    },
+    "trusted-by": {
+      "type": "trusted-by",
+      "settings": {}
+    },
+    "rated-grid": {
+      "type": "rated-grid",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
   },
   "order": [
     "main",
