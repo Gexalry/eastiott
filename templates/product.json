@@ -18,6 +18,8 @@
             "name": "One Tote",
             "subtitle": "The signature carry",
             "price": "$159",
+            "compare": "",
+            "flag": "",
             "quantity": 1,
             "selected": true
           }
@@ -30,7 +32,8 @@
             "price": "$302",
             "compare": "$318",
             "flag": "Flash Sale",
-            "quantity": 2
+            "quantity": 2,
+            "selected": false
           }
         },
         "tier-3": {
@@ -41,7 +44,8 @@
             "price": "$429",
             "compare": "$477",
             "flag": "Best Value",
-            "quantity": 3
+            "quantity": 3,
+            "selected": false
           }
         }
       },
@@ -51,6 +55,7 @@
         "tier-3"
       ],
       "settings": {
+        "product": "the-atelier-tote",
         "eyebrow_1": "The Ultimate Tote — Built By Women",
         "eyebrow_2": "2026 Top-Rated Tote",
         "show_rating": true,
@@ -62,15 +67,15 @@
         "cta_text": "Add to Cart",
         "ship_note": "Ships today · Tracked shipping worldwide",
         "guarantee": "30-day money-back guarantee",
-        "addon_1": "<b>Matching purse</b> · same colour as your tote",
+        "addon_1": "Matching purse · same colour as your tote",
         "addon_1_price": "Free",
         "addon_1_compare": "$20",
         "addon_1_on": true,
-        "addon_2": "<b>Matching shoulder strap</b>",
+        "addon_2": "Matching shoulder strap",
         "addon_2_price": "$9.99",
         "addon_2_compare": "$19.99",
         "addon_2_on": false,
-        "addon_3": "<b>Signature gift wrap</b>",
+        "addon_3": "Signature gift wrap",
         "addon_3_price": "Free",
         "addon_3_compare": "$9.99",
         "addon_3_on": true
@@ -92,11 +97,17 @@
     },
     "featured-on": {
       "type": "featured-on",
-      "settings": {}
+      "settings": {
+        "label": "As admired in"
+      }
     },
     "features-grid": {
       "type": "features-grid",
-      "settings": {}
+      "settings": {
+        "heading_pre": "Four",
+        "heading_emphasis": "Features",
+        "subheading": "the kind only a woman would think to include"
+      }
     },
     "feature-2": {
       "type": "editorial-feature",
@@ -142,23 +153,51 @@
     },
     "specs": {
       "type": "product-specs",
-      "settings": {}
+      "settings": {
+        "heading": "Considered in every dimension"
+      }
     },
     "trusted-by": {
       "type": "trusted-by",
-      "settings": {}
+      "settings": {
+        "kicker": "The verdict is in",
+        "heading_pre": "Trusted by",
+        "heading_em": "54,000+",
+        "heading_post": "customers",
+        "show_score": true,
+        "score_word": "Excellent",
+        "score_value": "4.8 / 5",
+        "based_count": "12,500",
+        "cta_text": "View All Reviews",
+        "cta_link": ""
+      }
     },
     "rated-grid": {
       "type": "rated-grid",
-      "settings": {}
+      "settings": {
+        "kicker": "Carried the world over",
+        "heading_pre": "Rated the",
+        "heading_em": "#1",
+        "heading_post": "everyday tote of 2026",
+        "show_rating": true,
+        "rating_value": "4.8/5",
+        "rating_count": "12,500+"
+      }
     },
     "faq": {
       "type": "faq",
-      "settings": {}
+      "settings": {
+        "heading": "Questions, answered"
+      }
     },
     "newsletter": {
       "type": "newsletter",
-      "settings": {}
+      "settings": {
+        "heading": "The List",
+        "body": "Quiet news, early access, and the occasional discreet discount.",
+        "placeholder": "Your email address",
+        "button_text": "Sign Up"
+      }
     }
   },
   "order": [
