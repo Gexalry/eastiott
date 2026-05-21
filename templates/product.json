@@ -83,6 +83,18 @@
     },
     "trust-strip": {
       "type": "trust-strip",
+      "blocks": {
+        "stat_fhgtjD": {
+          "type": "stat",
+          "settings": {
+            "value": "54,000+",
+            "label": "Customers Carried"
+          }
+        }
+      },
+      "block_order": [
+        "stat_fhgtjD"
+      ],
       "settings": {}
     },
     "feature-1": {
