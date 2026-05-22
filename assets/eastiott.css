@@ -126,6 +126,37 @@ button { font-family: inherit; }
   .site-subnav .row { display: none; }
 }
 
+@media (max-width: 720px) {
+  :root { --wrap-pad: 16px; }
+  .site-header .nav { height: 56px; }
+  .site-header .logo {
+    font-size: 20px;
+    letter-spacing: 0.22em;
+    padding-left: 0.22em;
+  }
+  .site-header .nav-icons {
+    gap: 12px;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+  }
+  .announce {
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    padding: 7px 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-header .logo {
+    font-size: 17px;
+    letter-spacing: 0.18em;
+  }
+  .site-header .nav-icons {
+    gap: 10px;
+    font-size: 10px;
+  }
+}
+
 /* ---------- footer ---------- */
 .site-footer {
   background: var(--ink);
