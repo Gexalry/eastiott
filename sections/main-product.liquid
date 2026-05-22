@@ -42,16 +42,6 @@
       <h1 class="title">{{ product.title }}</h1>
       {%- if section.settings.subtitle != blank -%}<div class="subtitle">{{ section.settings.subtitle }}</div>{%- endif -%}
 
-      <div class="price-row">
-        <span class="price" id="EastPrice">{{ current_variant.price | money }}</span>
-        {%- if current_variant.compare_at_price > current_variant.price -%}
-          <span class="was">{{ current_variant.compare_at_price | money }}</span>
-          {%- assign save_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
-          <span class="save">Save {{ save_pct }}%</span>
-        {%- endif -%}
-      </div>
-      {%- if section.settings.unit_note != blank -%}<div class="unit">{{ section.settings.unit_note }}</div>{%- endif -%}
-
       {%- if section.settings.bullets != blank -%}
         <ul class="bullets">
           {%- assign bullet_lines = section.settings.bullets | newline_to_br | split: '<br />' -%}
