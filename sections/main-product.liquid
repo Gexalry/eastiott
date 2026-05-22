@@ -31,8 +31,8 @@
 
     <div class="buybox">
       <div class="eyebrow">
-        {%- if section.settings.eyebrow_1 != blank -%}<span><i class="dot"></i>{{ section.settings.eyebrow_1 }}</span>{%- endif -%}
-        {%- if section.settings.eyebrow_2 != blank -%}<span><i class="dot"></i>{{ section.settings.eyebrow_2 }}</span>{%- endif -%}
+        {%- if section.settings.eyebrow_1 != blank -%}<span>{{ section.settings.eyebrow_1 }}</span>{%- endif -%}
+        {%- if section.settings.eyebrow_2 != blank -%}<span>{{ section.settings.eyebrow_2 }}</span>{%- endif -%}
       </div>
 
       {%- if section.settings.show_rating -%}
@@ -136,10 +136,9 @@
 .east-pdp .thumb{aspect-ratio:1;border-radius:2px;overflow:hidden;cursor:pointer;border:1px solid transparent;background:var(--paper-2);padding:0;transition:border-color .25s}
 .east-pdp .thumb img{width:100%;height:100%;object-fit:cover}
 .east-pdp .thumb:hover,.east-pdp .thumb.active{border-color:var(--gold)}
-.east-pdp .eyebrow{display:flex;gap:18px;flex-wrap:wrap;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-bottom:20px}
-@media(max-width:720px){.east-pdp .eyebrow{justify-content:center;text-align:center;gap:14px;margin-top:20px}}
-.east-pdp .eyebrow span{display:flex;align-items:center;gap:7px}
-.east-pdp .eyebrow .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+.east-pdp .eyebrow{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-bottom:20px}
+@media(max-width:720px){.east-pdp .eyebrow{margin-top:20px}}
+.east-pdp .eyebrow span{display:block}
 .east-pdp .rating-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-size:13px;color:var(--slate);letter-spacing:.04em}
 .east-pdp .rating-row b{color:var(--ink);font-weight:500}
 .east-pdp .stars{color:var(--gold);letter-spacing:3px;font-size:15px}
@@ -218,8 +217,8 @@
   "settings": [
     { "type": "product", "id": "product", "label": "Product (only used outside product templates)" },
     { "type": "header", "content": "Eyebrow tags" },
-    { "type": "text", "id": "eyebrow_1", "label": "Eyebrow 1", "default": "The Ultimate Tote — Built By Women" },
-    { "type": "text", "id": "eyebrow_2", "label": "Eyebrow 2", "default": "2026 Top-Rated Tote" },
+    { "type": "text", "id": "eyebrow_1", "label": "Eyebrow 1", "default": "2026 Top Rated - Built By Women" },
+    { "type": "text", "id": "eyebrow_2", "label": "Eyebrow 2", "default": "Overstock Sale [Limited Time]" },
     { "type": "header", "content": "Rating (placeholder)" },
     { "type": "checkbox", "id": "show_rating", "label": "Show rating line", "default": true },
     { "type": "text", "id": "rating_value", "label": "Rating value", "default": "4.8/5" },
