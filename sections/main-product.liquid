@@ -77,6 +77,9 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
+          <div class="bundle-picker" id="EastBundlePicker" hidden>
+            <div class="bp-head">Choose a colour for each tote</div>
+          </div>
         {%- endif -%}
 
         {%- assign warranty_product = all_products['warranty-shipping-protection'] -%}
@@ -172,6 +175,13 @@
 .east-pdp .tier .tprice b{font-size:17px;font-weight:500;color:var(--blue)}
 .east-pdp .tier .tprice s{display:block;font-size:12px;color:var(--slate);opacity:.7}
 .east-pdp .tier .flag{position:absolute;top:-9px;right:14px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;background:var(--gold);color:#fff;padding:2px 9px;border-radius:2px}
+.east-pdp .bundle-picker{margin:0 0 26px;padding:18px;border:1px solid var(--line);border-radius:4px;background:var(--paper-2)}
+.east-pdp .bundle-picker .bp-head{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-bottom:12px}
+.east-pdp .bundle-picker .bp-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.east-pdp .bundle-picker .bp-row:first-of-type{border-top:0}
+.east-pdp .bundle-picker .bp-num{font-family:var(--serif);font-size:15px;color:var(--ink);width:32px;font-weight:500}
+.east-pdp .bundle-picker .bp-sw{width:24px;height:24px;border-radius:50%;border:1px solid var(--line);flex:0 0 24px}
+.east-pdp .bundle-picker .bp-color{flex:1;background:#fff;border:1px solid var(--line);border-radius:3px;padding:9px 12px;font-family:var(--sans);font-size:14px;color:var(--ink);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%234F5B65'><path d='M6 8 0 0h12z'/></svg>");background-repeat:no-repeat;background-position:right 12px center;background-size:9px;padding-right:32px}
 .east-pdp .addons{display:grid;gap:9px;margin-bottom:26px}
 .east-pdp .addon{display:flex;align-items:center;gap:13px;border:1px dashed var(--line);border-radius:4px;padding:11px 14px;font-size:13px;cursor:pointer}
 .east-pdp .addon .ck{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--slate);flex:0 0 18px;transition:.2s;position:relative}
@@ -205,12 +215,57 @@
   function sync(v){hiddenId.value=v.id;if(priceEl)priceEl.textContent=moneyFormat(v.price);if(ctaPriceEl)ctaPriceEl.textContent=moneyFormat(v.price);if(ctaBtn){if(v.available){ctaBtn.disabled=false;ctaBtn.innerHTML='{{ section.settings.cta_text | default: "Add to Cart" }} · <span id="EastCtaPrice">'+moneyFormat(v.price)+'</span>';}else{ctaBtn.disabled=true;ctaBtn.textContent='Sold Out';}}}
   function find(){return productJson.find(function(v){for(var i=0;i<optionCount;i++){if(v.options[i]!==selected[i])return false;}return true;});}
   section.querySelectorAll('.swatches').forEach(function(g){var idx=parseInt(g.dataset.optionIndex,10);g.querySelectorAll('.sw').forEach(function(sw){sw.addEventListener('click',function(){g.querySelectorAll('.sw').forEach(function(x){x.classList.remove('on');});sw.classList.add('on');selected[idx]=sw.dataset.value;var p=section.querySelector('.label .pick[data-option-pick="'+idx+'"]');if(p)p.textContent=sw.dataset.value;var v=find();if(v)sync(v);});});});
-  section.querySelectorAll('.tier').forEach(function(t){t.addEventListener('click',function(){section.querySelectorAll('.tier').forEach(function(x){x.classList.remove('on');});t.classList.add('on');});});
+  var bundlePicker=section.querySelector('#EastBundlePicker');
+  function swatchColor(value){
+    var h=value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    var map={'white-black':'linear-gradient(135deg,#efe8dc 0 50%,#1c1c1c 50% 100%)','champagne':'#cdbfa6','classic-black':'#1c1c1c','black':'#1c1c1c','brown':'#6b4e34','blue':'#006B95','slate':'#4F5B65','green':'#5b6650','beige':'#cdbfa6','white':'#efe8dc'};
+    return map[h]||'#4F5B65';
+  }
+  function renderBundlePicker(qty){
+    if(!bundlePicker)return;
+    if(qty<2){bundlePicker.hidden=true;return;}
+    var defaultId=hiddenId.value;
+    var existing=Array.prototype.map.call(bundlePicker.querySelectorAll('.bp-color'),function(s){return s.value;});
+    var head=bundlePicker.querySelector('.bp-head');
+    bundlePicker.innerHTML='';
+    if(head)bundlePicker.appendChild(head);
+    for(var i=0;i<qty;i++){
+      var row=document.createElement('div');row.className='bp-row';
+      var num=document.createElement('span');num.className='bp-num';num.textContent='#'+(i+1);
+      var sw=document.createElement('span');sw.className='bp-sw';
+      var sel=document.createElement('select');sel.className='bp-color';sel.dataset.bagIndex=i;
+      productJson.forEach(function(v){
+        var opt=document.createElement('option');opt.value=v.id;opt.textContent=v.options[0];
+        sel.appendChild(opt);
+      });
+      sel.value=existing[i]||defaultId;
+      var chosen=productJson.find(function(v){return String(v.id)===String(sel.value);});
+      sw.style.background=chosen?swatchColor(chosen.options[0]):'';
+      sel.addEventListener('change',function(){
+        var v=productJson.find(function(x){return String(x.id)===String(this.value);}.bind(this));
+        if(v)this.parentElement.querySelector('.bp-sw').style.background=swatchColor(v.options[0]);
+      });
+      row.appendChild(num);row.appendChild(sw);row.appendChild(sel);
+      bundlePicker.appendChild(row);
+    }
+    bundlePicker.hidden=false;
+  }
+  section.querySelectorAll('.tier').forEach(function(t){t.addEventListener('click',function(){section.querySelectorAll('.tier').forEach(function(x){x.classList.remove('on');});t.classList.add('on');var q=parseInt(t.dataset.qty,10)||1;renderBundlePicker(q);});});
+  var initialTier=section.querySelector('.tier.on');
+  if(initialTier)renderBundlePicker(parseInt(initialTier.dataset.qty,10)||1);
   section.querySelectorAll('.addon').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.classList.toggle('on');});});
   var form=section.querySelector('#EastForm');
   if(form){form.addEventListener('submit',function(e){
     e.preventDefault();
-    var items=[{id:parseInt(hiddenId.value,10),quantity:1}];
+    var items=[];
+    var bundleSelects=bundlePicker&&!bundlePicker.hidden?bundlePicker.querySelectorAll('.bp-color'):[];
+    if(bundleSelects.length>0){
+      var counts={};
+      bundleSelects.forEach(function(sel){counts[sel.value]=(counts[sel.value]||0)+1;});
+      Object.keys(counts).forEach(function(vid){items.push({id:parseInt(vid,10),quantity:counts[vid]});});
+    }else{
+      items.push({id:parseInt(hiddenId.value,10),quantity:1});
+    }
     section.querySelectorAll('.addon.on[data-variant-id]').forEach(function(a){
       var vid=parseInt(a.dataset.variantId,10);
       if(vid)items.push({id:vid,quantity:1});
