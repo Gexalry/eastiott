@@ -26,11 +26,13 @@
           </div>
         {%- endif -%}
       </div>
-      {%- if product.media.size > 1 -%}
+      {%- assign capacity_shot = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014924_2a099ab1-8bf4-4500-949c-690a860fe024.png' -%}
+      {%- if product.media.size > 0 or capacity_shot != blank -%}
         <div class="thumbs" id="EastThumbs">
-          {%- for media in product.media limit: 5 -%}
+          {%- for media in product.media limit: 4 -%}
             <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="View image {{ forloop.index }}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy"></button>
           {%- endfor -%}
+          <button type="button" class="thumb" data-full="{{ capacity_shot }}" data-alt="Inside the Atelier — everything in its place" aria-label="View interior"><img src="{{ capacity_shot }}" alt="" loading="lazy"></button>
         </div>
       {%- endif -%}
     </div>
