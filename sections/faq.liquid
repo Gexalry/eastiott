@@ -1,11 +1,22 @@
 <section class="east-faq" id="EastFaq-{{ section.id }}">
   <h2>{{ section.settings.heading | default: 'Questions, answered' }}</h2>
-  {%- for block in section.blocks -%}
-    <div class="q" {{ block.shopify_attributes }}>
-      <button type="button">{{ block.settings.question }}<span class="ic">+</span></button>
-      <div class="a"><p>{{ block.settings.answer }}</p></div>
-    </div>
-  {%- endfor -%}
+  {%- if section.blocks.size > 0 -%}
+    {%- for block in section.blocks -%}
+      <div class="q" {{ block.shopify_attributes }}>
+        <button type="button">{{ block.settings.question }}<span class="ic">+</span></button>
+        <div class="a"><p>{{ block.settings.answer }}</p></div>
+      </div>
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign default_questions = 'Can the Atelier truly replace my laptop bag, lunch bag, and handbag?|Is the lunch compartment fully insulated, and how long does it keep food fresh?|Will a spill ever reach my laptop or other belongings?|Is the laptop section padded?|How much can the Atelier carry at once?|What size laptops will it fit?|Is it still comfortable to carry when fully packed?|What is your return policy?' | split: '|' -%}
+    {%- assign default_answers = "That is precisely what it was designed to do. A padded laptop sleeve, an insulated lunch compartment, and a thoughtful array of organised pockets retire the need for separate bags entirely.|Yes. The insulated compartment keeps food hot or cold for hours — up to 5 hours warm and 10 hours chilled. Slip in an ice pack for extended freshness.|No. The lunch section is fully leak-proof and isolated, so anything inside stays sealed away from your tech and valuables.|Yes. The laptop sleeve is fully padded and secured with a discreet Velcro strap, protecting your device from bumps, scratches, and shifting.|The insulated section holds a full meal, snacks, and two water bottles. The rest of the tote organises your tech, cosmetics, and daily essentials — every piece tidy and within reach.|The padded sleeve accommodates laptops up to 17 inches.|It is. The padded shoulder straps distribute weight evenly, so the Atelier stays easy to carry all day, even fully loaded.|A 30-day money-back guarantee. If it isn't quite right, simply reach out — we'll arrange a quiet, considered return." | split: '|' -%}
+    {%- for i in (0..7) -%}
+      <div class="q">
+        <button type="button">{{ default_questions[i] }}<span class="ic">+</span></button>
+        <div class="a"><p>{{ default_answers[i] }}</p></div>
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
 </section>
 
 <style>
