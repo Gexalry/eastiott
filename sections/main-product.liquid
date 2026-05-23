@@ -79,27 +79,33 @@
           </div>
         {%- endif -%}
 
+        {%- assign warranty_product = all_products['warranty-shipping-protection'] -%}
+        {%- assign warranty_variant = warranty_product.variants.first -%}
+        {%- if warranty_variant -%}
+          <input type="hidden" id="EastWarrantyVariantId" value="{{ warranty_variant.id }}">
+        {%- endif -%}
+
+        {%- assign addon_handles = 'matching-purse|matching-shoulder-strap|signature-gift-wrap' | split: '|' -%}
+        {%- assign addon_labels = 'Matching purse · same colour as your tote|Matching shoulder strap|Signature gift wrap' | split: '|' -%}
         <div class="addons">
-          <label class="addon on" data-variant-id="46794691412105">
-            <span class="ck" aria-hidden="true"></span>
-            <span class="an"><b>Matching purse</b> · same colour as your tote</span>
-            <span class="ap"><span class="free">Free</span><s>$28</s></span>
-          </label>
-          <label class="addon" data-variant-id="46794693083273">
-            <span class="ck" aria-hidden="true"></span>
-            <span class="an"><b>Matching shoulder strap</b></span>
-            <span class="ap">$9.99<s>$19.99</s></span>
-          </label>
-          <label class="addon on" data-variant-id="46794694819977">
-            <span class="ck" aria-hidden="true"></span>
-            <span class="an"><b>Signature gift wrap</b></span>
-            <span class="ap"><span class="free">Free</span><s>$14</s></span>
-          </label>
-          <label class="addon on" data-variant-id="46794695868553">
-            <span class="ck" aria-hidden="true"></span>
-            <span class="an"><b>Warranty &amp; shipping protection</b></span>
-            <span class="ap">$10</span>
-          </label>
+          {%- for handle in addon_handles -%}
+            {%- assign addon_product = all_products[handle] -%}
+            {%- assign addon_variant = addon_product.variants.first -%}
+            {%- if addon_variant -%}
+              <label class="addon on" data-variant-id="{{ addon_variant.id }}">
+                <span class="ck" aria-hidden="true"></span>
+                <span class="an"><b>{{ addon_labels[forloop.index0] | split: ' · ' | first }}</b>{%- if addon_labels[forloop.index0] contains ' · ' -%} · {{ addon_labels[forloop.index0] | split: ' · ' | last }}{%- endif -%}</span>
+                <span class="ap">
+                  {%- if addon_variant.price == 0 -%}
+                    <span class="free">Free</span>
+                  {%- else -%}
+                    {{ addon_variant.price | money }}
+                  {%- endif -%}
+                  {%- if addon_variant.compare_at_price and addon_variant.compare_at_price > addon_variant.price -%}<s>{{ addon_variant.compare_at_price | money }}</s>{%- endif -%}
+                </span>
+              </label>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
 
         <button type="submit" class="cta" {% unless current_variant.available %}disabled{% endunless %}>
@@ -209,6 +215,8 @@
       var vid=parseInt(a.dataset.variantId,10);
       if(vid)items.push({id:vid,quantity:1});
     });
+    var warrantyEl=section.querySelector('#EastWarrantyVariantId');
+    if(warrantyEl&&warrantyEl.value){var wvid=parseInt(warrantyEl.value,10);if(wvid)items.push({id:wvid,quantity:1});}
     if(ctaBtn){ctaBtn.disabled=true;ctaBtn.dataset.original=ctaBtn.innerHTML;ctaBtn.textContent='Adding…';}
     fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
       .then(function(r){if(!r.ok)throw new Error('cart-add failed');return r.json();})
