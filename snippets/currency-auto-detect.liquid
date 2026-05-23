@@ -1,0 +1,39 @@
+{%- comment -%}
+  Detects the visitor's country from their IP (api.country.is — keyless, free)
+  and submits the localization form once per visitor to switch currency. Stays
+  out of the way if the visitor has already been auto-set or has manually
+  picked a country (cookie set by the form submit also short-circuits us).
+{%- endcomment -%}
+<script defer>
+  (function () {
+    try {
+      var KEY = 'east_currency_autoset_v1';
+      if (localStorage.getItem(KEY)) return;
+      var current = {{ localization.country.iso_code | json }};
+      var available = [
+        {%- for c in localization.available_countries -%}
+          {{ c.iso_code | json }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ];
+      fetch('https://api.country.is/', { mode: 'cors', credentials: 'omit' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data || !data.country) return;
+          var detected = String(data.country).toUpperCase();
+          // Mark as attempted regardless — we don't want to ping the API on every page.
+          localStorage.setItem(KEY, detected);
+          if (detected === current) return;
+          if (available.indexOf(detected) === -1) return;
+          var form = document.getElementById('east-currency-form');
+          if (!form) return;
+          var sel = form.querySelector('select[name="country_code"]');
+          if (!sel) return;
+          sel.value = detected;
+          var ret = form.querySelector('input[name="return_to"]');
+          if (ret) ret.value = window.location.pathname + window.location.search;
+          form.submit();
+        })
+        .catch(function () { /* network failed — leave currency as-is */ });
+    } catch (e) { /* localStorage blocked, etc. — silent */ }
+  })();
+</script>

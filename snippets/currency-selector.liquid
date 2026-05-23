@@ -1,0 +1,19 @@
+{%- comment -%}
+  Country / currency selector. Uses Shopify's native localization form so the
+  choice is honored at checkout — not just visually. Requires countries to be
+  enabled in Shopify admin → Settings → Markets.
+{%- endcomment -%}
+{%- if localization.available_countries.size > 1 -%}
+  {%- form 'localization', id: 'east-currency-form', class: 'east-currency' -%}
+    <input type="hidden" name="return_to" value="{{ request.path }}">
+    <label for="east-currency-select" class="visually-hidden">Country and currency</label>
+    <span class="east-currency-icon" aria-hidden="true">{{ localization.country.currency.symbol }}</span>
+    <select id="east-currency-select" name="country_code" aria-label="Country and currency" onchange="this.form.submit()">
+      {%- for country in localization.available_countries -%}
+        <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+          {{ country.currency.iso_code }} · {{ country.name }}
+        </option>
+      {%- endfor -%}
+    </select>
+  {%- endform -%}
+{%- endif -%}
