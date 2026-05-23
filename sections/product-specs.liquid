@@ -2,12 +2,23 @@
   <div class="wrap">
     <h2>{{ section.settings.heading | default: 'Considered in every dimension' }}</h2>
     <div class="spec-grid">
-      {%- for block in section.blocks -%}
-        <div class="spec" {{ block.shopify_attributes }}>
-          <span class="sk">{{ block.settings.label }}</span>
-          <span class="sv">{{ block.settings.value }}</span>
-        </div>
-      {%- endfor -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="spec" {{ block.shopify_attributes }}>
+            <span class="sk">{{ block.settings.label }}</span>
+            <span class="sv">{{ block.settings.value }}</span>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign spec_labels = 'Dimensions|Weight|Laptop sleeve|Interior pockets|Exterior|Lining|Thermal hold|Warranty' | split: '|' -%}
+        {%- assign spec_values = '5.5&Prime;D × 14.5&Prime;W × 17&Prime;H|1.1 lbs|Fits up to 17&Prime;|10, thoughtfully placed|Premium structured quilted leather|Leak-proof, easy-clean|5 hrs warm · 10 hrs cold|Lifetime' | split: '|' -%}
+        {%- for i in (0..7) -%}
+          <div class="spec">
+            <span class="sk">{{ spec_labels[i] }}</span>
+            <span class="sv">{{ spec_values[i] }}</span>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
   </div>
 </section>
