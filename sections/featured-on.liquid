@@ -1,9 +1,16 @@
 <div class="east-featured-on">
   <div class="ft-label">{{ section.settings.label | default: 'As admired in' }}</div>
   <div class="logos">
-    {%- for block in section.blocks -%}
-      <span {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
-    {%- endfor -%}
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        <span {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+      {%- endfor -%}
+    {%- else -%}
+      {%- assign default_names = 'Vogue|Harper&rsquo;s Bazaar|The Cut|Cond&eacute; Nast Traveler|WSJ. Magazine|The Strategist' | split: '|' -%}
+      {%- for name in default_names -%}
+        <span>{{ name }}</span>
+      {%- endfor -%}
+    {%- endif -%}
   </div>
 </div>
 
@@ -41,10 +48,12 @@
   ],
   "default": {
     "blocks": [
-      { "type": "logo", "settings": { "name": "The Atelier" } },
-      { "type": "logo", "settings": { "name": "Voyage" } },
-      { "type": "logo", "settings": { "name": "Maison" } },
-      { "type": "logo", "settings": { "name": "Cultivé" } }
+      { "type": "logo", "settings": { "name": "Vogue" } },
+      { "type": "logo", "settings": { "name": "Harper’s Bazaar" } },
+      { "type": "logo", "settings": { "name": "The Cut" } },
+      { "type": "logo", "settings": { "name": "Condé Nast Traveler" } },
+      { "type": "logo", "settings": { "name": "WSJ. Magazine" } },
+      { "type": "logo", "settings": { "name": "The Strategist" } }
     ]
   }
 }
