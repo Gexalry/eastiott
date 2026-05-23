@@ -7,10 +7,10 @@
       {%- endif -%}
     </div>
 
-    {%- assign fallback_1 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014302_2cf5916f-ea85-40b3-8c23-8fe5b9b4d1c6.png' -%}
-    {%- assign fallback_2 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014314_d222ab38-bbbd-4ca8-bbdd-18de2cf9ddc3.png' -%}
-    {%- assign fallback_3 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260522_044750_14b8c2f2-a3f2-40ea-af10-4eedaa1dcea5.png' -%}
-    {%- assign fallback_4 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014325_e65a8f98-1853-44ce-9d91-9eab4d176a6a.png' -%}
+    {%- assign fallback_1 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014302_2cf5916f-ea85-40b3-8c23-8fe5b9b4d1c6_min.webp' -%}
+    {%- assign fallback_2 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014314_d222ab38-bbbd-4ca8-bbdd-18de2cf9ddc3_min.webp' -%}
+    {%- assign fallback_3 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260522_044750_14b8c2f2-a3f2-40ea-af10-4eedaa1dcea5_min.webp' -%}
+    {%- assign fallback_4 = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014325_e65a8f98-1853-44ce-9d91-9eab4d176a6a_min.webp' -%}
 
     <div class="fg">
       {%- if section.blocks.size > 0 -%}
@@ -25,9 +25,9 @@
           <article class="fc reveal" {{ block.shopify_attributes }}>
             <div class="img">
               {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape | default: block.settings.title | escape }}" loading="lazy">
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape | default: block.settings.title | escape }}" loading="lazy" decoding="async">
               {%- elsif fallback_src != blank -%}
-                <img src="{{ fallback_src }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+                <img src="{{ fallback_src }}" alt="{{ block.settings.title | escape }}" loading="lazy" decoding="async">
               {%- endif -%}
             </div>
             <span class="no">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
@@ -48,7 +48,7 @@
           {%- endcase -%}
           <article class="fc reveal">
             <div class="img">
-              <img src="{{ fallback_src }}" alt="{{ default_titles[i] | escape }}" loading="lazy">
+              <img src="{{ fallback_src }}" alt="{{ default_titles[i] | escape }}" loading="lazy" decoding="async">
             </div>
             <span class="no">{{ idx | prepend: '0' | slice: -2, 2 }}</span>
             <h3>{{ default_titles[i] }}</h3>

@@ -17,7 +17,7 @@
       <div class="hero-img" id="EastHero">
         {%- if product.media.size > 0 -%}
           {%- for media in product.media limit: 1 -%}
-            <img id="EastHeroImg" src="{{ media | image_url: width: 1200 }}" alt="{{ media.alt | escape | default: product.title }}" width="{{ media.width }}" height="{{ media.height }}" loading="eager">
+            <img id="EastHeroImg" src="{{ media | image_url: width: 1200 }}" alt="{{ media.alt | escape | default: product.title }}" width="{{ media.width }}" height="{{ media.height }}" loading="eager" fetchpriority="high" decoding="async">
           {%- endfor -%}
         {%- else -%}
           <div class="crest">
@@ -26,13 +26,13 @@
           </div>
         {%- endif -%}
       </div>
-      {%- assign capacity_shot = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014924_2a099ab1-8bf4-4500-949c-690a860fe024.png' -%}
+      {%- assign capacity_shot = 'https://d8j0ntlcm91z4.cloudfront.net/user_3CM0Z4osHXlzGBZ3LIRDjXy1o8z/hf_20260523_014924_2a099ab1-8bf4-4500-949c-690a860fe024_min.webp' -%}
       {%- if product.media.size > 0 or capacity_shot != blank -%}
         <div class="thumbs" id="EastThumbs">
           {%- for media in product.media limit: 4 -%}
-            <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="View image {{ forloop.index }}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy"></button>
+            <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="View image {{ forloop.index }}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy" decoding="async"></button>
           {%- endfor -%}
-          <button type="button" class="thumb" data-full="{{ capacity_shot }}" data-alt="Inside the Atelier — everything in its place" aria-label="View interior"><img src="{{ capacity_shot }}" alt="" loading="lazy"></button>
+          <button type="button" class="thumb" data-full="{{ capacity_shot }}" data-alt="Inside the Atelier — everything in its place" aria-label="View interior"><img src="{{ capacity_shot }}" alt="" loading="lazy" decoding="async"></button>
         </div>
       {%- endif -%}
     </div>
@@ -281,12 +281,13 @@
     var warrantyEl=section.querySelector('#EastWarrantyVariantId');
     if(warrantyEl&&warrantyEl.value){var wvid=parseInt(warrantyEl.value,10);if(wvid)items.push({id:wvid,quantity:1});}
     if(ctaBtn){ctaBtn.disabled=true;ctaBtn.dataset.original=ctaBtn.innerHTML;ctaBtn.textContent='Adding…';}
+    if(window.eastiottCart&&window.eastiottCart.open){window.eastiottCart.open();}
     fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
       .then(function(r){if(!r.ok)throw new Error('cart-add failed');return r.json();})
       .then(function(){
         if(ctaBtn){ctaBtn.disabled=false;ctaBtn.innerHTML=ctaBtn.dataset.original||'Add to Cart';}
-        if(window.eastiottCart&&window.eastiottCart.open){window.eastiottCart.open();}
-        else{window.location.href='{{ routes.cart_url }}';}
+        if(window.eastiottCart&&window.eastiottCart.refresh){window.eastiottCart.refresh();}
+        else if(!window.eastiottCart){window.location.href='{{ routes.cart_url }}';}
       })
       .catch(function(){if(ctaBtn){ctaBtn.disabled=false;ctaBtn.innerHTML=ctaBtn.dataset.original||'Add to Cart';}window.alert('Sorry — something went wrong adding to cart. Please try again.');});
   });}

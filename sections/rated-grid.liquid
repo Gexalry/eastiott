@@ -17,9 +17,9 @@
           <div class="ph">
             {%- if block.settings.verified -%}<span class="badge">Verified</span>{%- endif -%}
             {%- if block.settings.image != blank -%}
-              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape | default: block.settings.name | escape }}" loading="lazy">
+              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | escape | default: block.settings.name | escape }}" loading="lazy" decoding="async">
             {%- elsif block.settings.image_filename != blank -%}
-              <img src="{{ block.settings.image_filename | file_url }}" alt="{{ block.settings.name | escape }}" loading="lazy">
+              <img src="{{ block.settings.image_filename | file_url }}" alt="{{ block.settings.name | escape }}" loading="lazy" decoding="async">
             {%- endif -%}
           </div>
           <div class="nm">{{ block.settings.name }}</div>
