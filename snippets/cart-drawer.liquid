@@ -75,8 +75,38 @@
     return '{{ shop.money_format }}'.replace(/\{\{\s*amount[^}]*\}\}/,(c/100).toFixed(2));
   }
   function escapeHtml(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML;}
+  function thumb(url,w){if(!url)return '';return url+(url.indexOf('?')>-1?'&':'?')+'width='+w;}
+
+  var lastCart=null;
+  var pendingUpdates={};
+  var flushTimer=null;
+  var inFlight=false;
+
+  function recomputeFromDom(){
+    if(!lastCart)return;
+    var rows=itemsEl.querySelectorAll('.ecd-row');
+    var totalQty=0,totalCents=0;
+    rows.forEach(function(row){
+      var key=row.dataset.key;
+      var qty=parseInt(row.dataset.qty,10)||0;
+      totalQty+=qty;
+      var unit=parseInt(row.dataset.unit,10)||0;
+      var unitOrig=parseInt(row.dataset.unitOrig,10)||unit;
+      var line=unit*qty;
+      var lineOrig=unitOrig*qty;
+      totalCents+=line;
+      var priceEl=row.querySelector('.ecd-line-price');
+      if(priceEl){
+        priceEl.innerHTML=(lineOrig>line?'<s>'+money(lineOrig)+'</s> ':'')+money(line);
+      }
+    });
+    countEl.textContent='('+totalQty+')';
+    totalEl.textContent=money(totalCents);
+    if(totalQty===0){emptyEl.hidden=false;footEl.hidden=true;if(upsellEl)upsellEl.hidden=true;}
+  }
 
   function render(cart){
+    lastCart=cart;
     var items=cart&&cart.items||[];
     countEl.textContent='('+items.reduce(function(n,i){return n+i.quantity;},0)+')';
     if(items.length===0){
@@ -97,9 +127,11 @@
       var line=item.final_line_price;
       var originalLine=item.original_line_price;
       var save=originalLine>line?originalLine-line:0;
+      var unit=item.final_price||(item.quantity?Math.round(line/item.quantity):0);
+      var unitOrig=item.original_price||(item.quantity?Math.round(originalLine/item.quantity):unit);
       return ''
-        +'<li class="ecd-row" data-key="'+escapeHtml(item.key)+'">'
-        +'  <div class="ecd-thumb">'+(img?'<img src="'+escapeHtml(img)+'" alt="">':'')+'</div>'
+        +'<li class="ecd-row" data-key="'+escapeHtml(item.key)+'" data-qty="'+item.quantity+'" data-unit="'+unit+'" data-unit-orig="'+unitOrig+'">'
+        +'  <div class="ecd-thumb">'+(img?'<img src="'+escapeHtml(thumb(img,140))+'" width="70" height="70" alt="" loading="lazy" decoding="async">':'')+'</div>'
         +'  <div class="ecd-row-body">'
         +'    <div class="ecd-row-top">'
         +'      <a class="ecd-row-name" href="'+escapeHtml(item.url)+'">'+escapeHtml(item.product_title)+'</a>'
@@ -129,11 +161,41 @@
   }
   function open(){drawer.classList.add('on');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';refresh();}
   function close(){drawer.classList.remove('on');drawer.setAttribute('aria-hidden','true');document.body.style.overflow='';}
-  function change(key,quantity){
-    return fetch('{{ routes.cart_url }}/change.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({id:key,quantity:quantity})})
-      .then(function(r){return r.json();})
-      .then(render);
+
+  function flushUpdates(){
+    if(inFlight)return;
+    var updates=pendingUpdates;
+    if(Object.keys(updates).length===0)return;
+    pendingUpdates={};
+    inFlight=true;
+    fetch('{{ routes.cart_url }}/update.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({updates:updates})})
+      .then(function(r){if(!r.ok)throw new Error('update failed');return r.json();})
+      .then(render)
+      .catch(function(){refresh();})
+      .then(function(){
+        inFlight=false;
+        if(Object.keys(pendingUpdates).length>0)scheduleFlush(0);
+      });
   }
+  function scheduleFlush(delay){
+    if(flushTimer)clearTimeout(flushTimer);
+    flushTimer=setTimeout(flushUpdates,delay==null?180:delay);
+  }
+  function queueChange(key,qty,row){
+    pendingUpdates[key]=Math.max(0,qty);
+    if(row){
+      row.dataset.qty=qty;
+      var nEl=row.querySelector('.ecd-qty-n');if(nEl)nEl.textContent=qty;
+      if(qty<=0){
+        row.style.transition='opacity .18s ease, height .18s ease, padding .18s ease, margin .18s ease';
+        row.style.opacity='0';
+        row.style.pointerEvents='none';
+      }
+    }
+    recomputeFromDom();
+    scheduleFlush();
+  }
+
   function addItems(items){
     return fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
       .then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
@@ -144,16 +206,28 @@
     var t=e.target.closest('[data-ecd-close]');if(t){e.preventDefault();close();return;}
     var q=e.target.closest('.ecd-qty-btn');
     if(q){
-      var key=q.dataset.key;var delta=parseInt(q.dataset.delta,10);
-      var row=q.closest('.ecd-row');var nEl=row?row.querySelector('.ecd-qty-n'):null;
-      var current=nEl?parseInt(nEl.textContent,10):1;
-      change(key,Math.max(0,current+delta));
+      var row=q.closest('.ecd-row');
+      if(!row)return;
+      var key=row.dataset.key;
+      var delta=parseInt(q.dataset.delta,10);
+      var current=parseInt(row.dataset.qty,10)||1;
+      queueChange(key,current+delta,row);
       return;
     }
     var rm=e.target.closest('.ecd-remove');
-    if(rm){change(rm.dataset.key,0);return;}
+    if(rm){
+      var row2=rm.closest('.ecd-row');
+      if(!row2)return;
+      queueChange(row2.dataset.key,0,row2);
+      return;
+    }
   });
-  if(upsellAdd){upsellAdd.addEventListener('click',function(){if(lunchVariantId)addItems([{id:lunchVariantId,quantity:1}]);});}
+  if(upsellAdd){upsellAdd.addEventListener('click',function(){
+    if(!lunchVariantId)return;
+    if(upsellEl)upsellEl.hidden=true;
+    upsellAdd.disabled=true;
+    addItems([{id:lunchVariantId,quantity:1}]).catch(function(){if(upsellEl)upsellEl.hidden=false;upsellAdd.disabled=false;});
+  });}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&drawer.classList.contains('on'))close();});
 
   window.eastiottCart={open:open,close:close,refresh:refresh,addItems:function(items){return addItems(items).then(open);}};
