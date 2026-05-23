@@ -1,4 +1,52 @@
-<section class="wrap" style="padding:72px 28px;max-width:1080px;">
+<div class="east-checkout-trust">
+  <div class="ct-wrap">
+    <div class="ct-brand">EASTIOTT</div>
+    <div class="ct-pill">
+      <div class="ct-avs" aria-hidden="true">
+        <span style="background:#cdbfa6"></span>
+        <span style="background:#6b4e34"></span>
+        <span style="background:#4F5B65"></span>
+      </div>
+      <span class="ct-pill-text"><b>54,000+</b> carried worldwide</span>
+    </div>
+    <ul class="ct-badges">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 4 6v6c0 5 3.4 9.5 8 11 4.6-1.5 8-6 8-11V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span>Secure Checkout</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span>30-Day Guarantee</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+        <span>Tracked Worldwide</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .east-checkout-trust { background: var(--paper-2); border-bottom: 1px solid var(--line); padding: 30px 0 26px; }
+  .east-checkout-trust .ct-wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--wrap-pad); display:flex; flex-direction:column; align-items:center; gap: 18px; }
+  .east-checkout-trust .ct-brand { font-family: var(--serif); font-size: 30px; font-weight: 600; letter-spacing: .32em; color: var(--blue); padding-left: .32em; text-transform: uppercase; }
+  .east-checkout-trust .ct-pill { display:flex; align-items:center; gap: 14px; background:#fff; border:1px solid var(--line); border-radius: 999px; padding: 8px 22px 8px 12px; }
+  .east-checkout-trust .ct-avs { display:flex; }
+  .east-checkout-trust .ct-avs span { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--gold); display:inline-block; margin-left: -8px; }
+  .east-checkout-trust .ct-avs span:first-child { margin-left: 0; }
+  .east-checkout-trust .ct-pill-text { font-family: var(--sans); font-size: 14px; color: var(--ink); letter-spacing: .03em; }
+  .east-checkout-trust .ct-pill-text b { color: var(--blue); font-weight: 600; }
+  .east-checkout-trust .ct-badges { list-style:none; padding:0; margin:0; display:flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+  .east-checkout-trust .ct-badges li { display:flex; align-items:center; gap: 9px; font-size: 12.5px; letter-spacing: .08em; color: var(--slate); text-transform: uppercase; }
+  .east-checkout-trust .ct-badges svg { width: 22px; height: 22px; color: var(--blue); }
+  @media (max-width: 640px) {
+    .east-checkout-trust .ct-brand { font-size: 22px; letter-spacing: .24em; padding-left: .24em; }
+    .east-checkout-trust .ct-badges { gap: 22px; }
+    .east-checkout-trust .ct-badges li { font-size: 11px; letter-spacing: .06em; }
+  }
+</style>
+
+<section class="wrap" style="padding:48px 28px 72px;max-width:1080px;">
   <h1 style="font-family:var(--serif);font-size:48px;font-weight:500;margin-bottom:36px;">Your cart</h1>
   {% if cart.item_count == 0 %}
     <p style="color:var(--slate);margin-bottom:24px;">Your cart is empty.</p>
