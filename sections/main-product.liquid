@@ -43,15 +43,12 @@
       <h1 class="title">{{ product.title }}</h1>
       {%- if section.settings.subtitle != blank -%}<div class="subtitle">{{ section.settings.subtitle }}</div>{%- endif -%}
 
-      {%- if section.settings.bullets != blank -%}
-        <ul class="bullets">
-          {%- assign bullet_lines = section.settings.bullets | newline_to_br | split: '<br />' -%}
-          {%- for line in bullet_lines -%}
-            {%- assign b = line | strip -%}
-            {%- if b != blank -%}<li>{{ b }}</li>{%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
+      <ul class="bullets">
+        <li>Lifetime Warranty</li>
+        <li>10 Pockets / Make Up, Books, Purse</li>
+        <li>Fits Laptops up to 17 In</li>
+        <li>Keep meals the same</li>
+      </ul>
 
       <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" id="EastForm" novalidate>
         {%- for option in product.options_with_values -%}
