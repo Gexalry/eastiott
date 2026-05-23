@@ -79,27 +79,28 @@
           </div>
         {%- endif -%}
 
-        {%- if section.settings.addon_1 != blank or section.settings.addon_2 != blank or section.settings.addon_3 != blank -%}
-          <div class="addons">
-            {%- for i in (1..3) -%}
-              {%- assign label_key = 'addon_' | append: i -%}
-              {%- assign price_key = 'addon_' | append: i | append: '_price' -%}
-              {%- assign compare_key = 'addon_' | append: i | append: '_compare' -%}
-              {%- assign default_on_key = 'addon_' | append: i | append: '_on' -%}
-              {%- assign label = section.settings[label_key] -%}
-              {%- assign price = section.settings[price_key] -%}
-              {%- assign compare = section.settings[compare_key] -%}
-              {%- assign default_on = section.settings[default_on_key] -%}
-              {%- if label != blank -%}
-                <label class="addon{% if default_on %} on{% endif %}">
-                  <span class="ck" aria-hidden="true"></span>
-                  <span class="an">{{ label }}</span>
-                  <span class="ap">{%- if price == 'Free' or price == 'free' -%}<span class="free">Free</span>{%- else -%}{{ price }}{%- endif -%}{%- if compare != blank -%}<s>{{ compare }}</s>{%- endif -%}</span>
-                </label>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+        <div class="addons">
+          <label class="addon on" data-variant-id="46794691412105">
+            <span class="ck" aria-hidden="true"></span>
+            <span class="an"><b>Matching purse</b> · same colour as your tote</span>
+            <span class="ap"><span class="free">Free</span><s>$28</s></span>
+          </label>
+          <label class="addon" data-variant-id="46794693083273">
+            <span class="ck" aria-hidden="true"></span>
+            <span class="an"><b>Matching shoulder strap</b></span>
+            <span class="ap">$9.99<s>$19.99</s></span>
+          </label>
+          <label class="addon on" data-variant-id="46794694819977">
+            <span class="ck" aria-hidden="true"></span>
+            <span class="an"><b>Signature gift wrap</b></span>
+            <span class="ap"><span class="free">Free</span><s>$14</s></span>
+          </label>
+          <label class="addon on" data-variant-id="46794695868553">
+            <span class="ck" aria-hidden="true"></span>
+            <span class="an"><b>Warranty &amp; shipping protection</b></span>
+            <span class="ap">$10</span>
+          </label>
+        </div>
 
         <button type="submit" class="cta" {% unless current_variant.available %}disabled{% endunless %}>
           {%- if current_variant.available -%}{{ section.settings.cta_text | default: 'Add to Cart' }} · <span id="EastCtaPrice">{{ current_variant.price | money }}</span>{%- else -%}Sold Out{%- endif -%}
@@ -200,6 +201,20 @@
   section.querySelectorAll('.swatches').forEach(function(g){var idx=parseInt(g.dataset.optionIndex,10);g.querySelectorAll('.sw').forEach(function(sw){sw.addEventListener('click',function(){g.querySelectorAll('.sw').forEach(function(x){x.classList.remove('on');});sw.classList.add('on');selected[idx]=sw.dataset.value;var p=section.querySelector('.label .pick[data-option-pick="'+idx+'"]');if(p)p.textContent=sw.dataset.value;var v=find();if(v)sync(v);});});});
   section.querySelectorAll('.tier').forEach(function(t){t.addEventListener('click',function(){section.querySelectorAll('.tier').forEach(function(x){x.classList.remove('on');});t.classList.add('on');});});
   section.querySelectorAll('.addon').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.classList.toggle('on');});});
+  var form=section.querySelector('#EastForm');
+  if(form){form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var items=[{id:parseInt(hiddenId.value,10),quantity:1}];
+    section.querySelectorAll('.addon.on[data-variant-id]').forEach(function(a){
+      var vid=parseInt(a.dataset.variantId,10);
+      if(vid)items.push({id:vid,quantity:1});
+    });
+    if(ctaBtn){ctaBtn.disabled=true;ctaBtn.dataset.original=ctaBtn.innerHTML;ctaBtn.textContent='Adding…';}
+    fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
+      .then(function(r){if(!r.ok)throw new Error('cart-add failed');return r.json();})
+      .then(function(){window.location.href='{{ routes.cart_url }}';})
+      .catch(function(){if(ctaBtn){ctaBtn.disabled=false;ctaBtn.innerHTML=ctaBtn.dataset.original||'Add to Cart';}window.alert('Sorry — something went wrong adding to cart. Please try again.');});
+  });}
   thumbs.forEach(function(t){t.addEventListener('click',function(){thumbs.forEach(function(x){x.classList.remove('active');});t.classList.add('active');if(heroImg&&t.dataset.full){heroImg.src=t.dataset.full;heroImg.alt=t.dataset.alt||heroImg.alt;}});});
 })();
 </script>
