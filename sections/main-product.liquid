@@ -57,7 +57,7 @@
           <div class="label"><span>{{ option.name }}</span><span class="pick" data-option-pick="{{ forloop.index0 }}">{{ option.selected_value }}</span></div>
           <div class="swatches" data-option-index="{{ forloop.index0 }}">
             {%- for value in option.values -%}
-              <button type="button" class="sw{% if value == option.selected_value %} on{% endif %}" data-option-index="{{ forloop.index0 | plus: 0 }}" data-value="{{ value | escape }}" style="--swatch:{{ value | handle | prepend: '#' | replace: '#white-black', 'linear-gradient(135deg,#efe8dc 0 50%,#1c1c1c 50% 100%)' | replace: '#champagne', '#cdbfa6' | replace: '#classic-black', '#1c1c1c' | replace: '#black', '#1c1c1c' | replace: '#brown', '#6b4e34' | replace: '#blue', '#006B95' | replace: '#slate', '#4F5B65' | replace: '#green', '#5b6650' | replace: '#beige', '#cdbfa6' | replace: '#white', '#efe8dc' }};" title="{{ value | escape }}" aria-label="{{ option.name }}: {{ value }}"></button>
+              <button type="button" class="sw{% if value == option.selected_value %} on{% endif %}" data-option-index="{{ forloop.index0 | plus: 0 }}" data-value="{{ value | escape }}" style="--swatch:{{ value | handle | prepend: '#' | replace: '#white-black', 'linear-gradient(135deg,#efe8dc 0 50%,#1c1c1c 50% 100%)' | replace: '#champagne', '#cdbfa6' | replace: '#classic-black', '#1c1c1c' | replace: '#black', '#1c1c1c' | replace: '#brown', '#6b4e34' | replace: '#blue', '#006B95' | replace: '#slate', '#4F5B65' | replace: '#green', '#5b6650' | replace: '#beige', '#cdbfa6' | replace: '#purple', '#6a4c75' | replace: '#white', '#efe8dc' }};" title="{{ value | escape }}" aria-label="{{ option.name }}: {{ value }}"></button>
             {%- endfor -%}
           </div>
         {%- endfor -%}
@@ -218,7 +218,7 @@
   var bundlePicker=section.querySelector('#EastBundlePicker');
   function swatchColor(value){
     var h=value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    var map={'white-black':'linear-gradient(135deg,#efe8dc 0 50%,#1c1c1c 50% 100%)','champagne':'#cdbfa6','classic-black':'#1c1c1c','black':'#1c1c1c','brown':'#6b4e34','blue':'#006B95','slate':'#4F5B65','green':'#5b6650','beige':'#cdbfa6','white':'#efe8dc'};
+    var map={'white-black':'linear-gradient(135deg,#efe8dc 0 50%,#1c1c1c 50% 100%)','champagne':'#cdbfa6','classic-black':'#1c1c1c','black':'#1c1c1c','brown':'#6b4e34','blue':'#006B95','slate':'#4F5B65','green':'#5b6650','beige':'#cdbfa6','purple':'#6a4c75','white':'#efe8dc'};
     return map[h]||'#4F5B65';
   }
   function renderBundlePicker(qty){
