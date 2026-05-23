@@ -1,0 +1,170 @@
+{%- assign lunch_product = all_products['the-atelier-lunch-box'] -%}
+{%- assign lunch_variant = lunch_product.variants.first -%}
+
+<div class="east-cart-drawer" id="EastCartDrawer" aria-hidden="true" role="dialog" aria-label="Your bag">
+  <div class="ecd-backdrop" data-ecd-close></div>
+  <aside class="ecd-panel">
+    <header class="ecd-head">
+      <span class="ecd-title">Your bag <em id="EastCartCount">0</em></span>
+      <button type="button" class="ecd-close" data-ecd-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="ecd-body">
+      <div class="ecd-empty" hidden>
+        <p>Your bag is quietly empty.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="ecd-keep">Continue shopping</a>
+      </div>
+      <ul class="ecd-items" id="EastCartItems"></ul>
+
+      {%- if lunch_variant -%}
+        <div class="ecd-upsell" id="EastCartUpsell" data-variant-id="{{ lunch_variant.id }}" hidden>
+          <div class="ecd-upsell-label">Pair it with</div>
+          <div class="ecd-upsell-card">
+            <div class="ecd-upsell-img">
+              {%- if lunch_product.featured_image -%}
+                <img src="{{ lunch_product.featured_image | image_url: width: 200 }}" alt="{{ lunch_product.title | escape }}" loading="lazy">
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.4"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/><path d="M8 12h8"/></svg>
+              {%- endif -%}
+            </div>
+            <div class="ecd-upsell-info">
+              <div class="ecd-upsell-name">{{ lunch_product.title }}</div>
+              <div class="ecd-upsell-sub">Slips into the insulated compartment</div>
+              <div class="ecd-upsell-price">
+                {{ lunch_variant.price | money }}
+                {%- if lunch_variant.compare_at_price > lunch_variant.price -%}
+                  <s>{{ lunch_variant.compare_at_price | money }}</s>
+                {%- endif -%}
+              </div>
+            </div>
+            <button type="button" class="ecd-upsell-add" id="EastUpsellAdd">Add</button>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <footer class="ecd-foot" id="EastCartFoot" hidden>
+      <div class="ecd-sub">
+        <span>Subtotal</span>
+        <span id="EastCartTotal">$0.00</span>
+      </div>
+      <div class="ecd-ship">Taxes & shipping calculated at checkout</div>
+      <a href="{{ routes.cart_url }}" id="EastCheckoutBtn" class="ecd-checkout">Check out</a>
+    </footer>
+  </aside>
+</div>
+
+<script>
+(function(){
+  if(window.eastiottCart)return;
+  var drawer=document.getElementById('EastCartDrawer');
+  if(!drawer)return;
+  var itemsEl=drawer.querySelector('#EastCartItems');
+  var emptyEl=drawer.querySelector('.ecd-empty');
+  var footEl=drawer.querySelector('#EastCartFoot');
+  var countEl=drawer.querySelector('#EastCartCount');
+  var totalEl=drawer.querySelector('#EastCartTotal');
+  var upsellEl=drawer.querySelector('#EastCartUpsell');
+  var upsellAdd=drawer.querySelector('#EastUpsellAdd');
+  var checkoutBtn=drawer.querySelector('#EastCheckoutBtn');
+  var lunchVariantId=upsellEl?parseInt(upsellEl.dataset.variantId,10):null;
+
+  function money(c){
+    return '{{ shop.money_format }}'.replace(/\{\{\s*amount[^}]*\}\}/,(c/100).toFixed(2));
+  }
+  function escapeHtml(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML;}
+
+  function render(cart){
+    var items=cart&&cart.items||[];
+    countEl.textContent='('+items.reduce(function(n,i){return n+i.quantity;},0)+')';
+    if(items.length===0){
+      emptyEl.hidden=false;
+      itemsEl.innerHTML='';
+      footEl.hidden=true;
+      if(upsellEl)upsellEl.hidden=true;
+      return;
+    }
+    emptyEl.hidden=true;
+    footEl.hidden=false;
+    totalEl.textContent=money(cart.total_price);
+    var hasLunch=items.some(function(i){return i.variant_id===lunchVariantId;});
+    if(upsellEl)upsellEl.hidden=hasLunch;
+    itemsEl.innerHTML=items.map(function(item){
+      var img=item.featured_image&&item.featured_image.url?item.featured_image.url:'';
+      var variantLabel=item.variant_title&&item.variant_title!=='Default Title'?item.variant_title:'';
+      var line=item.final_line_price;
+      var originalLine=item.original_line_price;
+      var save=originalLine>line?originalLine-line:0;
+      return ''
+        +'<li class="ecd-row" data-key="'+escapeHtml(item.key)+'">'
+        +'  <div class="ecd-thumb">'+(img?'<img src="'+escapeHtml(img)+'" alt="">':'')+'</div>'
+        +'  <div class="ecd-row-body">'
+        +'    <div class="ecd-row-top">'
+        +'      <a class="ecd-row-name" href="'+escapeHtml(item.url)+'">'+escapeHtml(item.product_title)+'</a>'
+        +'      <button class="ecd-remove" data-key="'+escapeHtml(item.key)+'" aria-label="Remove">×</button>'
+        +'    </div>'
+        +(variantLabel?'<div class="ecd-row-variant">'+escapeHtml(variantLabel)+'</div>':'')
+        +'    <div class="ecd-row-bottom">'
+        +'      <div class="ecd-qty">'
+        +'        <button class="ecd-qty-btn" data-key="'+escapeHtml(item.key)+'" data-delta="-1" aria-label="Decrease">−</button>'
+        +'        <span class="ecd-qty-n">'+item.quantity+'</span>'
+        +'        <button class="ecd-qty-btn" data-key="'+escapeHtml(item.key)+'" data-delta="1" aria-label="Increase">+</button>'
+        +'      </div>'
+        +'      <div class="ecd-line-price">'
+        +(save>0?'<s>'+money(originalLine)+'</s> ':'')
+        +money(line)
+        +'</div>'
+        +'    </div>'
+        +'  </div>'
+        +'</li>';
+    }).join('');
+  }
+
+  function refresh(){
+    return fetch('{{ routes.cart_url }}.js',{headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json();})
+      .then(render);
+  }
+  function open(){drawer.classList.add('on');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';refresh();}
+  function close(){drawer.classList.remove('on');drawer.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  function change(key,quantity){
+    return fetch('{{ routes.cart_url }}/change.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({id:key,quantity:quantity})})
+      .then(function(r){return r.json();})
+      .then(render);
+  }
+  function addItems(items){
+    return fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
+      .then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
+      .then(refresh);
+  }
+
+  drawer.addEventListener('click',function(e){
+    var t=e.target.closest('[data-ecd-close]');if(t){e.preventDefault();close();return;}
+    var q=e.target.closest('.ecd-qty-btn');
+    if(q){
+      var key=q.dataset.key;var delta=parseInt(q.dataset.delta,10);
+      var row=q.closest('.ecd-row');var nEl=row?row.querySelector('.ecd-qty-n'):null;
+      var current=nEl?parseInt(nEl.textContent,10):1;
+      change(key,Math.max(0,current+delta));
+      return;
+    }
+    var rm=e.target.closest('.ecd-remove');
+    if(rm){change(rm.dataset.key,0);return;}
+  });
+  if(upsellAdd){upsellAdd.addEventListener('click',function(){if(lunchVariantId)addItems([{id:lunchVariantId,quantity:1}]);});}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&drawer.classList.contains('on'))close();});
+
+  window.eastiottCart={open:open,close:close,refresh:refresh,addItems:function(items){return addItems(items).then(open);}};
+  document.addEventListener('click',function(e){
+    var trigger=e.target.closest('[data-east-cart-open], a[href$="/cart"]');
+    if(trigger){
+      var href=trigger.getAttribute('href');
+      if(trigger.matches('[data-east-cart-open]') || (href && /\/cart$/.test(href))){
+        e.preventDefault();open();
+      }
+    }
+  });
+})();
+</script>

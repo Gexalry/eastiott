@@ -283,7 +283,11 @@
     if(ctaBtn){ctaBtn.disabled=true;ctaBtn.dataset.original=ctaBtn.innerHTML;ctaBtn.textContent='Adding…';}
     fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
       .then(function(r){if(!r.ok)throw new Error('cart-add failed');return r.json();})
-      .then(function(){window.location.href='{{ routes.cart_url }}';})
+      .then(function(){
+        if(ctaBtn){ctaBtn.disabled=false;ctaBtn.innerHTML=ctaBtn.dataset.original||'Add to Cart';}
+        if(window.eastiottCart&&window.eastiottCart.open){window.eastiottCart.open();}
+        else{window.location.href='{{ routes.cart_url }}';}
+      })
       .catch(function(){if(ctaBtn){ctaBtn.disabled=false;ctaBtn.innerHTML=ctaBtn.dataset.original||'Add to Cart';}window.alert('Sorry — something went wrong adding to cart. Please try again.');});
   });}
   thumbs.forEach(function(t){t.addEventListener('click',function(){thumbs.forEach(function(x){x.classList.remove('active');});t.classList.add('active');if(heroImg&&t.dataset.full){heroImg.src=t.dataset.full;heroImg.alt=t.dataset.alt||heroImg.alt;}});});
