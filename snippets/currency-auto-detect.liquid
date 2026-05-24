@@ -16,18 +16,27 @@
         {%- endfor -%}
       ];
       fetch('https://api.country.is/', { mode: 'cors', credentials: 'omit' })
-        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (r) { return r && r.ok ? r.json() : null; })
         .then(function (data) {
           if (!data || !data.country) return;
-          var detected = String(data.country).toUpperCase();
+          // Normalize: trim incidental whitespace, then upper-case. Guards against
+          // edge responses like " us " or lower-case codes.
+          var detected = String(data.country).trim().toUpperCase();
+          if (!detected || !/^[A-Z]{2}$/.test(detected)) return;
           // Mark as attempted regardless — we don't want to ping the API on every page.
-          localStorage.setItem(KEY, detected);
+          try { localStorage.setItem(KEY, detected); } catch (e) { /* storage may be full / disabled */ }
           if (detected === current) return;
           if (available.indexOf(detected) === -1) return;
           var form = document.getElementById('east-currency-form');
           if (!form) return;
           var sel = form.querySelector('select[name="country_code"]');
           if (!sel) return;
+          // Confirm the option exists in the select before assigning + submitting
+          var hasOption = false;
+          for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === detected) { hasOption = true; break; }
+          }
+          if (!hasOption) return;
           sel.value = detected;
           var ret = form.querySelector('input[name="return_to"]');
           if (ret) ret.value = window.location.pathname + window.location.search;

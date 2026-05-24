@@ -48,11 +48,45 @@
     var burger=document.getElementById('EastBurger');
     var nav=document.getElementById('EastMobileNav');
     if(!burger||!nav)return;
-    function open(){nav.classList.add('on');nav.setAttribute('aria-hidden','false');burger.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';}
-    function close(){nav.classList.remove('on');nav.setAttribute('aria-hidden','true');burger.setAttribute('aria-expanded','false');document.body.style.overflow='';}
+    var lastFocused=null;
+    function focusables(){
+      try{
+        var sel='button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+        var nodes=nav.querySelectorAll(sel);
+        var out=[];
+        for(var i=0;i<nodes.length;i++){var n=nodes[i];if(n.offsetParent!==null||n===document.activeElement)out.push(n);}
+        return out;
+      }catch(_){return [];}
+    }
+    function open(){
+      try{lastFocused=document.activeElement;}catch(_){lastFocused=null;}
+      nav.classList.add('on');nav.setAttribute('aria-hidden','false');burger.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';
+      setTimeout(function(){
+        try{
+          var closeBtn=nav.querySelector('[data-emn-close]');
+          var first=closeBtn||focusables()[0];
+          if(first&&typeof first.focus==='function')first.focus();
+        }catch(_){}
+      },30);
+    }
+    function close(){
+      nav.classList.remove('on');nav.setAttribute('aria-hidden','true');burger.setAttribute('aria-expanded','false');document.body.style.overflow='';
+      try{if(lastFocused&&typeof lastFocused.focus==='function')lastFocused.focus();}catch(_){}
+      lastFocused=null;
+    }
     burger.addEventListener('click',function(){nav.classList.contains('on')?close():open();});
     nav.addEventListener('click',function(e){if(e.target.closest('[data-emn-close]')){e.preventDefault();close();}});
-    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('on'))close();});
+    document.addEventListener('keydown',function(e){
+      if(!nav.classList.contains('on'))return;
+      if(e.key==='Escape'){close();return;}
+      if(e.key==='Tab'){
+        var f=focusables();
+        if(!f.length)return;
+        var firstF=f[0],lastF=f[f.length-1];
+        if(e.shiftKey&&document.activeElement===firstF){e.preventDefault();lastF.focus();}
+        else if(!e.shiftKey&&document.activeElement===lastF){e.preventDefault();firstF.focus();}
+      }
+    });
   })();
   </script>
 {%- endif -%}
