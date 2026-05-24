@@ -6,7 +6,7 @@
     <h2>{{ section.settings.heading_pre }} <em>{{ section.settings.heading_em }}</em>{%- if section.settings.heading_post != blank -%}<br>{{ section.settings.heading_post }}{%- endif -%}</h2>
     {%- if section.settings.show_rating -%}
       <div class="rate">
-        <span class="stars">★★★★★</span>
+        <span class="stars" aria-hidden="true">★★★★★</span>
         <span class="txt">Rated <b>{{ section.settings.rating_value }}</b> based on <b>{{ section.settings.rating_count }}</b> reviews</span>
       </div>
     {%- endif -%}
@@ -24,7 +24,7 @@
           </div>
           <div class="nm">{{ block.settings.name }}</div>
           <div class="loc">{{ block.settings.location }}</div>
-          <div class="qs">★★★★★</div>
+          <div class="qs" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
           <p class="qt">{{ block.settings.quote }}</p>
         </article>
       {%- endfor -%}
