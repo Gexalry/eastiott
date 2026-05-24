@@ -50,10 +50,12 @@
         root.querySelectorAll('.q').forEach(function (x) {
           x.classList.remove('open');
           var ax = x.querySelector('.a'); if (ax) ax.style.maxHeight = null;
+          var bx = x.querySelector('button'); if (bx) bx.setAttribute('aria-expanded', 'false');
         });
         if (!isOpen && a) {
           q.classList.add('open');
           a.style.maxHeight = a.scrollHeight + 'px';
+          b.setAttribute('aria-expanded', 'true');
         }
       });
     });

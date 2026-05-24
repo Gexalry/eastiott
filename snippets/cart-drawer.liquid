@@ -170,20 +170,21 @@
       var save=originalLine>line?originalLine-line:0;
       var unit=item.final_price||(item.quantity?Math.round(line/item.quantity):0);
       var unitOrig=item.original_price||(item.quantity?Math.round(originalLine/item.quantity):unit);
+      var itemLabel=escapeHtml(item.product_title);
       return ''
         +'<li class="ecd-row" data-key="'+escapeHtml(item.key)+'" data-qty="'+item.quantity+'" data-unit="'+unit+'" data-unit-orig="'+unitOrig+'">'
         +'  <div class="ecd-thumb">'+(img?'<img src="'+escapeHtml(thumb(img,140))+'" width="70" height="70" alt="" loading="lazy" decoding="async">':'')+'</div>'
         +'  <div class="ecd-row-body">'
         +'    <div class="ecd-row-top">'
-        +'      <a class="ecd-row-name" href="'+escapeHtml(item.url)+'">'+escapeHtml(item.product_title)+'</a>'
-        +'      <button class="ecd-remove" data-key="'+escapeHtml(item.key)+'" aria-label="Remove">×</button>'
+        +'      <a class="ecd-row-name" href="'+escapeHtml(item.url)+'">'+itemLabel+'</a>'
+        +'      <button class="ecd-remove" type="button" data-key="'+escapeHtml(item.key)+'" aria-label="Remove '+itemLabel+' from cart"><span aria-hidden="true">×</span></button>'
         +'    </div>'
         +(variantLabel?'<div class="ecd-row-variant">'+escapeHtml(variantLabel)+'</div>':'')
         +'    <div class="ecd-row-bottom">'
         +'      <div class="ecd-qty">'
-        +'        <button class="ecd-qty-btn" data-key="'+escapeHtml(item.key)+'" data-delta="-1" aria-label="Decrease">−</button>'
-        +'        <span class="ecd-qty-n">'+item.quantity+'</span>'
-        +'        <button class="ecd-qty-btn" data-key="'+escapeHtml(item.key)+'" data-delta="1" aria-label="Increase">+</button>'
+        +'        <button class="ecd-qty-btn" type="button" data-key="'+escapeHtml(item.key)+'" data-delta="-1" aria-label="Decrease quantity of '+itemLabel+'"><span aria-hidden="true">−</span></button>'
+        +'        <span class="ecd-qty-n" aria-label="Quantity: '+item.quantity+'">'+item.quantity+'</span>'
+        +'        <button class="ecd-qty-btn" type="button" data-key="'+escapeHtml(item.key)+'" data-delta="1" aria-label="Increase quantity of '+itemLabel+'"><span aria-hidden="true">+</span></button>'
         +'      </div>'
         +'      <div class="ecd-line-price">'
         +(save>0?'<s>'+money(originalLine)+'</s> ':'')

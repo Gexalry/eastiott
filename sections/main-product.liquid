@@ -30,7 +30,7 @@
       {%- if product.media.size > 0 or capacity_shot != blank -%}
         <div class="thumbs" id="EastThumbs">
           {%- for media in product.media limit: 4 -%}
-            <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="{% if media.alt != blank %}View {{ media.alt | escape }}{% else %}View image {{ forloop.index }} of {{ product.title | escape }}{% endif %}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy" decoding="async"></button>
+            <button type="button" class="thumb{% if forloop.first %} active{% endif %}"{% if forloop.first %} aria-current="true"{% endif %} data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="{% if media.alt != blank %}View {{ media.alt | escape }}{% else %}View image {{ forloop.index }} of {{ product.title | escape }}{% endif %}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy" decoding="async"></button>
           {%- endfor -%}
           <button type="button" class="thumb" data-full="{{ capacity_shot }}" data-alt="Inside the Atelier — everything in its place" aria-label="View interior of {{ product.title | escape }}"><img src="{{ capacity_shot }}" alt="" loading="lazy" decoding="async"></button>
         </div>
@@ -251,7 +251,7 @@
     if(heroImg.src===url)return;
     if(heroWrap)heroWrap.classList.add('swapping');
     var next=new Image();
-    next.onload=function(){heroImg.src=url;if(alt)heroImg.alt=alt;if(heroWrap)heroWrap.classList.remove('swapping');thumbs.forEach(function(x){x.classList.remove('active');});};
+    next.onload=function(){heroImg.src=url;if(alt)heroImg.alt=alt;if(heroWrap)heroWrap.classList.remove('swapping');thumbs.forEach(function(x){x.classList.remove('active');x.removeAttribute('aria-current');});};
     next.onerror=function(){
       if(heroWrap)heroWrap.classList.remove('swapping');
       try{if(window.console&&console.warn)console.warn('[east-pdp] hero image failed to load:',url);}catch(_){}
@@ -446,10 +446,10 @@
       });
   });}
   thumbs.forEach(function(t){t.addEventListener('click',function(){
-    thumbs.forEach(function(x){x.classList.remove('active');});
+    thumbs.forEach(function(x){x.classList.remove('active');x.removeAttribute('aria-current');});
     t.classList.add('active');
+    t.setAttribute('aria-current','true');
     if(heroImg&&t.dataset.full){
-      // Listen for errors on the direct src swap — surface to console instead of leaving the user in the dark
       try{
         heroImg.onerror=function(){try{if(window.console&&console.warn)console.warn('[east-pdp] thumb image failed to load:',t.dataset.full);}catch(_){}};
       }catch(_){}
