@@ -17,10 +17,9 @@
           "settings": {
             "name": "One Tote",
             "subtitle": "The signature carry",
-            "price": "$159",
-            "compare": "$189",
-            "flag": "",
             "quantity": 1,
+            "discount_percent": 0,
+            "flag": "",
             "selected": true
           }
         },
@@ -29,10 +28,9 @@
           "settings": {
             "name": "Two Totes",
             "subtitle": "One to keep, one to gift",
-            "price": "$302",
-            "compare": "$318",
-            "flag": "Flash Sale",
             "quantity": 2,
+            "discount_percent": 5,
+            "flag": "Flash Sale",
             "selected": false
           }
         },
@@ -41,10 +39,9 @@
           "settings": {
             "name": "Three Totes",
             "subtitle": "The family set",
-            "price": "$429",
-            "compare": "$477",
-            "flag": "Best Value",
             "quantity": 3,
+            "discount_percent": 10,
+            "flag": "Best Value",
             "selected": false
           }
         }

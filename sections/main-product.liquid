@@ -68,12 +68,17 @@
           <div class="tiers" id="EastTiers">
             {%- for block in section.blocks -%}
               {%- if block.type == 'tier' -%}
-                <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ block.settings.quantity }}" {{ block.shopify_attributes }}>
+                {%- assign tier_qty = block.settings.quantity | default: 1 -%}
+                {%- assign tier_disc = block.settings.discount_percent | default: 0 -%}
+                {%- assign tier_gross = current_variant.price | times: tier_qty -%}
+                {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
+                {%- assign tier_net = tier_gross | minus: tier_off -%}
+                <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ tier_qty }}" data-disc="{{ tier_disc }}" {{ block.shopify_attributes }}>
                   <label class="tier">
                     {%- if block.settings.flag != blank -%}<span class="flag">{{ block.settings.flag }}</span>{%- endif -%}
                     <span class="radio" aria-hidden="true"></span>
                     <span class="ti"><span class="tname">{{ block.settings.name }}</span><span class="tsub">{{ block.settings.subtitle }}</span></span>
-                    <span class="tprice"><b>{{ block.settings.price }}</b>{%- if block.settings.compare != blank -%}<s>{{ block.settings.compare }}</s>{%- endif -%}</span>
+                    <span class="tprice"><b class="tprice-now">{{ tier_net | money }}</b>{%- if current_variant.compare_at_price > current_variant.price -%}<s class="tprice-was">{{ current_variant.compare_at_price | times: tier_qty | money }}</s>{%- else -%}<s class="tprice-was" hidden></s>{%- endif -%}</span>
                   </label>
                   <div class="tier-colors" hidden></div>
                 </div>
@@ -234,7 +239,22 @@
     next.onerror=function(){if(heroWrap)heroWrap.classList.remove('swapping');};
     next.src=url;
   }
-  function sync(v){hiddenId.value=v.id;if(priceEl)priceEl.textContent=moneyFormat(v.price);if(ctaPriceEl)ctaPriceEl.textContent=moneyFormat(v.price);if(ctaBtn){if(v.available){ctaBtn.disabled=false;ctaBtn.innerHTML='{{ section.settings.cta_text | default: "Add to Cart" }} · <span id="EastCtaPrice">'+moneyFormat(v.price)+'</span>';}else{ctaBtn.disabled=true;ctaBtn.textContent='Sold Out';}}var img=variantImage(v);if(img)swapHero(img,v.featured_image.alt||'');}
+  function syncTierPrices(v){
+    section.querySelectorAll('.tier-wrap').forEach(function(w){
+      var qty=parseInt(w.dataset.qty,10)||1;
+      var disc=parseInt(w.dataset.disc,10)||0;
+      var gross=v.price*qty;
+      var net=gross-Math.round(gross*disc/100);
+      var nowEl=w.querySelector('.tprice-now');
+      var wasEl=w.querySelector('.tprice-was');
+      if(nowEl)nowEl.textContent=moneyFormat(net);
+      if(wasEl){
+        if(v.compare_at_price&&v.compare_at_price>v.price){wasEl.textContent=moneyFormat(v.compare_at_price*qty);wasEl.hidden=false;}
+        else{wasEl.hidden=true;}
+      }
+    });
+  }
+  function sync(v){hiddenId.value=v.id;if(priceEl)priceEl.textContent=moneyFormat(v.price);if(ctaPriceEl)ctaPriceEl.textContent=moneyFormat(v.price);if(ctaBtn){if(v.available){ctaBtn.disabled=false;ctaBtn.innerHTML='{{ section.settings.cta_text | default: "Add to Cart" }} · <span id="EastCtaPrice">'+moneyFormat(v.price)+'</span>';}else{ctaBtn.disabled=true;ctaBtn.textContent='Sold Out';}}syncTierPrices(v);var img=variantImage(v);if(img)swapHero(img,v.featured_image.alt||'');}
   function find(){return productJson.find(function(v){for(var i=0;i<optionCount;i++){if(v.options[i]!==selected[i])return false;}return true;});}
   function variantForSwatch(idx,value){
     // Prefer a variant where all other selected options also match; fall back to any variant with that value.
@@ -418,19 +438,18 @@
       "settings": [
         { "type": "text", "id": "name", "label": "Name", "default": "One Tote" },
         { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "The signature carry" },
-        { "type": "text", "id": "price", "label": "Price", "default": "$159" },
-        { "type": "text", "id": "compare", "label": "Compare-at (strike-through)" },
+        { "type": "number", "id": "quantity", "label": "Quantity", "default": 1, "info": "How many of the product this tier sells." },
+        { "type": "range", "id": "discount_percent", "label": "Bundle discount %", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Applied to the live variant price. The Shopify compare-at is shown automatically." },
         { "type": "text", "id": "flag", "label": "Flag (e.g. Best Value)" },
-        { "type": "number", "id": "quantity", "label": "Quantity hint", "default": 1 },
         { "type": "checkbox", "id": "selected", "label": "Selected by default", "default": false }
       ]
     }
   ],
   "default": {
     "blocks": [
-      { "type": "tier", "settings": { "name": "One Tote", "subtitle": "The signature carry", "price": "$159", "selected": true, "quantity": 1 } },
-      { "type": "tier", "settings": { "name": "Two Totes", "subtitle": "One to keep, one to gift", "price": "$302", "compare": "$318", "flag": "Flash Sale", "quantity": 2 } },
-      { "type": "tier", "settings": { "name": "Three Totes", "subtitle": "The family set", "price": "$429", "compare": "$477", "flag": "Best Value", "quantity": 3 } }
+      { "type": "tier", "settings": { "name": "One Tote", "subtitle": "The signature carry", "quantity": 1, "discount_percent": 0, "selected": true } },
+      { "type": "tier", "settings": { "name": "Two Totes", "subtitle": "One to keep, one to gift", "quantity": 2, "discount_percent": 5, "flag": "Flash Sale" } },
+      { "type": "tier", "settings": { "name": "Three Totes", "subtitle": "The family set", "quantity": 3, "discount_percent": 10, "flag": "Best Value" } }
     ]
   },
   "enabled_on": { "templates": ["product"] }
