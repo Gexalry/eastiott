@@ -1,4 +1,4 @@
-<footer class="site-footer">
+<footer class="site-footer" role="contentinfo">
   <div class="wrap">
     <div class="foot-top">
       <div>
@@ -7,7 +7,7 @@
           <div class="foot-tag">{{ section.settings.tagline }}</div>
         {%- endif -%}
       </div>
-      <div class="foot-links">
+      <nav class="foot-links" aria-label="Footer">
         {%- for block in section.blocks -%}
           {%- if block.type == 'column' -%}
             <div class="foot-col" {{ block.shopify_attributes }}>
@@ -25,7 +25,7 @@
             </div>
           {%- endif -%}
         {%- endfor -%}
-      </div>
+      </nav>
     </div>
     <div class="foot-bottom">
       <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>

@@ -1,40 +1,40 @@
-<header class="site-header">
-  <div class="wrap nav">
+<header class="site-header" role="banner">
+  <nav class="wrap nav" aria-label="Primary">
     <div class="nav-icons nav-left">
       <button type="button" class="east-burger" id="EastBurger" aria-expanded="false" aria-controls="EastMobileNav" aria-label="Open menu">
         <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
       <a href="{{ routes.search_url }}" class="nav-search">Search</a>
     </div>
-    <a class="logo" href="{{ routes.root_url }}">{{ section.settings.logo_text | default: shop.name }}</a>
+    <a class="logo" href="{{ routes.root_url }}" rel="home">{{ section.settings.logo_text | default: shop.name }}</a>
     <div class="nav-icons">
       {%- render 'currency-selector' -%}
       <a href="{{ routes.account_url }}" class="nav-account">Account</a>
-      <a href="{{ routes.cart_url }}" id="EastHeaderCart" data-east-cart-open>Cart (<span id="EastHeaderCartCount">{{ cart.item_count }}</span>)</a>
+      <a href="{{ routes.cart_url }}" id="EastHeaderCart" data-east-cart-open>Cart (<span id="EastHeaderCartCount" aria-live="polite" aria-atomic="true">{{ cart.item_count }}</span><span class="visually-hidden"> items</span>)</a>
     </div>
-  </div>
+  </nav>
 </header>
 
 {%- render 'currency-auto-detect' -%}
 
 {%- if section.blocks.size > 0 -%}
-  <div class="site-subnav">
+  <nav class="site-subnav" aria-label="Collections">
     <div class="wrap row">
       {%- for block in section.blocks -%}
         <a href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
       {%- endfor -%}
     </div>
-  </div>
+  </nav>
   <div class="east-mobile-nav" id="EastMobileNav" aria-hidden="true">
-    <div class="emn-backdrop" data-emn-close></div>
-    <aside class="emn-panel" role="dialog" aria-label="Site navigation">
+    <div class="emn-backdrop" data-emn-close aria-hidden="true"></div>
+    <aside class="emn-panel" role="dialog" aria-modal="true" aria-label="Site navigation">
       <header class="emn-head">
         <span class="emn-title">Menu</span>
         <button type="button" class="emn-close" data-emn-close aria-label="Close menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
         </button>
       </header>
-      <nav class="emn-links">
+      <nav class="emn-links" aria-label="Mobile">
         {%- for block in section.blocks -%}
           <a href="{{ block.settings.link | default: '#' }}">{{ block.settings.label }}</a>
         {%- endfor -%}

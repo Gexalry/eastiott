@@ -11,7 +11,7 @@
         <span class="num">{{ section.settings.score_value }}</span>
         <span class="stars" aria-hidden="true">
           {%- for i in (1..5) -%}
-            <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+            <i><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
           {%- endfor -%}
         </span>
       </div>
@@ -19,16 +19,17 @@
     {%- endif -%}
 
     <div class="carousel">
-      <button class="arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <button class="arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+      <button type="button" class="arrow prev" aria-label="Previous review"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button type="button" class="arrow next" aria-label="Next review"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"/></svg></button>
 
       <div class="track-mask">
         <div class="track">
           {%- for block in section.blocks -%}
-            <article class="rcard" {{ block.shopify_attributes }}>
-              <span class="stars" aria-hidden="true">
+            <article class="rcard" aria-label="Review by {{ block.settings.author | escape }}" {{ block.shopify_attributes }}>
+              <span class="stars" aria-label="Rated 5 out of 5 stars">
+                <span class="visually-hidden">Rated 5 out of 5 stars</span>
                 {%- for i in (1..5) -%}
-                  <i><svg viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
+                  <i aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></i>
                 {%- endfor -%}
               </span>
               {%- if block.settings.title != blank -%}

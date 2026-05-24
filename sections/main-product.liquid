@@ -21,7 +21,7 @@
           {%- endfor -%}
         {%- else -%}
           <div class="crest">
-            <svg viewBox="0 0 64 64" fill="none" stroke="var(--blue)" stroke-width="1.4"><path d="M32 6c4 5 10 6 16 6-2 8 0 18-16 40C16 30 18 20 16 12c6 0 12-1 16-6Z"/><circle cx="32" cy="22" r="5"/><path d="M24 30h16M27 36h10"/></svg>
+            <svg viewBox="0 0 64 64" fill="none" stroke="var(--blue)" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M32 6c4 5 10 6 16 6-2 8 0 18-16 40C16 30 18 20 16 12c6 0 12-1 16-6Z"/><circle cx="32" cy="22" r="5"/><path d="M24 30h16M27 36h10"/></svg>
             <span class="ph">{{ product.title }}</span>
           </div>
         {%- endif -%}
@@ -30,9 +30,9 @@
       {%- if product.media.size > 0 or capacity_shot != blank -%}
         <div class="thumbs" id="EastThumbs">
           {%- for media in product.media limit: 4 -%}
-            <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="View image {{ forloop.index }}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy" decoding="async"></button>
+            <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-full="{{ media | image_url: width: 1200 }}" data-alt="{{ media.alt | escape }}" aria-label="{% if media.alt != blank %}View {{ media.alt | escape }}{% else %}View image {{ forloop.index }} of {{ product.title | escape }}{% endif %}"><img src="{{ media | image_url: width: 240 }}" alt="" loading="lazy" decoding="async"></button>
           {%- endfor -%}
-          <button type="button" class="thumb" data-full="{{ capacity_shot }}" data-alt="Inside the Atelier — everything in its place" aria-label="View interior"><img src="{{ capacity_shot }}" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" class="thumb" data-full="{{ capacity_shot }}" data-alt="Inside the Atelier — everything in its place" aria-label="View interior of {{ product.title | escape }}"><img src="{{ capacity_shot }}" alt="" loading="lazy" decoding="async"></button>
         </div>
       {%- endif -%}
     </div>
@@ -131,7 +131,7 @@
       </form>
 
       {%- if section.settings.ship_note != blank -%}<div class="ship-note">{{ section.settings.ship_note }}</div>{%- endif -%}
-      {%- if section.settings.guarantee != blank -%}<div class="guarantee"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm-1.2 15-3.5-3.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4-6 6Z"/></svg>{{ section.settings.guarantee }}</div>{%- endif -%}
+      {%- if section.settings.guarantee != blank -%}<div class="guarantee"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm-1.2 15-3.5-3.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4-6 6Z"/></svg>{{ section.settings.guarantee }}</div>{%- endif -%}
     </div>
   </div>
 </section>

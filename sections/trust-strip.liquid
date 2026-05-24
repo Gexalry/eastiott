@@ -1,13 +1,13 @@
-<div class="east-trust">
-  <div class="wrap">
+<section class="east-trust" aria-label="Trust highlights">
+  <div class="wrap" role="list">
     {%- for block in section.blocks -%}
-      <div class="ti" {{ block.shopify_attributes }}>
+      <div class="ti" role="listitem" {{ block.shopify_attributes }}>
         <div class="tn">{{ block.settings.value }}</div>
         <div class="tl">{{ block.settings.label }}</div>
       </div>
     {%- endfor -%}
   </div>
-</div>
+</section>
 
 <style>
   .east-trust { background: var(--slate); color: #fff; padding: 22px 0; }

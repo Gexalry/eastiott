@@ -40,8 +40,8 @@
       {%- elsif product.featured_image != blank -%}
         <img src="{{ product.featured_image | image_url: width: 1400 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" loading="eager">
       {%- else -%}
-        <div class="east-hero-placeholder">
-          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
+        <div class="east-hero-placeholder" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">
             <path d="M32 6c4 5 10 6 16 6-2 8 0 18-16 40C16 30 18 20 16 12c6 0 12-1 16-6Z"/>
             <circle cx="32" cy="22" r="5"/><path d="M24 30h16M27 36h10"/>
           </svg>

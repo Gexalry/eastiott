@@ -1,5 +1,5 @@
 {%- if section.settings.message != blank -%}
-  <div class="announce">{{ section.settings.message }}</div>
+  <div class="announce" role="region" aria-label="Announcement">{{ section.settings.message }}</div>
 {%- endif -%}
 
 {% schema %}
