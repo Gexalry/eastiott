@@ -5,12 +5,13 @@
   {%- endif -%}
   {% form 'customer', class: 'east-news-form' %}
     <input type="hidden" name="contact[tags]" value="newsletter">
-    <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder }}" required>
+    <label for="EastNewsletterEmail" class="visually-hidden">Email address</label>
+    <input type="email" id="EastNewsletterEmail" name="contact[email]" placeholder="{{ section.settings.placeholder }}" aria-label="Email address" required>
     <button type="submit">{{ section.settings.button_text | default: 'Sign Up' }}</button>
     {%- if form.posted_successfully? -%}
-      <div class="east-news-msg ok">Thank you — you're on the list.</div>
+      <div class="east-news-msg ok" role="status" aria-live="polite">Thank you — you're on the list.</div>
     {%- elsif form.errors -%}
-      <div class="east-news-msg err">{{ form.errors | default_errors }}</div>
+      <div class="east-news-msg err" role="alert" aria-live="assertive">{{ form.errors | default_errors }}</div>
     {%- endif -%}
   {% endform %}
 </div>

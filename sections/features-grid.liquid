@@ -30,7 +30,7 @@
                 <img src="{{ fallback_src }}" alt="{{ block.settings.title | escape }}" loading="lazy" decoding="async">
               {%- endif -%}
             </div>
-            <span class="no">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="no" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
             <h3>{{ block.settings.title }}</h3>
             <p>{{ block.settings.body }}</p>
           </article>
@@ -50,7 +50,7 @@
             <div class="img">
               <img src="{{ fallback_src }}" alt="{{ default_titles[i] | escape }}" loading="lazy" decoding="async">
             </div>
-            <span class="no">{{ idx | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="no" aria-hidden="true">{{ idx | prepend: '0' | slice: -2, 2 }}</span>
             <h3>{{ default_titles[i] }}</h3>
             <p>{{ default_bodies[i] }}</p>
           </article>

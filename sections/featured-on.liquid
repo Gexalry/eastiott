@@ -1,18 +1,18 @@
-<div class="east-featured-on">
-  <div class="ft-label">{{ section.settings.label | default: 'As admired in' }}</div>
-  <div class="logos">
+<section class="east-featured-on" aria-labelledby="EastFeaturedLabel-{{ section.id }}">
+  <div class="ft-label" id="EastFeaturedLabel-{{ section.id }}">{{ section.settings.label | default: 'As admired in' }}</div>
+  <div class="logos" role="list">
     {%- if section.blocks.size > 0 -%}
       {%- for block in section.blocks -%}
-        <span {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+        <span role="listitem" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
       {%- endfor -%}
     {%- else -%}
       {%- assign default_names = 'Vogue|Harper&rsquo;s Bazaar|The Cut|Cond&eacute; Nast Traveler|WSJ. Magazine|The Strategist' | split: '|' -%}
       {%- for name in default_names -%}
-        <span>{{ name }}</span>
+        <span role="listitem">{{ name }}</span>
       {%- endfor -%}
     {%- endif -%}
   </div>
-</div>
+</section>
 
 <style>
   .east-featured-on {

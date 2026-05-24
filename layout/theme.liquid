@@ -27,10 +27,11 @@
     {{ 'eastiott.css' | asset_url | stylesheet_tag }}
   </head>
   <body class="template-{{ template.name | handle }}">
+    <a href="#MainContent" class="visually-hidden">Skip to main content</a>
     {% section 'announcement-bar' %}
     {% section 'header' %}
 
-    <main id="MainContent" role="main">
+    <main id="MainContent" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 

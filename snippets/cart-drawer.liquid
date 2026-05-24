@@ -1,13 +1,13 @@
 {%- assign lunch_product = all_products['the-atelier-lunch-box'] -%}
 {%- assign lunch_variant = lunch_product.variants.first -%}
 
-<div class="east-cart-drawer" id="EastCartDrawer" aria-hidden="true" role="dialog" aria-label="Your bag">
-  <div class="ecd-backdrop" data-ecd-close></div>
+<div class="east-cart-drawer" id="EastCartDrawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Your bag">
+  <div class="ecd-backdrop" data-ecd-close aria-hidden="true"></div>
   <aside class="ecd-panel">
     <header class="ecd-head">
-      <span class="ecd-title">Your bag <em id="EastCartCount">0</em></span>
-      <button type="button" class="ecd-close" data-ecd-close aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      <span class="ecd-title">Your bag <em id="EastCartCount" aria-live="polite">0</em></span>
+      <button type="button" class="ecd-close" data-ecd-close aria-label="Close cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </header>
 
@@ -27,14 +27,14 @@
             <div class="ecd-row-body">
               <div class="ecd-row-top">
                 <a class="ecd-row-name" href="{{ item.url }}">{{ item.product_title }}</a>
-                <button class="ecd-remove" type="button" data-key="{{ item.key }}" aria-label="Remove">×</button>
+                <button class="ecd-remove" type="button" data-key="{{ item.key }}" aria-label="Remove {{ item.product_title | escape }} from cart"><span aria-hidden="true">×</span></button>
               </div>
               {%- if item.variant.title != 'Default Title' -%}<div class="ecd-row-variant">{{ item.variant.title }}</div>{%- endif -%}
               <div class="ecd-row-bottom">
                 <div class="ecd-qty">
-                  <button class="ecd-qty-btn" type="button" data-key="{{ item.key }}" data-delta="-1" aria-label="Decrease">−</button>
-                  <span class="ecd-qty-n">{{ item.quantity }}</span>
-                  <button class="ecd-qty-btn" type="button" data-key="{{ item.key }}" data-delta="1" aria-label="Increase">+</button>
+                  <button class="ecd-qty-btn" type="button" data-key="{{ item.key }}" data-delta="-1" aria-label="Decrease quantity of {{ item.product_title | escape }}"><span aria-hidden="true">−</span></button>
+                  <span class="ecd-qty-n" aria-label="Quantity: {{ item.quantity }}">{{ item.quantity }}</span>
+                  <button class="ecd-qty-btn" type="button" data-key="{{ item.key }}" data-delta="1" aria-label="Increase quantity of {{ item.product_title | escape }}"><span aria-hidden="true">+</span></button>
                 </div>
                 <div class="ecd-line-price">
                   {%- if item.original_line_price > item.final_line_price -%}<s>{{ item.original_line_price | money }}</s> {%- endif -%}
@@ -54,7 +54,7 @@
               {%- if lunch_product.featured_image -%}
                 <img src="{{ lunch_product.featured_image | image_url: width: 200 }}" alt="{{ lunch_product.title | escape }}" loading="lazy">
               {%- else -%}
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.4"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/><path d="M8 12h8"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.4" aria-hidden="true" focusable="false"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/><path d="M8 12h8"/></svg>
               {%- endif -%}
             </div>
             <div class="ecd-upsell-info">
@@ -67,7 +67,7 @@
                 {%- endif -%}
               </div>
             </div>
-            <button type="button" class="ecd-upsell-add" id="EastUpsellAdd">Add</button>
+            <button type="button" class="ecd-upsell-add" id="EastUpsellAdd" aria-label="Add {{ lunch_product.title | escape }} to cart">Add</button>
           </div>
         </div>
       {%- endif -%}
