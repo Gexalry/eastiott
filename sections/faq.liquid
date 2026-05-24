@@ -42,13 +42,14 @@
     root.querySelectorAll('.q button').forEach(function (b) {
       b.addEventListener('click', function () {
         var q = b.parentElement;
+        if (!q) return;
         var a = q.querySelector('.a');
         var isOpen = q.classList.contains('open');
         root.querySelectorAll('.q').forEach(function (x) {
           x.classList.remove('open');
           var ax = x.querySelector('.a'); if (ax) ax.style.maxHeight = null;
         });
-        if (!isOpen) {
+        if (!isOpen && a) {
           q.classList.add('open');
           a.style.maxHeight = a.scrollHeight + 'px';
         }

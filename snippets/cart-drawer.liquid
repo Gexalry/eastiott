@@ -117,6 +117,8 @@
   var pendingUpdates={};
   var flushTimer=null;
   var inFlight=false;
+  var refreshToken=0;
+  var lastFocused=null;
 
   function recomputeFromDom(){
     if(!lastCart)return;
@@ -194,12 +196,35 @@
   }
 
   function refresh(){
+    var token=++refreshToken;
     return fetch('{{ routes.cart_url }}.js',{headers:{'Accept':'application/json'}})
-      .then(function(r){return r.json();})
-      .then(render);
+      .then(function(r){if(!r.ok)throw new Error('cart fetch failed: '+r.status);return r.json();})
+      .then(function(cart){
+        // Only apply if this is still the latest in-flight refresh — avoids stale renders racing
+        if(token!==refreshToken)return;
+        render(cart);
+      })
+      .catch(function(err){try{if(window.console&&console.warn)console.warn('[east-cart] refresh failed:',err);}catch(_){}});
   }
-  function open(){drawer.classList.add('on');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';refresh();}
-  function close(){drawer.classList.remove('on');drawer.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  function focusFirst(){
+    try{
+      var sel='button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+      var first=drawer.querySelector('.ecd-close')||drawer.querySelector(sel);
+      if(first&&typeof first.focus==='function')first.focus();
+    }catch(_){}
+  }
+  function open(){
+    try{lastFocused=document.activeElement;}catch(_){lastFocused=null;}
+    drawer.classList.add('on');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+    refresh();
+    // Defer focus to after the drawer transitions in / paints
+    setTimeout(focusFirst,30);
+  }
+  function close(){
+    drawer.classList.remove('on');drawer.setAttribute('aria-hidden','true');document.body.style.overflow='';
+    try{if(lastFocused&&typeof lastFocused.focus==='function')lastFocused.focus();}catch(_){}
+    lastFocused=null;
+  }
 
   function flushUpdates(){
     if(inFlight)return;
@@ -208,9 +233,16 @@
     pendingUpdates={};
     inFlight=true;
     fetch('{{ routes.cart_url }}/update.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({updates:updates})})
-      .then(function(r){if(!r.ok)throw new Error('update failed');return r.json();})
-      .then(render)
-      .catch(function(){refresh();})
+      .then(function(r){if(!r.ok)throw new Error('update failed: '+r.status);return r.json();})
+      .then(function(cart){
+        // Invalidate any in-flight refresh — this server response is now authoritative
+        refreshToken++;
+        render(cart);
+      })
+      .catch(function(err){
+        try{if(window.console&&console.warn)console.warn('[east-cart] update failed, refetching:',err);}catch(_){}
+        refresh();
+      })
       .then(function(){
         inFlight=false;
         if(Object.keys(pendingUpdates).length>0)scheduleFlush(0);
@@ -221,7 +253,9 @@
     flushTimer=setTimeout(flushUpdates,delay==null?180:delay);
   }
   function queueChange(key,qty,row){
-    pendingUpdates[key]=Math.max(0,qty);
+    if(!key)return;
+    qty=Math.max(0,qty|0);
+    pendingUpdates[key]=qty;
     if(row){
       row.dataset.qty=qty;
       var nEl=row.querySelector('.ecd-qty-n');if(nEl)nEl.textContent=qty;
@@ -229,6 +263,8 @@
         row.style.transition='opacity .18s ease, height .18s ease, padding .18s ease, margin .18s ease';
         row.style.opacity='0';
         row.style.pointerEvents='none';
+        // Disable buttons inside so repeated rapid clicks can't keep firing on a removed row
+        row.querySelectorAll('button').forEach(function(b){b.disabled=true;});
       }
     }
     recomputeFromDom();
@@ -236,27 +272,37 @@
   }
 
   function addItems(items){
+    if(!items||!items.length)return Promise.resolve();
     return fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
-      .then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
-      .then(refresh);
+      .then(function(r){if(!r.ok)throw new Error('add failed: '+r.status);return r.json();})
+      .then(function(){return refresh();});
   }
 
   drawer.addEventListener('click',function(e){
     var t=e.target.closest('[data-ecd-close]');if(t){e.preventDefault();close();return;}
     var q=e.target.closest('.ecd-qty-btn');
     if(q){
+      if(q.disabled)return;
       var row=q.closest('.ecd-row');
-      if(!row)return;
+      if(!row||!row.dataset.key)return;
       var key=row.dataset.key;
       var delta=parseInt(q.dataset.delta,10);
-      var current=parseInt(row.dataset.qty,10)||1;
-      queueChange(key,current+delta,row);
+      if(isNaN(delta))return;
+      var current=parseInt(row.dataset.qty,10);
+      if(isNaN(current))current=1;
+      var next=current+delta;
+      // Don't fire updates that don't change anything
+      if(next===current)return;
+      // Floor at 0 — a remove is fine but we don't want negatives queued
+      if(next<0)next=0;
+      queueChange(key,next,row);
       return;
     }
     var rm=e.target.closest('.ecd-remove');
     if(rm){
+      if(rm.disabled)return;
       var row2=rm.closest('.ecd-row');
-      if(!row2)return;
+      if(!row2||!row2.dataset.key)return;
       queueChange(row2.dataset.key,0,row2);
       return;
     }
@@ -267,7 +313,22 @@
     upsellAdd.disabled=true;
     addItems([{id:lunchVariantId,quantity:1}]).catch(function(){if(upsellEl)upsellEl.hidden=false;upsellAdd.disabled=false;});
   });}
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&drawer.classList.contains('on'))close();});
+  document.addEventListener('keydown',function(e){
+    if(!drawer.classList.contains('on'))return;
+    if(e.key==='Escape'){close();return;}
+    if(e.key==='Tab'){
+      try{
+        var sel='button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+        var nodes=drawer.querySelectorAll(sel);
+        var focusable=[];
+        for(var i=0;i<nodes.length;i++){var n=nodes[i];if(n.offsetParent!==null||n===document.activeElement)focusable.push(n);}
+        if(!focusable.length)return;
+        var firstF=focusable[0],lastF=focusable[focusable.length-1];
+        if(e.shiftKey&&document.activeElement===firstF){e.preventDefault();lastF.focus();}
+        else if(!e.shiftKey&&document.activeElement===lastF){e.preventDefault();firstF.focus();}
+      }catch(_){}
+    }
+  });
 
   window.eastiottCart={open:open,close:close,refresh:refresh,addItems:function(items){return addItems(items).then(open);}};
   document.addEventListener('click',function(e){
