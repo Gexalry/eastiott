@@ -189,8 +189,104 @@ button { font-family: inherit; }
 .site-subnav a:hover::after { width: 100%; }
 
 @media (max-width: 880px) {
-  .site-subnav .row { display: none; }
+  .site-subnav { display: none; }
 }
+
+/* ---------- mobile nav ---------- */
+.east-burger {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 8px 6px;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+.east-burger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--slate);
+  border-radius: 1px;
+  transition: transform .25s, opacity .2s;
+}
+.east-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.east-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.east-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+.site-header .nav-left { gap: 14px; }
+
+.east-mobile-nav {
+  position: fixed; inset: 0; z-index: 180;
+  visibility: hidden; pointer-events: none;
+}
+.east-mobile-nav.on { visibility: visible; pointer-events: auto; }
+.east-mobile-nav .emn-backdrop {
+  position: absolute; inset: 0; background: rgba(28, 34, 39, 0.45);
+  opacity: 0; transition: opacity .3s;
+}
+.east-mobile-nav.on .emn-backdrop { opacity: 1; }
+.east-mobile-nav .emn-panel {
+  position: absolute; top: 0; left: 0; height: 100%;
+  width: min(320px, 86vw);
+  background: var(--paper); display: flex; flex-direction: column;
+  transform: translateX(-100%); transition: transform .32s cubic-bezier(.4,0,.2,1);
+  box-shadow: 20px 0 50px rgba(0,0,0,.12);
+}
+.east-mobile-nav.on .emn-panel { transform: translateX(0); }
+.east-mobile-nav .emn-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px; border-bottom: 1px solid var(--line);
+}
+.east-mobile-nav .emn-title {
+  font-family: var(--serif); font-size: 20px; color: var(--ink);
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.east-mobile-nav .emn-close {
+  background: none; border: 0; cursor: pointer; color: var(--slate);
+  display: flex; padding: 4px;
+}
+.east-mobile-nav .emn-close svg { width: 22px; height: 22px; }
+.east-mobile-nav .emn-links {
+  display: flex; flex-direction: column; padding: 14px 0;
+}
+.east-mobile-nav .emn-links a {
+  padding: 14px 24px; font-size: 14px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.east-mobile-nav .emn-links a.emn-sec {
+  color: var(--slate); font-size: 12.5px; letter-spacing: .14em;
+}
+.east-mobile-nav .emn-links a:hover { color: var(--blue); }
+
+@media (max-width: 880px) {
+  .east-burger { display: inline-flex; }
+  .site-header .nav-search { display: none; }
+}
+@media (max-width: 540px) {
+  .site-header .nav-account { display: none; }
+}
+
+/* ---------- global focus indicators ---------- */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+input:focus-visible + .ck,
+input:focus-visible + .radio,
+input:focus-visible ~ .radio,
+.tier-input:focus-visible ~ .ti,
+.addon-input:focus-visible ~ .an {
+  /* radios/checkboxes inside labels — surface focus on the visual surrogate */
+}
+.tier-input:focus-visible ~ .radio,
+.addon-input:focus-visible ~ .ck {
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--gold);
+}
+/* Drop the gold outline from focused buttons that already use box-shadow as their visual ring */
+.east-pdp .sw:focus-visible { outline: none; box-shadow: 0 0 0 1.5px var(--paper), 0 0 0 3px var(--gold); }
 
 @media (max-width: 720px) {
   :root { --wrap-pad: 16px; }

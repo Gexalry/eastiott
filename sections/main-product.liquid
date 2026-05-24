@@ -8,8 +8,8 @@
 <section class="east-pdp" id="EastPdp-{{ section.id }}">
   <div class="wrap">
     <div class="eyebrow eyebrow-top">
-      <span><b>2026 Top Rated</b> - Built By <i>Women</i></span>
-      <span><i>Overstock</i> <b>Sale</b> [<b>Limited Time</b>]</span>
+      {%- if section.settings.eyebrow_1 != blank -%}<span>{{ section.settings.eyebrow_1 }}</span>{%- endif -%}
+      {%- if section.settings.eyebrow_2 != blank -%}<span>{{ section.settings.eyebrow_2 }}</span>{%- endif -%}
     </div>
   </div>
   <div class="wrap product-grid">
@@ -39,18 +39,21 @@
 
     <div class="buybox">
       {%- if section.settings.show_rating -%}
-        <div class="rating-row"><span class="stars">★★★★★</span><span><b>{{ section.settings.rating_value }}</b> · {{ section.settings.rating_label }}</span></div>
+        <div class="rating-row"><span class="stars" aria-hidden="true">★★★★★</span><span><span class="visually-hidden">Rated </span><b>{{ section.settings.rating_value }}</b> · {{ section.settings.rating_label }}</span></div>
       {%- endif -%}
 
       <h1 class="title">{{ product.title }}</h1>
       {%- if section.settings.subtitle != blank -%}<div class="subtitle">{{ section.settings.subtitle }}</div>{%- endif -%}
 
-      <ul class="bullets">
-        <li>Lifetime Warranty</li>
-        <li>10 Pockets / Make Up, Books, Purse</li>
-        <li>Fits Laptops up to 17 In</li>
-        <li>Keeps meals warm for 5 hrs, cold for 10</li>
-      </ul>
+      {%- if section.settings.bullets != blank -%}
+        <ul class="bullets">
+          {%- assign bullet_lines = section.settings.bullets | newline_to_br | split: '<br />' -%}
+          {%- for bullet in bullet_lines -%}
+            {%- assign bullet_text = bullet | strip -%}
+            {%- if bullet_text != blank -%}<li>{{ bullet_text }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
 
       <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" id="EastForm" novalidate>
         {%- for option in product.options_with_values -%}
@@ -65,7 +68,7 @@
         <input type="hidden" name="id" id="EastVariantId" value="{{ current_variant.id }}">
 
         {%- if section.blocks.size > 0 -%}
-          <div class="tiers" id="EastTiers">
+          <div class="tiers" id="EastTiers" role="radiogroup" aria-label="Bundle quantity">
             {%- for block in section.blocks -%}
               {%- if block.type == 'tier' -%}
                 {%- assign tier_qty = block.settings.quantity | default: 1 -%}
@@ -73,8 +76,10 @@
                 {%- assign tier_gross = current_variant.price | times: tier_qty -%}
                 {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
                 {%- assign tier_net = tier_gross | minus: tier_off -%}
+                {%- assign tier_id = 'EastTier-' | append: section.id | append: '-' | append: block.id -%}
                 <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ tier_qty }}" data-disc="{{ tier_disc }}" {{ block.shopify_attributes }}>
-                  <label class="tier">
+                  <label class="tier" for="{{ tier_id }}">
+                    <input type="radio" name="east-tier-{{ section.id }}" id="{{ tier_id }}" class="tier-input visually-hidden" value="{{ block.id }}"{% if block.settings.selected %} checked{% endif %}>
                     {%- if block.settings.flag != blank -%}<span class="flag">{{ block.settings.flag }}</span>{%- endif -%}
                     <span class="radio" aria-hidden="true"></span>
                     <span class="ti"><span class="tname">{{ block.settings.name }}</span><span class="tsub">{{ block.settings.subtitle }}</span></span>
@@ -87,22 +92,26 @@
           </div>
         {%- endif -%}
 
-        {%- assign warranty_product = all_products['warranty-shipping-protection'] -%}
-        {%- assign warranty_variant = warranty_product.variants.first -%}
-        {%- if warranty_variant -%}
-          <input type="hidden" id="EastWarrantyVariantId" value="{{ warranty_variant.id }}">
-        {%- endif -%}
-
-        {%- assign addon_handles = 'matching-purse|matching-shoulder-strap|signature-gift-wrap' | split: '|' -%}
-        {%- assign addon_labels = 'Matching purse · same colour as your tote|Matching shoulder strap|Signature gift wrap' | split: '|' -%}
+        {%- assign addon_handles = 'warranty-shipping-protection|matching-purse|matching-shoulder-strap|signature-gift-wrap' | split: '|' -%}
+        {%- assign addon_settings_labels = section.settings.addon_warranty | append: '||' | append: section.settings.addon_1 | append: '||' | append: section.settings.addon_2 | append: '||' | append: section.settings.addon_3 | split: '||' -%}
+        {%- assign addon_defaults = '' -%}
+        {%- if section.settings.addon_warranty_on -%}{%- assign addon_defaults = addon_defaults | append: '1|' -%}{%- else -%}{%- assign addon_defaults = addon_defaults | append: '0|' -%}{%- endif -%}
+        {%- if section.settings.addon_1_on -%}{%- assign addon_defaults = addon_defaults | append: '1|' -%}{%- else -%}{%- assign addon_defaults = addon_defaults | append: '0|' -%}{%- endif -%}
+        {%- if section.settings.addon_2_on -%}{%- assign addon_defaults = addon_defaults | append: '1|' -%}{%- else -%}{%- assign addon_defaults = addon_defaults | append: '0|' -%}{%- endif -%}
+        {%- if section.settings.addon_3_on -%}{%- assign addon_defaults = addon_defaults | append: '1' -%}{%- else -%}{%- assign addon_defaults = addon_defaults | append: '0' -%}{%- endif -%}
+        {%- assign addon_default_flags = addon_defaults | split: '|' -%}
         <div class="addons">
           {%- for handle in addon_handles -%}
             {%- assign addon_product = all_products[handle] -%}
             {%- assign addon_variant = addon_product.variants.first -%}
             {%- if addon_variant -%}
-              <label class="addon on" data-variant-id="{{ addon_variant.id }}">
+              {%- assign label_raw = addon_settings_labels[forloop.index0] | strip -%}
+              {%- assign is_on = addon_default_flags[forloop.index0] -%}
+              {%- assign addon_id = 'EastAddon-' | append: section.id | append: '-' | append: forloop.index0 -%}
+              <label class="addon{% if is_on == '1' %} on{% endif %}" for="{{ addon_id }}">
+                <input type="checkbox" id="{{ addon_id }}" class="addon-input visually-hidden" data-variant-id="{{ addon_variant.id }}"{% if is_on == '1' %} checked{% endif %}>
                 <span class="ck" aria-hidden="true"></span>
-                <span class="an"><b>{{ addon_labels[forloop.index0] | split: ' · ' | first }}</b>{%- if addon_labels[forloop.index0] contains ' · ' -%} · {{ addon_labels[forloop.index0] | split: ' · ' | last }}{%- endif -%}</span>
+                <span class="an">{%- if label_raw contains ' · ' -%}<b>{{ label_raw | split: ' · ' | first }}</b> · {{ label_raw | split: ' · ' | last }}{%- else -%}<b>{{ label_raw }}</b>{%- endif -%}</span>
                 <span class="ap">
                   {%- if addon_variant.price == 0 -%}
                     <span class="free">Free</span>
@@ -150,7 +159,7 @@
 .east-pdp .rating-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-size:13px;color:var(--slate);letter-spacing:.04em}
 .east-pdp .rating-row b{color:var(--ink);font-weight:500}
 .east-pdp .stars{color:var(--gold);letter-spacing:3px;font-size:15px}
-.east-pdp h1.title{font-family:var(--serif);font-size:clamp(34px,9vw,54px);line-height:1.02;font-weight:500;letter-spacing:.01em;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.east-pdp h1.title{font-family:var(--serif);font-size:clamp(34px,9vw,54px);line-height:1.02;font-weight:500;letter-spacing:.01em;margin-bottom:6px}
 .east-pdp .subtitle{font-family:var(--serif);font-style:italic;font-size:21px;color:var(--slate);margin-bottom:24px}
 .east-pdp .price-row{display:flex;align-items:baseline;gap:14px;margin-bottom:4px;flex-wrap:wrap}
 .east-pdp .price{font-size:30px;font-weight:400;color:var(--blue)}
@@ -220,7 +229,6 @@
   var productJson={{ product.variants | json }};
   var optionCount={{ product.options.size }};
   var hiddenId=section.querySelector('#EastVariantId');
-  var priceEl=section.querySelector('#EastPrice');
   var ctaPriceEl=section.querySelector('#EastCtaPrice');
   var ctaBtn=section.querySelector('.cta');
   var heroImg=section.querySelector('#EastHeroImg');
@@ -228,7 +236,13 @@
   var thumbs=section.querySelectorAll('.thumb');
   var selected=[];
   section.querySelectorAll('.label .pick').forEach(function(el,i){selected[i]=el.textContent.trim();});
-  function moneyFormat(c){return '{{ shop.money_format }}'.replace(/\{\{\s*amount[^}]*\}\}/,(c/100).toFixed(2));}
+  var activeCurrency='{{ localization.country.currency.iso_code | default: "USD" }}';
+  var moneyFmt;
+  try{moneyFmt=new Intl.NumberFormat((navigator&&navigator.language)||'en-US',{style:'currency',currency:activeCurrency});}catch(e){moneyFmt=null;}
+  function moneyFormat(c){
+    if(moneyFmt)return moneyFmt.format(c/100);
+    return '{{ shop.money_format }}'.replace(/\{\{\s*amount[^}]*\}\}/,(c/100).toFixed(2));
+  }
   function variantImage(v){return v&&v.featured_image&&v.featured_image.src?v.featured_image.src:null;}
   function swapHero(url,alt){
     if(!heroImg||!url)return;
@@ -254,7 +268,24 @@
       }
     });
   }
-  function sync(v){hiddenId.value=v.id;if(priceEl)priceEl.textContent=moneyFormat(v.price);if(ctaPriceEl)ctaPriceEl.textContent=moneyFormat(v.price);if(ctaBtn){if(v.available){ctaBtn.disabled=false;ctaBtn.innerHTML='{{ section.settings.cta_text | default: "Add to Cart" }} · <span id="EastCtaPrice">'+moneyFormat(v.price)+'</span>';}else{ctaBtn.disabled=true;ctaBtn.textContent='Sold Out';}}syncTierPrices(v);var img=variantImage(v);if(img)swapHero(img,v.featured_image.alt||'');}
+  function escapeHtml(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML;}
+  function sync(v){
+    hiddenId.value=v.id;
+    if(ctaPriceEl)ctaPriceEl.textContent=moneyFormat(v.price);
+    if(ctaBtn){
+      if(v.available){
+        ctaBtn.disabled=false;
+        ctaBtn.innerHTML='{{ section.settings.cta_text | default: "Add to Cart" | escape }} · <span id="EastCtaPrice">'+escapeHtml(moneyFormat(v.price))+'</span>';
+        ctaPriceEl=ctaBtn.querySelector('#EastCtaPrice');
+      }else{
+        ctaBtn.disabled=true;
+        ctaBtn.textContent='Sold Out';
+      }
+    }
+    syncTierPrices(v);
+    var img=variantImage(v);
+    if(img)swapHero(img,v.featured_image.alt||'');
+  }
   function find(){return productJson.find(function(v){for(var i=0;i<optionCount;i++){if(v.options[i]!==selected[i])return false;}return true;});}
   function variantForSwatch(idx,value){
     // Prefer a variant where all other selected options also match; fall back to any variant with that value.
@@ -287,8 +318,13 @@
         pdot.style.background=sw.style.getPropertyValue('--swatch')||'';
       }
       pname.textContent=value;
-      preview.style.left=(sw.offsetLeft+sw.offsetWidth/2)+'px';
       preview.classList.add('on');
+      var center=sw.offsetLeft+sw.offsetWidth/2;
+      var pw=preview.offsetWidth||148;
+      var gw=g.clientWidth;
+      var minX=pw/2, maxX=gw-pw/2;
+      if(minX>maxX){minX=maxX=gw/2;}
+      preview.style.left=Math.max(minX,Math.min(maxX,center))+'px';
     }
     function hide(){hideTimer=setTimeout(function(){preview.classList.remove('on');},80);}
     g.querySelectorAll('.sw').forEach(function(sw){
@@ -356,13 +392,18 @@
     wrap.classList.add('on');
     renderTierColors(wrap);
   }
-  section.querySelectorAll('.tier-wrap').forEach(function(w){
-    var label=w.querySelector('.tier');
-    if(label)label.addEventListener('click',function(){activateTier(w);});
+  section.querySelectorAll('.tier-input').forEach(function(input){
+    input.addEventListener('change',function(){
+      if(input.checked)activateTier(input.closest('.tier-wrap'));
+    });
   });
   var initialWrap=section.querySelector('.tier-wrap.on');
   if(initialWrap)renderTierColors(initialWrap);
-  section.querySelectorAll('.addon').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();a.classList.toggle('on');});});
+  section.querySelectorAll('.addon-input').forEach(function(input){
+    input.addEventListener('change',function(){
+      input.closest('.addon').classList.toggle('on',input.checked);
+    });
+  });
   var form=section.querySelector('#EastForm');
   if(form){form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -376,12 +417,10 @@
     }else{
       items.push({id:parseInt(hiddenId.value,10),quantity:1});
     }
-    section.querySelectorAll('.addon.on[data-variant-id]').forEach(function(a){
-      var vid=parseInt(a.dataset.variantId,10);
+    section.querySelectorAll('.addon-input:checked').forEach(function(input){
+      var vid=parseInt(input.dataset.variantId,10);
       if(vid)items.push({id:vid,quantity:1});
     });
-    var warrantyEl=section.querySelector('#EastWarrantyVariantId');
-    if(warrantyEl&&warrantyEl.value){var wvid=parseInt(warrantyEl.value,10);if(wvid)items.push({id:wvid,quantity:1});}
     if(ctaBtn){ctaBtn.disabled=true;ctaBtn.dataset.original=ctaBtn.innerHTML;ctaBtn.textContent='Adding…';}
     if(window.eastiottCart&&window.eastiottCart.open){window.eastiottCart.open();}
     fetch('{{ routes.cart_url }}/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:items})})
@@ -417,18 +456,14 @@
     { "type": "text", "id": "cta_text", "label": "Button text", "default": "Add to Cart" },
     { "type": "text", "id": "ship_note", "label": "Ship note", "default": "Ships today · Tracked shipping worldwide" },
     { "type": "text", "id": "guarantee", "label": "Guarantee", "default": "30-day money-back guarantee" },
-    { "type": "header", "content": "Add-ons" },
-    { "type": "text", "id": "addon_1", "label": "Add-on 1 label", "default": "<b>Matching purse</b> · same colour as your tote" },
-    { "type": "text", "id": "addon_1_price", "label": "Add-on 1 price", "default": "Free" },
-    { "type": "text", "id": "addon_1_compare", "label": "Add-on 1 compare-at", "default": "$20" },
+    { "type": "header", "content": "Add-ons", "info": "Labels can include ` · ` to split into a bold lead + lighter trailing phrase. Price comes from the linked product (warranty-shipping-protection, matching-purse, matching-shoulder-strap, signature-gift-wrap)." },
+    { "type": "text", "id": "addon_warranty", "label": "Warranty addon label", "default": "Shipping Protection · against loss or damage in transit" },
+    { "type": "checkbox", "id": "addon_warranty_on", "label": "Warranty selected by default", "default": true },
+    { "type": "text", "id": "addon_1", "label": "Add-on 1 label", "default": "Matching purse · same colour as your tote" },
     { "type": "checkbox", "id": "addon_1_on", "label": "Add-on 1 selected by default", "default": true },
-    { "type": "text", "id": "addon_2", "label": "Add-on 2 label", "default": "<b>Matching shoulder strap</b>" },
-    { "type": "text", "id": "addon_2_price", "label": "Add-on 2 price", "default": "$9.99" },
-    { "type": "text", "id": "addon_2_compare", "label": "Add-on 2 compare-at", "default": "$19.99" },
+    { "type": "text", "id": "addon_2", "label": "Add-on 2 label", "default": "Matching shoulder strap" },
     { "type": "checkbox", "id": "addon_2_on", "label": "Add-on 2 selected by default", "default": false },
-    { "type": "text", "id": "addon_3", "label": "Add-on 3 label", "default": "<b>Signature gift wrap</b>" },
-    { "type": "text", "id": "addon_3_price", "label": "Add-on 3 price", "default": "Free" },
-    { "type": "text", "id": "addon_3_compare", "label": "Add-on 3 compare-at", "default": "$9.99" },
+    { "type": "text", "id": "addon_3", "label": "Add-on 3 label", "default": "Signature gift wrap" },
     { "type": "checkbox", "id": "addon_3_on", "label": "Add-on 3 selected by default", "default": true }
   ],
   "blocks": [
