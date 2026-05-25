@@ -69,7 +69,7 @@
         "addon_1": "Matching purse · same colour as your tote",
         "addon_1_on": true,
         "addon_2": "Matching shoulder strap",
-        "addon_2_on": false,
+        "addon_2_on": true,
         "addon_3": "Signature gift wrap",
         "addon_3_on": true
       }

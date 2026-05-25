@@ -2,7 +2,7 @@
 
 > Shopify storefront repo for **Eastiott** — the quiet-luxury brand selling **The Atelier Tote** (a 3-in-1 everyday tote). Contains a custom Shopify theme built to the brand identity (Cormorant Garamond serif + Jost sans, paper palette, single confident blue, gold accents) plus the design references it was ported from. Organized using the [llms.txt](https://llmstxt.org) convention.
 
-Connected store: `7rkgkh-kh.myshopify.com` · Plan: Basic · Currency: USD · Owner: loridasam@gmail.com
+Connected store: `7rkgkh-kh.myshopify.com` · Plan: Basic · Currency: USD
 
 ## Catalog (live in Shopify — do not recreate)
 

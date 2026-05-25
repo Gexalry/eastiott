@@ -22,6 +22,9 @@
   --wrap-pad: 28px;
 }
 
+/* hide Shopify's built-in cookie consent banner */
+#shopify-pc__banner, .shopify-cleanslate .consent-tracking { display: none !important; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
