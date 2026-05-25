@@ -100,8 +100,14 @@
         {%- if section.settings.addon_2_on -%}{%- assign addon_defaults = addon_defaults | append: '1|' -%}{%- else -%}{%- assign addon_defaults = addon_defaults | append: '0|' -%}{%- endif -%}
         {%- if section.settings.addon_3_on -%}{%- assign addon_defaults = addon_defaults | append: '1' -%}{%- else -%}{%- assign addon_defaults = addon_defaults | append: '0' -%}{%- endif -%}
         {%- assign addon_default_flags = addon_defaults | split: '|' -%}
+        {%- comment -%}Shipping protection auto-adds to cart (not shown as checkbox){%- endcomment -%}
+        {%- assign sp_product = all_products['warranty-shipping-protection'] -%}
+        {%- if sp_product.variants.first -%}
+          <input type="hidden" id="EastShipProtect" data-variant-id="{{ sp_product.variants.first.id }}">
+        {%- endif -%}
         <div class="addons">
           {%- for handle in addon_handles -%}
+            {%- if handle == 'warranty-shipping-protection' -%}{%- continue -%}{%- endif -%}
             {%- assign addon_product = all_products[handle] -%}
             {%- assign addon_variant = addon_product.variants.first -%}
             {%- if addon_variant -%}
@@ -441,6 +447,8 @@
       var vid=parseInt(input.dataset.variantId,10);
       if(vid)items.push({id:vid,quantity:1});
     });
+    var sp=document.getElementById('EastShipProtect');
+    if(sp){var spId=parseInt(sp.dataset.variantId,10);if(spId)items.push({id:spId,quantity:1});}
     if(ctaBtn&&!ctaBtn.dataset.original){ctaBtn.dataset.original=ctaBtn.innerHTML;}
     if(ctaBtn){ctaBtn.disabled=true;ctaBtn.textContent='Adding…';}
     if(window.eastiottCart&&window.eastiottCart.open){window.eastiottCart.open();}
