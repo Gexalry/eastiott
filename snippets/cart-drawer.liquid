@@ -26,7 +26,7 @@
             </div>
             <div class="ecd-row-body">
               <div class="ecd-row-top">
-                <a class="ecd-row-name" href="{{ item.url }}">{{ item.product_title }}</a>
+                <span class="ecd-row-name">{{ item.product_title }}</span>
                 <button class="ecd-remove" type="button" data-key="{{ item.key }}" aria-label="Remove {{ item.product_title | escape }} from cart"><span aria-hidden="true">×</span></button>
               </div>
               {%- if item.variant.title != 'Default Title' -%}<div class="ecd-row-variant">{{ item.variant.title }}</div>{%- endif -%}
@@ -176,7 +176,7 @@
         +'  <div class="ecd-thumb">'+(img?'<img src="'+escapeHtml(thumb(img,140))+'" width="70" height="70" alt="" loading="lazy" decoding="async">':'')+'</div>'
         +'  <div class="ecd-row-body">'
         +'    <div class="ecd-row-top">'
-        +'      <a class="ecd-row-name" href="'+escapeHtml(item.url)+'">'+itemLabel+'</a>'
+        +'      <span class="ecd-row-name">'+itemLabel+'</span>'
         +'      <button class="ecd-remove" type="button" data-key="'+escapeHtml(item.key)+'" aria-label="Remove '+itemLabel+' from cart"><span aria-hidden="true">×</span></button>'
         +'    </div>'
         +(variantLabel?'<div class="ecd-row-variant">'+escapeHtml(variantLabel)+'</div>':'')
