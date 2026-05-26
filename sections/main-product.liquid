@@ -74,10 +74,15 @@
                 {%- assign tier_qty = block.settings.quantity | default: 1 -%}
                 {%- assign tier_disc = block.settings.discount_percent | default: 0 -%}
                 {%- assign tier_gross = current_variant.price | times: tier_qty -%}
-                {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
-                {%- assign tier_net = tier_gross | minus: tier_off -%}
+                {%- assign tier_fixed = block.settings.fixed_total | default: 0 | times: 100 -%}
+                {%- if tier_fixed > 0 -%}
+                  {%- assign tier_net = tier_fixed -%}
+                {%- else -%}
+                  {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
+                  {%- assign tier_net = tier_gross | minus: tier_off -%}
+                {%- endif -%}
                 {%- assign tier_id = 'EastTier-' | append: section.id | append: '-' | append: block.id -%}
-                <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ tier_qty }}" data-disc="{{ tier_disc }}" {{ block.shopify_attributes }}>
+                <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ tier_qty }}" data-disc="{{ tier_disc }}" data-fixed="{{ tier_fixed }}" {{ block.shopify_attributes }}>
                   <label class="tier" for="{{ tier_id }}">
                     <input type="radio" name="east-tier-{{ section.id }}" id="{{ tier_id }}" class="tier-input visually-hidden" value="{{ block.id }}"{% if block.settings.selected %} checked{% endif %}>
                     {%- if block.settings.flag != blank -%}<span class="flag">{{ block.settings.flag }}</span>{%- endif -%}
@@ -282,8 +287,9 @@
     section.querySelectorAll('.tier-wrap').forEach(function(w){
       var qty=parseInt(w.dataset.qty,10)||1;
       var disc=parseInt(w.dataset.disc,10)||0;
+      var fixed=parseInt(w.dataset.fixed,10)||0;
       var gross=v.price*qty;
-      var net=gross-Math.round(gross*disc/100);
+      var net=fixed>0?fixed:gross-Math.round(gross*disc/100);
       var nowEl=w.querySelector('.tprice-now');
       var wasEl=w.querySelector('.tprice-was');
       if(nowEl)nowEl.textContent=moneyFormat(net);
@@ -519,7 +525,8 @@
         { "type": "text", "id": "name", "label": "Name", "default": "One Tote" },
         { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "The signature carry" },
         { "type": "number", "id": "quantity", "label": "Quantity", "default": 1, "info": "How many of the product this tier sells." },
-        { "type": "range", "id": "discount_percent", "label": "Bundle discount %", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Applied to the live variant price. The Shopify compare-at is shown automatically." },
+        { "type": "range", "id": "discount_percent", "label": "Bundle discount %", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Applied to the live variant price. Ignored when Fixed total is set." },
+        { "type": "number", "id": "fixed_total", "label": "Fixed total price ($)", "default": 0, "info": "If non-zero, overrides the discount % and shows this exact dollar amount." },
         { "type": "text", "id": "flag", "label": "Flag (e.g. Best Value)" },
         { "type": "checkbox", "id": "selected", "label": "Selected by default", "default": false }
       ]
