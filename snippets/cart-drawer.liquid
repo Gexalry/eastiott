@@ -79,7 +79,7 @@
         <span id="EastCartTotal">{{ cart.total_price | money }}</span>
       </div>
       <div class="ecd-ship">Taxes & shipping calculated at checkout</div>
-      <a href="{{ routes.checkout_url }}" id="EastCheckoutBtn" class="ecd-checkout">Check out</a>
+      <button type="button" id="EastCheckoutBtn" class="ecd-checkout" onclick="window.location.href='/checkout';">Check out</button>
     </footer>
   </aside>
 </div>
