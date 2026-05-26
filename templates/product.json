@@ -30,7 +30,7 @@
             "subtitle": "One to keep, one to gift",
             "quantity": 2,
             "discount_percent": 0,
-            "fixed_total": 159,
+            "fixed_total": "159",
             "flag": "Flash Sale",
             "selected": false
           }
@@ -42,7 +42,7 @@
             "subtitle": "The family set",
             "quantity": 3,
             "discount_percent": 0,
-            "fixed_total": 228,
+            "fixed_total": "228",
             "flag": "Best Value",
             "selected": false
           }

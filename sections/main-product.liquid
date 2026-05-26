@@ -74,8 +74,9 @@
                 {%- assign tier_qty = block.settings.quantity | default: 1 -%}
                 {%- assign tier_disc = block.settings.discount_percent | default: 0 -%}
                 {%- assign tier_gross = current_variant.price | times: tier_qty -%}
-                {%- assign tier_fixed = block.settings.fixed_total | default: 0 | times: 100 -%}
-                {%- if tier_fixed > 0 -%}
+                {%- assign tier_fixed_raw = block.settings.fixed_total | plus: 0 -%}
+                {%- assign tier_fixed = tier_fixed_raw | times: 100 -%}
+                {%- if tier_fixed_raw > 0 -%}
                   {%- assign tier_net = tier_fixed -%}
                 {%- else -%}
                   {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
@@ -526,7 +527,7 @@
         { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "The signature carry" },
         { "type": "number", "id": "quantity", "label": "Quantity", "default": 1, "info": "How many of the product this tier sells." },
         { "type": "range", "id": "discount_percent", "label": "Bundle discount %", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Applied to the live variant price. Ignored when Fixed total is set." },
-        { "type": "number", "id": "fixed_total", "label": "Fixed total price ($)", "default": 0, "info": "If non-zero, overrides the discount % and shows this exact dollar amount." },
+        { "type": "text", "id": "fixed_total", "label": "Fixed total price ($)", "info": "If set, overrides the discount % and shows this exact dollar amount (e.g. 159)." },
         { "type": "text", "id": "flag", "label": "Flag (e.g. Best Value)" },
         { "type": "checkbox", "id": "selected", "label": "Selected by default", "default": false }
       ]
