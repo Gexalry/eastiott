@@ -1,6 +1,122 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
-    "color_accent": "#111111"
+    "color_accent": "#111111",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "message": "Complimentary shipping & gift wrap"
+        }
+      },
+      "header": {
+        "type": "header",
+        "blocks": {
+          "header-0": {
+            "type": "link",
+            "settings": {
+              "label": "The Collection",
+              "link": "/collections/the-eastiott-collection"
+            }
+          },
+          "header-1": {
+            "type": "link",
+            "settings": {
+              "label": "The Atelier Tote",
+              "link": "/products/the-atelier-tote"
+            }
+          },
+          "header-2": {
+            "type": "link",
+            "settings": {
+              "label": "Travel",
+              "link": "/collections/the-eastiott-collection"
+            }
+          },
+          "header-3": {
+            "type": "link",
+            "settings": {
+              "label": "Materials",
+              "link": "/pages/materials"
+            }
+          },
+          "header-4": {
+            "type": "link",
+            "settings": {
+              "label": "Our Story",
+              "link": "/pages/about"
+            }
+          }
+        },
+        "block_order": [
+          "header-0",
+          "header-1",
+          "header-2",
+          "header-3",
+          "header-4"
+        ],
+        "settings": {
+          "logo_text": "Eastiott"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "footer-0": {
+            "type": "column",
+            "settings": {
+              "heading": "Shop",
+              "links": "The Atelier Tote | /products/the-atelier-tote\nThe Collection | /collections/the-eastiott-collection\nAccessories | #\nGift Cards | #"
+            }
+          },
+          "footer-1": {
+            "type": "column",
+            "settings": {
+              "heading": "House",
+              "links": "Our Story | #\nMaterials | #\nTrack Your Order | #\nContact | #"
+            }
+          },
+          "footer-2": {
+            "type": "column",
+            "settings": {
+              "heading": "Policies",
+              "links": "Privacy | /policies/privacy-policy\nRefunds | /policies/refund-policy\nShipping | /policies/shipping-policy\nTerms | /policies/terms-of-service"
+            }
+          }
+        },
+        "block_order": [
+          "footer-0",
+          "footer-1",
+          "footer-2"
+        ],
+        "settings": {
+          "logo_text": "Eastiott",
+          "tagline": "Carried with intention.",
+          "tagline_bottom": "Designed for those who carry more, gracefully."
+        }
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Default": {
