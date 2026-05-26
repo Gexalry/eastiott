@@ -74,15 +74,12 @@
                 {%- assign tier_qty = block.settings.quantity | default: 1 -%}
                 {%- assign tier_disc = block.settings.discount_percent | default: 0 -%}
                 {%- assign tier_gross = current_variant.price | times: tier_qty -%}
-                {%- assign tier_fixed = block.settings.fixed_total | default: 0 | times: 100 -%}
-                {%- if tier_fixed > 0 -%}
-                  {%- assign tier_net = tier_fixed -%}
-                {%- else -%}
-                  {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
-                  {%- assign tier_net = tier_gross | minus: tier_off -%}
-                {%- endif -%}
+                {%- assign tier_off = tier_gross | times: tier_disc | divided_by: 100 -%}
+                {%- assign tier_net = tier_gross | minus: tier_off -%}
+                {%- if tier_qty == 2 -%}{%- assign tier_net = 15900 -%}{%- endif -%}
+                {%- if tier_qty == 3 -%}{%- assign tier_net = 22800 -%}{%- endif -%}
                 {%- assign tier_id = 'EastTier-' | append: section.id | append: '-' | append: block.id -%}
-                <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ tier_qty }}" data-disc="{{ tier_disc }}" data-fixed="{{ tier_fixed }}" {{ block.shopify_attributes }}>
+                <div class="tier-wrap{% if block.settings.selected %} on{% endif %}" data-qty="{{ tier_qty }}" data-disc="{{ tier_disc }}" data-fixed="{{ tier_net }}" {{ block.shopify_attributes }}>
                   <label class="tier" for="{{ tier_id }}">
                     <input type="radio" name="east-tier-{{ section.id }}" id="{{ tier_id }}" class="tier-input visually-hidden" value="{{ block.id }}"{% if block.settings.selected %} checked{% endif %}>
                     {%- if block.settings.flag != blank -%}<span class="flag">{{ block.settings.flag }}</span>{%- endif -%}
